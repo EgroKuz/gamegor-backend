@@ -1,0 +1,56 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Django
+*.log
+db.sqlite3
+*.sqlite3
+*.sqlite3-journal
+media/
+staticfiles/
+*.pot
+
+# Настройки с паролями
+.env
+.venv
+secrets.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+gitignore
+# Secrets
+.env
+.venv
+secrets.py
+*.env
+
+# Django
+*.log
+db.sqlite3
+
+
+passwords.txt
+requirements.txt
+
+# Миграции (опционально - иногда их тоже загружают)
+# */migrations/*.py
+# !*/migrations/__init__.py
