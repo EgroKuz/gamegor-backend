@@ -1,5 +1,6 @@
 from rest_framework import viewsets, filters, permissions
 from django_filters.rest_framework import DjangoFilterBackend
+from django.views.generic import TemplateView
 from .models import GameSession
 from .serializers import GameSessionSerializer, GameSessionCreateSerializer
 
@@ -23,3 +24,14 @@ class GameSessionViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
         
+
+class GameSessionCreatePageView(TemplateView):
+    """
+    Страница добавления игровой сессии для выбранной игры.
+    """
+    template_name = "gamesessions/session_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["game_id"] = kwargs.get("game_id")
+        return context

@@ -2,6 +2,7 @@ from rest_framework import viewsets, generics, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
+from django.views.generic import TemplateView
 from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer
 
 User = get_user_model()
@@ -45,3 +46,23 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = RegisterSerializer
+
+class AuthPageView(TemplateView):
+    """
+    Простая HTML-страница для регистрации и авторизации пользователей.
+    """
+    template_name = "users/auth.html"
+
+
+class ProfilePageView(TemplateView):
+    """
+    HTML-страница профиля пользователя с редактированием данных.
+    """
+    template_name = "users/profile.html"
+
+
+class StatsAchievementsPageView(TemplateView):
+    """
+    HTML-страница статистики и достижений пользователя.
+    """
+    template_name = "users/stats_achievements.html"

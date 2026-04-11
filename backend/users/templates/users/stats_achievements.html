@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameGor — Статистика и достижения</title>
+  <style>
+    body { margin:0; font-family: Inter, Arial, sans-serif; background:#0b1220; color:#e5e7eb; }
+    .wrap { max-width:980px; margin:32px auto; padding:0 16px; }
+    .head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px; }
+    .btn { background:#334155; color:#e2e8f0; text-decoration:none; padding:10px 14px; border-radius:10px; }
+    .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card { background:#111827; border:1px solid #253042; border-radius:14px; padding:16px; }
+    .value { font-size:28px; font-weight:800; margin-top:6px; }
+    .muted { color:#9ca3af; font-size:14px; }
+    .ach-list { display:grid; gap:10px; margin-top:8px; }
+    .ach { border:1px solid #2d3a50; border-radius:10px; padding:10px; }
+    .bar { height:10px; background:#1f2937; border-radius:999px; overflow:hidden; margin-top:6px; }
+    .bar > span { display:block; height:100%; background:linear-gradient(90deg,#22c55e,#84cc16); }
+    .warn { color:#fbbf24; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <h1>Статистика и достижения</h1>
+      <a class="btn" href="/api/profile-page/">К профилю</a>
+    </div>
+    <p class="muted">Прототип страницы аналитики по вашим игровым сессиям и активности с видео.</p>
+
+    <div id="warning" class="warn"></div>
+
+    <section class="grid" id="stats-cards"></section>
+
+    <section class="card" style="margin-top:14px;">
+      <h2>Достижения</h2>
+      <div id="achievements" class="ach-list"></div>
+    </section>
+
+    <section class="card" style="margin-top:14px;">
+      <h2>Быстрые графики (базовые)</h2>
+      <div id="charts"></div>
+    </section>
+  </div>
+
+  <script>
+    const warningEl = document.getElementById('warning');
+    const statsCards = document.getElementById('stats-cards');
+    const achievementsEl = document.getElementById('achievements');
+    const chartsEl = document.getElementById('charts');
+
+    function token() { return localStorage.getItem('access_token'); }
+
+    async function apiGet(url) {
+      const t = token();
+      const response = await fetch(url, { headers: { Authorization: `Bearer ${t}` } });
+      if (!response.ok) throw new Error(`Request failed: ${url}`);
+      return response.json();
+    }
+
+    function card(title, value, hint='') {
+      return `<div class="card"><div class="muted">${title}</div><div class="value">${value}</div><div class="muted">${hint}</div></div>`;
+    }
+
+    function achievement(title, desc) {
+      return `<div class="ach"><strong>${title}</strong><div class="muted">${desc}</div></div>`;
+    }
+
+    function bar(label, value, max = 10) {
+      const pct = Math.max(0, Math.min(100, (value / max) * 100));
+      return `<div style="margin-bottom:10px;"><div class="muted">${label}: ${value.toFixed ? value.toFixed(2) : value}</div><div class="bar"><span style="width:${pct}%"></span></div></div>`;
+    }
+
+    async function loadStats() {
+      if (!token()) {
+        warningEl.textContent = 'Нет access_token. Сначала авторизуйтесь на /api/auth/.';
+        return;
+      }
+
+      try {
+        const [sessions, interactions, weakSkills] = await Promise.all([
+          apiGet('/api/sessions/'),
+          apiGet('/api/interactions/'),
+          apiGet('/api/recommendations/weak_skills/'),
+        ]);
+
+        const uniqueGames = new Set(sessions.map(s => s.game)).size;
+        const avgRating = sessions.length ? sessions.reduce((a, s) => a + Number(s.rating || 0), 0) / sessions.length : 0;
+        const avgWatch = interactions.length ? interactions.reduce((a, i) => a + Number(i.watch_duration || 0), 0) / interactions.length : 0;
+
+        statsCards.innerHTML = [
+          card('Игровых сессий', sessions.length, 'Отзывы и оценки 1–10'),
+          card('Уникальных игр', uniqueGames, 'Разнообразие игрового опыта'),
+          card('Средняя оценка сессий', avgRating.toFixed(2), 'На основе ваших отзывов'),
+          card('Просмотров видео', interactions.length, 'История просмотра контента'),
+          card('Средняя длительность просмотра (сек)', avgWatch.toFixed(0), 'По взаимодействиям с видео'),
+          card('Слабые навыки', weakSkills.length, 'По анализу тегов и рекомендаций'),
+        ].join('');
+
+        const ach = [];
+        if (sessions.length >= 1) ach.push(['Первые шаги', 'Добавлена первая игровая сессия.']);
+        if (sessions.length >= 10) ach.push(['Опытный игрок', 'Добавлено 10+ игровых сессий.']);
+        if (uniqueGames >= 5) ach.push(['Исследователь', 'Вы сыграли как минимум в 5 разных игр.']);
+        if (interactions.length >= 5) ach.push(['Медиазритель', 'Просмотрено 5+ видео.']);
+        if (avgRating >= 8) ach.push(['Стабильный результат', 'Средняя оценка сессий 8.0 и выше.']);
+        if (sessions.length >= 3 && weakSkills.length === 0) ach.push(['Без слабых мест', 'Система не выявила слабых навыков.']);
+
+        achievementsEl.innerHTML = ach.length
+          ? ach.map(([t, d]) => achievement(t, d)).join('')
+          : '<div class="muted">Пока достижений мало — добавьте сессии и взаимодействия с видео.</div>';
+
+        chartsEl.innerHTML = [
+          bar('Средняя оценка сессий', avgRating, 10),
+          bar('Покрытие по играм (цель: 10)', uniqueGames, 10),
+          bar('Активность по видео (цель: 20 просмотров)', interactions.length, 20),
+        ].join('');
+
+      } catch (e) {
+        warningEl.textContent = 'Не удалось загрузить статистику. Проверьте токен и доступность API.';
+      }
+    }
+
+    loadStats();
+  </script>
+</body>
+</html>

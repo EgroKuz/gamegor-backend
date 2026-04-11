@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameGor — Главная</title>
+  <style>
+    body { margin:0; font-family: Inter, Arial, sans-serif; background:#0b1220; color:#e5e7eb; }
+    .wrap { max-width:1100px; margin:24px auto; padding:0 16px; }
+    h1 { margin:0 0 6px; }
+    .muted { color:#9ca3af; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+    .links a { color:#cbd5e1; text-decoration:none; margin-left:12px; }
+    .search { display:flex; gap:10px; margin-bottom:18px; }
+    input { flex:1; border:1px solid #2b3a52; background:#111827; color:#e5e7eb; border-radius:10px; padding:11px 12px; }
+    button { border:none; background:#22c55e; color:#052e16; font-weight:700; border-radius:10px; padding:11px 14px; cursor:pointer; }
+    .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+    .card { background:#111827; border:1px solid #253042; border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
+    .cover { width:100%; height:130px; object-fit:cover; background:#0f172a; }
+    .content { padding:12px; }
+    .title { font-size:16px; font-weight:700; margin-bottom:6px; }
+    .meta { font-size:13px; color:#9ca3af; margin-bottom:8px; }
+    .card a { margin-top:auto; display:block; text-align:center; text-decoration:none; color:#e2e8f0; background:#1e293b; padding:10px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>GameGor</h1>
+        <div class="muted">Поиск по названиям игр и переход к карточке игры</div>
+      </div>
+      <div class="links">
+        <a href="/api/auth/">Вход/регистрация</a>
+        <a href="/api/profile-page/">Профиль</a>
+        <a href="/api/stats-page/">Статистика</a>
+      </div>
+    </div>
+
+    <form id="search-form" class="search">
+      <input id="search-input" placeholder="Введите название игры (например, Counter-Strike)" />
+      <button type="submit">Найти</button>
+    </form>
+
+    <div id="count" class="muted" style="margin-bottom:10px"></div>
+    <section id="games-grid" class="grid"></section>
+  </div>
+
+  <script>
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('search-input');
+    const grid = document.getElementById('games-grid');
+    const count = document.getElementById('count');
+
+    function gameCard(game) {
+      const image = game.cover_image || 'https://placehold.co/640x360?text=GameGor';
+      return `
+      <article class="card">
+        <img class="cover" src="${image}" alt="${game.title}" />
+        <div class="content">
+          <div class="title">${game.title}</div>
+          <div class="meta">Жанр: ${game.genre || '—'}</div>
+          <div class="meta">Разработчик: ${game.developer || '—'}</div>
+          <div class="meta">Релиз: ${game.release_date || '—'}</div>
+        </div>
+        <a href="/games/${game.id}/">Открыть страницу игры</a>
+      </article>`;
+    }
+
+    async function loadGames(search = '') {
+      const query = search ? `?search=${encodeURIComponent(search)}` : '';
+      const response = await fetch(`/api/games/${query}`);
+      if (!response.ok) {
+        count.textContent = 'Не удалось загрузить список игр';
+        return;
+      }
+
+      const data = await response.json();
+      const games = Array.isArray(data) ? data : (data.results || []);
+      count.textContent = `Найдено игр: ${games.length}`;
+
+      if (!games.length) {
+        grid.innerHTML = '<div class="muted">По вашему запросу ничего не найдено.</div>';
+        return;
+      }
+
+      grid.innerHTML = games.map(gameCard).join('');
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      loadGames(input.value.trim());
+    });
+
+    loadGames('');
+  </script>
+</body>
+</html>
