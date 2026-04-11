@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameGor — Авторизация и регистрация</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --accent: #22c55e;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #ef4444;
+      --line: #1f2937;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at top right, #111827, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .layout {
+      width: 100%;
+      max-width: 980px;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .card {
+      background: linear-gradient(180deg, #111827, #0b1220);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 { margin: 0 0 8px; font-size: 24px; }
+    h2 { margin: 0 0 16px; font-size: 20px; }
+    p { margin: 0 0 16px; color: var(--muted); }
+
+    .field { margin-bottom: 12px; }
+    label { display: block; margin-bottom: 6px; font-size: 14px; }
+    input {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #0b1020;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      background: var(--accent);
+      color: #052e16;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .result {
+      margin-top: 10px;
+      min-height: 22px;
+      font-size: 14px;
+    }
+
+    .ok { color: #4ade80; }
+    .error { color: var(--danger); }
+    .meta {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    code {
+      background: #111827;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 2px 6px;
+      color: #93c5fd;
+    }
+  </style>
+</head>
+<body>
+  <main class="layout">
+    <section class="card">
+      <h1>GameGor</h1>
+      <p>Страница авторизации и регистрации для дипломного веб-приложения.</p>
+
+      <h2>Вход</h2>
+      <form id="login-form">
+        <div class="field">
+          <label for="login-username">Логин (username)</label>
+          <input id="login-username" name="username" required />
+        </div>
+        <div class="field">
+          <label for="login-password">Пароль</label>
+          <input id="login-password" name="password" type="password" required />
+        </div>
+        <button type="submit">Войти</button>
+      </form>
+      <div id="login-result" class="result"></div>
+      <div class="meta">JWT endpoint: <code>/api/token/</code></div>
+    </section>
+
+    <section class="card">
+      <h2>Регистрация</h2>
+      <form id="register-form">
+        <div class="field">
+          <label for="reg-username">Username</label>
+          <input id="reg-username" name="username" required />
+        </div>
+        <div class="field">
+          <label for="reg-nickname">Никнейм</label>
+          <input id="reg-nickname" name="nickname" required />
+        </div>
+        <div class="field">
+          <label for="reg-email">Email</label>
+          <input id="reg-email" name="email" type="email" required />
+        </div>
+        <div class="field">
+          <label for="reg-password">Пароль</label>
+          <input id="reg-password" name="password" type="password" required />
+        </div>
+        <div class="field">
+          <label for="reg-password2">Повтор пароля</label>
+          <input id="reg-password2" name="password2" type="password" required />
+        </div>
+        <button type="submit">Создать аккаунт</button>
+      </form>
+      <div id="register-result" class="result"></div>
+      <div class="meta">Register endpoint: <code>/api/register/</code></div>
+    </section>
+  </main>
+
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const loginResult = document.getElementById('login-result');
+    const registerResult = document.getElementById('register-result');
+
+    function showResult(target, text, ok = true) {
+      target.textContent = text;
+      target.className = `result ${ok ? 'ok' : 'error'}`;
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        username: loginForm.username.value,
+        password: loginForm.password.value,
+      };
+
+      try {
+        const response = await fetch('/api/token/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          showResult(loginResult, data.detail || 'Ошибка входа', false);
+          return;
+        }
+
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        showResult(loginResult, 'Вход успешен. JWT сохранен в localStorage.');
+      } catch {
+        showResult(loginResult, 'Не удалось выполнить запрос на авторизацию', false);
+      }
+    });
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        username: registerForm.username.value,
+        nickname: registerForm.nickname.value,
+        email: registerForm.email.value,
+        password: registerForm.password.value,
+        password2: registerForm.password2.value,
+      };
+
+      try {
+        const response = await fetch('/api/register/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          const firstError = Object.values(data)[0];
+          const message = Array.isArray(firstError) ? firstError[0] : 'Ошибка регистрации';
+          showResult(registerResult, message, false);
+          return;
+        }
+
+        showResult(registerResult, 'Регистрация успешна. Теперь выполните вход.');
+        registerForm.reset();
+      } catch {
+        showResult(registerResult, 'Не удалось выполнить запрос на регистрацию', false);
+      }
+    });
+  </script>
+</body>
+</html>
