@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameGor — Профиль пользователя</title>
+  <style>
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background:#0b1220; color:#e5e7eb; }
+    .wrap { max-width: 760px; margin: 40px auto; padding: 0 16px; }
+    .card { background:#111827; border:1px solid #253042; border-radius:14px; padding:20px; }
+    h1 { margin: 0 0 8px; }
+    p { color:#9ca3af; margin:0 0 18px; }
+    .grid { display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
+    .field { display:flex; flex-direction:column; gap:6px; }
+    .field.full { grid-column: 1 / -1; }
+    input { border:1px solid #2c3b52; background:#0b1020; color:#e5e7eb; border-radius:10px; padding:10px 12px; }
+    .row { display:flex; gap:10px; margin-top:14px; }
+    button,a.btn { border:none; background:#22c55e; color:#052e16; font-weight:700; padding:10px 14px; border-radius:10px; cursor:pointer; text-decoration:none; }
+    a.secondary { background:#334155; color:#e2e8f0; }
+    .result { margin-top:12px; min-height:20px; }
+    .ok { color:#4ade80; } .error { color:#f87171; }
+    @media (max-width: 700px){ .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Профиль пользователя</h1>
+      <p>Редактирование личных данных пользователя GameGor.</p>
+
+      <form id="profile-form">
+        <div class="grid">
+          <div class="field">
+            <label>Username</label>
+            <input name="username" required />
+          </div>
+          <div class="field">
+            <label>Никнейм</label>
+            <input name="nickname" required />
+          </div>
+          <div class="field full">
+            <label>Email</label>
+            <input name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label>Имя</label>
+            <input name="first_name" />
+          </div>
+          <div class="field">
+            <label>Фамилия</label>
+            <input name="last_name" />
+          </div>
+          <div class="field full">
+            <label>Дата регистрации</label>
+            <input name="registration_date" readonly />
+          </div>
+        </div>
+
+        <div class="row">
+          <button type="submit">Сохранить профиль</button>
+          <a class="btn secondary" href="/api/stats-page/">К статистике достижений</a>
+        </div>
+      </form>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('profile-form');
+    const result = document.getElementById('result');
+
+    function show(message, ok=true) {
+      result.textContent = message;
+      result.className = `result ${ok ? 'ok' : 'error'}`;
+    }
+
+    function getToken() {
+      return localStorage.getItem('access_token');
+    }
+
+    async function loadProfile() {
+      const token = getToken();
+      if (!token) {
+        show('Сначала выполните вход на странице /api/auth/.', false);
+        return;
+      }
+
+      const response = await fetch('/api/users/profile/', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (!response.ok) {
+        show('Не удалось загрузить профиль. Проверьте токен.', false);
+        return;
+      }
+
+      const data = await response.json();
+      Object.keys(data).forEach((key) => {
+        if (form[key]) {
+          form[key].value = data[key] || '';
+        }
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = getToken();
+      if (!token) {
+        show('Нет токена доступа. Авторизуйтесь на /api/auth/.', false);
+        return;
+      }
+
+      const payload = {
+        username: form.username.value,
+        nickname: form.nickname.value,
+        email: form.email.value,
+        first_name: form.first_name.value,
+        last_name: form.last_name.value,
+      };
+
+      const response = await fetch('/api/users/profile/', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        show(JSON.stringify(data), false);
+        return;
+      }
+
+      show('Профиль успешно обновлён.');
+      form.registration_date.value = data.registration_date || '';
+    });
+
+    loadProfile();
+  </script>
+</body>
+</html>

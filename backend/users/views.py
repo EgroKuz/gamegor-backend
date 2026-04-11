@@ -52,3 +52,17 @@ class AuthPageView(TemplateView):
     Простая HTML-страница для регистрации и авторизации пользователей.
     """
     template_name = "users/auth.html"
+
+
+class ProfilePageView(TemplateView):
+    """
+    HTML-страница профиля пользователя с редактированием данных.
+    """
+    template_name = "users/profile.html"
+
+
+class StatsAchievementsPageView(TemplateView):
+    """
+    HTML-страница статистики и достижений пользователя.
+    """
+    template_name = "users/stats_achievements.html"

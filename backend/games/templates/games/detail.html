@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameGor — Страница игры</title>
+  <style>
+    body { margin:0; font-family: Inter, Arial, sans-serif; background:#0b1220; color:#e5e7eb; }
+    .wrap { max-width:920px; margin:24px auto; padding:0 16px; }
+    a { color:#93c5fd; text-decoration:none; }
+    .card { background:#111827; border:1px solid #253042; border-radius:14px; overflow:hidden; }
+    .cover { width:100%; height:320px; object-fit:cover; background:#0f172a; }
+    .content { padding:18px; }
+    .title { font-size:30px; margin:0 0 10px; }
+    .meta { color:#cbd5e1; margin-bottom:8px; }
+    .desc { color:#d1d5db; line-height:1.5; white-space:pre-line; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .chip { background:#1e293b; color:#e2e8f0; border-radius:999px; padding:6px 10px; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><a href="/">← На главную</a></p>
+    <article class="card" id="game-card">
+      <img class="cover" id="cover" alt="cover" />
+      <div class="content">
+        <h1 class="title" id="title">Загрузка...</h1>
+        <div class="meta" id="genre"></div>
+        <div class="meta" id="developer"></div>
+        <div class="meta" id="release"></div>
+        <div class="meta" id="achievements"></div>
+        <div class="desc" id="description"></div>
+        <div class="chips" style="margin-top:14px;">
+          <a id="session-link" class="chip" href="#">Добавить игровую сессию</a>
+        </div>
+        <div id="platforms" class="chips"></div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    const gameId = '{{ game_id }}';
+
+    async function loadGame() {
+      const response = await fetch(`/api/games/${gameId}/`);
+      if (!response.ok) {
+        document.getElementById('title').textContent = 'Игра не найдена';
+        return;
+      }
+
+      const game = await response.json();
+      document.title = `GameGor — ${game.title}`;
+      document.getElementById('cover').src = game.cover_image || 'https://placehold.co/1200x600?text=GameGor';
+      document.getElementById('cover').alt = game.title;
+      document.getElementById('title').textContent = game.title;
+      document.getElementById('genre').textContent = `Жанр: ${game.genre || '—'}`;
+      document.getElementById('developer').textContent = `Разработчик: ${game.developer || '—'}`;
+      document.getElementById('release').textContent = `Дата релиза: ${game.release_date || '—'}`;
+      document.getElementById('achievements').textContent = `Достижений в игре: ${game.total_achievements ?? 0}`;
+      document.getElementById('description').textContent = game.description || 'Описание пока не добавлено.';
+      document.getElementById('session-link').href = `/games/${game.id}/session/new/`;
+
+      const platforms = document.getElementById('platforms');
+      const list = game.platforms || [];
+      if (!list.length) {
+        platforms.innerHTML = '<span class="chip">Платформы не указаны</span>';
+      } else {
+        platforms.innerHTML = list.map(p => `<span class="chip">${p.name} (${p.type})</span>`).join('');
+      }
+    }
+
+    loadGame();
+  </script>
+</body>
+</html>
