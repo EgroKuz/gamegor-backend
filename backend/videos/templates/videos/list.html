@@ -19,26 +19,27 @@
     .content { padding:12px; }
     .title { font-size:16px; font-weight:700; margin-bottom:6px; }
     .meta { font-size:13px; color:#9ca3af; margin-bottom:6px; }
-    .watch { margin-top:auto; display:block; text-align:center; text-decoration:none; color:#e2e8f0; background:#1e293b; padding:10px; }
+    .watch { margin-top:auto; display:block; text-align:center; text-decoration:none; color:#e2e8f0; background:#1e293b; padding:10px; border:none; width:100%; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="top">
-      <div>
-        <h1>Видеоконтент</h1>
-        <div class="muted">Подборка видео по играм, авторам и тегам.</div>
-      </div>
+      <div><h1>Видеоконтент</h1><div class="muted">Подборка видео по играм, авторам и тегам.</div></div>
       <a class="btn" href="/">← На главную</a>
     </div>
-
-    <form id="search-form" class="search">
-      <input id="search-input" placeholder="Поиск по видео и авторам"/>
-      <button type="submit">Найти</button>
-    </form>
-
+    <form id="search-form" class="search"><input id="search-input" placeholder="Поиск по видео и авторам"/><button type="submit">Найти</button></form>
     <div id="count" class="muted" style="margin-bottom:10px"></div>
     <section id="videos-grid" class="grid"></section>
+  </div>
+
+  <div id="video-edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;">
+    <div style="width:min(560px,92vw);background:#111827;border:1px solid #253042;border-radius:14px;padding:16px;">
+      <h3 style="margin-top:0;">Редактирование видео</h3>
+      <label>Название</label><input id="video-edit-title" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <label>Теги через запятую</label><input id="video-edit-tags" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <div style="display:flex;gap:10px;"><button id="save-video-btn" class="watch" type="button">Сохранить</button><button id="cancel-video-btn" class="watch" type="button">Отмена</button></div>
+    </div>
   </div>
 
   <script>
@@ -46,52 +47,48 @@
     const input = document.getElementById('search-input');
     const grid = document.getElementById('videos-grid');
     const count = document.getElementById('count');
-    let isAdmin = false;
+    const videoEditModal = document.getElementById('video-edit-modal');
+    const videoEditTitle = document.getElementById('video-edit-title');
+    const videoEditTags = document.getElementById('video-edit-tags');
+    const saveVideoBtn = document.getElementById('save-video-btn');
+    const cancelVideoBtn = document.getElementById('cancel-video-btn');
     const params = new URLSearchParams(window.location.search);
     const initialTags = params.get('tags') || '';
-    if (initialTags) {
-      input.value = initialTags;
-    }
+    if (initialTags) input.value = initialTags;
 
-
+    let isAdmin = false;
+    let editingVideoId = null;
 
     async function detectAdmin() {
       const token = localStorage.getItem('access_token');
       if (!token) return false;
-      const response = await fetch('/api/users/profile/', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await fetch('/api/users/profile/', { headers: { Authorization: `Bearer ${token}` } });
       if (!response.ok) return false;
       const user = await response.json();
       return user.username === 'admin';
     }
 
-    async function editVideo(videoId) {
-      const title = prompt('Новое название видео:');
-      if (title === null) return;
-      const tags = prompt('Новые теги через запятую:');
-      if (tags === null) return;
+    function openEditVideoModal(video) {
+      editingVideoId = video.id;
+      videoEditTitle.value = video.title || '';
+      videoEditTags.value = Array.isArray(video.tags) ? video.tags.join(', ') : '';
+      videoEditModal.style.display = 'flex';
+    }
 
-      const response = await fetch(`/api/videos/${videoId}/`, {
+    async function saveVideoChanges() {
+      const token = localStorage.getItem('access_token');
+      const response = await fetch(`/api/videos/${editingVideoId}/`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-        },
-        body: JSON.stringify({
-          title: title.trim(),
-          tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
-        }),
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ title: videoEditTitle.value.trim(), tags: videoEditTags.value.split(',').map((t) => t.trim()).filter(Boolean) })
       });
-
-      if (!response.ok) {
-        alert('Не удалось обновить видео.');
-        return;
-      }
-
-      alert('Видео обновлено.');
+      if (!response.ok) { alert('Не удалось обновить видео.'); return; }
+      videoEditModal.style.display = 'none';
       loadVideos(input.value.trim());
     }
+
+    cancelVideoBtn.addEventListener('click', () => { videoEditModal.style.display = 'none'; });
+    saveVideoBtn.addEventListener('click', saveVideoChanges);
 
     function card(v) {
       return `
@@ -103,7 +100,7 @@
           <div class="meta">Тип: ${v.video_type || '—'}</div>
           <div class="meta">Теги: ${Array.isArray(v.tags) && v.tags.length ? v.tags.join(', ') : '—'}</div>
         </div>
-        ${isAdmin ? `<button class="watch" type="button" onclick="editVideo(${v.id})">Редактировать видео (admin)</button>` : ''}
+        ${isAdmin ? `<button class="watch edit-video-btn" type="button" data-video='${JSON.stringify(v).replace(/'/g, '&#39;')}'>Редактировать видео (admin)</button>` : ''}
         <a class="watch" href="${v.url}" target="_blank" rel="noopener noreferrer">Смотреть видео</a>
       </article>`;
     }
@@ -111,22 +108,17 @@
     async function loadVideos(search = '') {
       const query = search ? `?search=${encodeURIComponent(search)}` : '';
       const response = await fetch(`/api/videos/${query}`);
-      if (!response.ok) {
-        count.textContent = 'Не удалось загрузить видео.';
-        return;
-      }
-
+      if (!response.ok) { count.textContent = 'Не удалось загрузить видео.'; return; }
       const data = await response.json();
       const videos = Array.isArray(data) ? data : (data.results || []);
       count.textContent = `Найдено видео: ${videos.length}`;
       grid.innerHTML = videos.length ? videos.map(card).join('') : '<div class="muted">Видео не найдены.</div>';
+      document.querySelectorAll('.edit-video-btn').forEach((btn) => {
+        btn.addEventListener('click', () => openEditVideoModal(JSON.parse(btn.dataset.video)));
+      });
     }
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      loadVideos(input.value.trim());
-    });
-
+    form.addEventListener('submit', (e) => { e.preventDefault(); loadVideos(input.value.trim()); });
     detectAdmin().then((value) => { isAdmin = value; loadVideos(initialTags); });
   </script>
 </body>
