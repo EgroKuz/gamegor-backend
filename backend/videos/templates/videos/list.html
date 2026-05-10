@@ -1,3 +1,182 @@
-<!DOCTYPE html><html lang='ru'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>GameGor — Видеоконтент</title></head><body><div class='wrap'><h1>Видеоконтент</h1><a href='/'>← На главную</a><form id='search-form'><input id='search-input' placeholder='Поиск по видео и авторам'/><button type='submit'>Найти</button></form><section id='videos-grid'></section></div><script>
-const form=document.getElementById('search-form');const input=document.getElementById('search-input');const grid=document.getElementById('videos-grid');function card(v){return `<article><img src="${v.thumbnail||'https://placehold.co/640x360?text=Video'}" alt="${v.title}" style="width:240px;height:130px;object-fit:cover"/><h3>${v.title}</h3><p>Автор: ${v.author_name||'—'}</p><p>Тип: ${v.video_type||'—'}</p><a href="${v.url}" target="_blank" rel="noopener noreferrer">Смотреть видео</a></article>`;}async function loadVideos(search=''){const query=search?`?search=${encodeURIComponent(search)}`:'';const response=await fetch(`/api/videos/${query}`);if(!response.ok){grid.innerHTML='<div>Не удалось загрузить видео.</div>';return;}const data=await response.json();const videos=Array.isArray(data)?data:(data.results||[]);grid.innerHTML=videos.length?videos.map(card).join(''):'<div>Видео не найдены.</div>';}form.addEventListener('submit',(e)=>{e.preventDefault();loadVideos(input.value.trim());});loadVideos();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GameGor — Видеоконтент</title>
+  <style>
+    body { margin:0; font-family:Inter, Arial, sans-serif; background:#0b1220; color:#e5e7eb; }
+    .wrap { max-width:1100px; margin:24px auto; padding:0 16px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+    .btn { background:#334155; color:#e2e8f0; text-decoration:none; padding:10px 14px; border-radius:10px; }
+    .muted { color:#9ca3af; }
+    .search { display:flex; gap:10px; margin:16px 0; }
+    input { flex:1; border:1px solid #2b3a52; background:#111827; color:#e5e7eb; border-radius:10px; padding:11px 12px; }
+    button { border:none; background:#22c55e; color:#052e16; font-weight:700; border-radius:10px; padding:11px 14px; cursor:pointer; }
+    .grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
+    .card { background:#111827; border:1px solid #253042; border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
+    .cover { width:100%; height:150px; object-fit:cover; background:#0f172a; }
+    .content { padding:12px; }
+    .title { font-size:16px; font-weight:700; margin-bottom:6px; }
+    .meta { font-size:13px; color:#9ca3af; margin-bottom:6px; }
+    .watch { margin-top:auto; display:block; text-align:center; text-decoration:none; color:#e2e8f0; background:#1e293b; padding:10px; border:none; width:100%; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div><h1>Видеоконтент</h1><div class="muted">Подборка видео по играм, авторам и тегам.</div></div>
+      <a class="btn" href="/">← На главную</a>
+    </div>
+    <form id="search-form" class="search"><input id="search-input" placeholder="Поиск по видео и авторам"/><button type="submit">Найти</button><button id="open-filter-btn" type="button" style="background:#2563eb;color:#dbeafe;">Фильтр по тегам</button></form>
+    <div id="filter-panel" style="display:none;background:#111827;border:1px solid #253042;border-radius:12px;padding:12px;margin-bottom:12px;">
+      <div class="muted" style="margin-bottom:8px;">Выберите теги для фильтрации:</div>
+      <div id="tags-container" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;"></div>
+      <div style="display:flex;gap:8px;">
+        <button id="apply-filter-btn" type="button">Применить</button>
+        <button id="reset-filter-btn" type="button" style="background:#334155;color:#e2e8f0;">Сбросить</button>
+      </div>
+    </div>
+    <div id="active-filters" class="muted" style="margin-bottom:8px"></div>
+    <div id="count" class="muted" style="margin-bottom:10px"></div>
+    <section id="videos-grid" class="grid"></section>
+  </div>
+
+  <div id="video-edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;">
+    <div style="width:min(560px,92vw);background:#111827;border:1px solid #253042;border-radius:14px;padding:16px;">
+      <h3 style="margin-top:0;">Редактирование видео</h3>
+      <label>Название</label><input id="video-edit-title" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <label>Теги через запятую</label><input id="video-edit-tags" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <div style="display:flex;gap:10px;"><button id="save-video-btn" class="watch" type="button">Сохранить</button><button id="cancel-video-btn" class="watch" type="button">Отмена</button></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('search-input');
+    const grid = document.getElementById('videos-grid');
+    const count = document.getElementById('count');
+    const activeFilters = document.getElementById('active-filters');
+    const videoEditModal = document.getElementById('video-edit-modal');
+    const videoEditTitle = document.getElementById('video-edit-title');
+    const videoEditTags = document.getElementById('video-edit-tags');
+    const saveVideoBtn = document.getElementById('save-video-btn');
+    const cancelVideoBtn = document.getElementById('cancel-video-btn');
+    const params = new URLSearchParams(window.location.search);
+    const initialTags = params.get('tags') || '';
+    if (initialTags) input.value = initialTags;
+
+    const openFilterBtn = document.getElementById('open-filter-btn');
+    const filterPanel = document.getElementById('filter-panel');
+    const tagsContainer = document.getElementById('tags-container');
+    const applyFilterBtn = document.getElementById('apply-filter-btn');
+    const resetFilterBtn = document.getElementById('reset-filter-btn');
+
+    let isAdmin = false;
+    let editingVideoId = null;
+    let allVideos = [];
+    let selectedTags = initialTags ? initialTags.split(',').map((t) => t.trim()).filter(Boolean) : [];
+
+    async function detectAdmin() {
+      const token = localStorage.getItem('access_token');
+      if (!token) return false;
+      const response = await fetch('/api/users/profile/', { headers: { Authorization: `Bearer ${token}` } });
+      if (!response.ok) return false;
+      const user = await response.json();
+      return user.username === 'admin';
+    }
+
+    function openEditVideoModal(video) {
+      editingVideoId = video.id;
+      videoEditTitle.value = video.title || '';
+      videoEditTags.value = Array.isArray(video.tags) ? video.tags.join(', ') : '';
+      videoEditModal.style.display = 'flex';
+    }
+
+    async function saveVideoChanges() {
+      const token = localStorage.getItem('access_token');
+      const response = await fetch(`/api/videos/${editingVideoId}/`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ title: videoEditTitle.value.trim(), tags: videoEditTags.value.split(',').map((t) => t.trim()).filter(Boolean) })
+      });
+      if (!response.ok) { alert('Не удалось обновить видео.'); return; }
+      videoEditModal.style.display = 'none';
+      loadVideos(input.value.trim());
+    }
+
+    cancelVideoBtn.addEventListener('click', () => { videoEditModal.style.display = 'none'; });
+    saveVideoBtn.addEventListener('click', saveVideoChanges);
+
+    function card(v) {
+      return `
+      <article class="card">
+        <img class="cover" src="${v.thumbnail || 'https://placehold.co/640x360?text=Video'}" alt="${v.title}"/>
+        <div class="content">
+          <div class="title">${v.title}</div>
+          <div class="meta">Автор: ${v.author_name || '—'}</div>
+          <div class="meta">Тип: ${v.video_type || '—'}</div>
+          <div class="meta">Теги: ${Array.isArray(v.tags) && v.tags.length ? v.tags.join(', ') : '—'}</div>
+        </div>
+        ${isAdmin ? `<button class="watch edit-video-btn" type="button" data-video='${JSON.stringify(v).replace(/'/g, '&#39;')}'>Редактировать видео (admin)</button>` : ''}
+        <a class="watch" href="${v.url}" target="_blank" rel="noopener noreferrer">Смотреть видео</a>
+      </article>`;
+    }
+
+    function renderTagFilters(videos) {
+      const tags = [...new Set(videos.flatMap((v) => Array.isArray(v.tags) ? v.tags : []))].sort();
+      tagsContainer.innerHTML = tags.map((tag) => {
+        const checked = selectedTags.includes(tag) ? 'checked' : '';
+        return `<label style="display:flex;align-items:center;gap:6px;background:#0f172a;border:1px solid #253042;border-radius:999px;padding:6px 10px;"><input type="checkbox" value="${tag}" ${checked}/> ${tag}</label>`;
+      }).join('');
+    }
+
+    function applyFilters(videos, search = '') {
+      const normalizedSearch = search.toLowerCase();
+      return videos.filter((v) => {
+        const searchable = `${v.title || ''} ${v.author_name || ''}`.toLowerCase();
+        const searchOk = !normalizedSearch || searchable.includes(normalizedSearch);
+        const videoTags = Array.isArray(v.tags) ? v.tags : [];
+        const tagsOk = !selectedTags.length || selectedTags.every((tag) => videoTags.includes(tag));
+        return searchOk && tagsOk;
+      });
+    }
+
+    function renderVideos(videos) {
+      count.textContent = `Найдено видео: ${videos.length}`;
+      activeFilters.textContent = selectedTags.length ? `Активные теги: ${selectedTags.join(', ')}` : 'Активные теги: нет';
+      grid.innerHTML = videos.length ? videos.map(card).join('') : '<div class="muted">Видео не найдены.</div>';
+      document.querySelectorAll('.edit-video-btn').forEach((btn) => {
+        btn.addEventListener('click', () => openEditVideoModal(JSON.parse(btn.dataset.video)));
+      });
+    }
+
+    async function loadVideos(search = '') {
+      const response = await fetch('/api/videos/');
+      if (!response.ok) { count.textContent = 'Не удалось загрузить видео.'; return; }
+      const data = await response.json();
+      allVideos = Array.isArray(data) ? data : (data.results || []);
+      renderTagFilters(allVideos);
+      renderVideos(applyFilters(allVideos, search));
+    }
+
+    openFilterBtn.addEventListener('click', () => {
+      filterPanel.style.display = filterPanel.style.display === 'none' ? 'block' : 'none';
+    });
+
+    applyFilterBtn.addEventListener('click', () => {
+      selectedTags = [...tagsContainer.querySelectorAll('input[type="checkbox"]:checked')].map((el) => el.value);
+      renderVideos(applyFilters(allVideos, input.value.trim()));
+    });
+
+    resetFilterBtn.addEventListener('click', () => {
+      selectedTags = [];
+      tagsContainer.querySelectorAll('input[type="checkbox"]').forEach((el) => { el.checked = false; });
+      renderVideos(applyFilters(allVideos, input.value.trim()));
+    });
+
+    form.addEventListener('submit', (e) => { e.preventDefault(); renderVideos(applyFilters(allVideos, input.value.trim())); });
+    detectAdmin().then((value) => { isAdmin = value; loadVideos(input.value.trim()); });
+  </script>
+</body>
+</html>

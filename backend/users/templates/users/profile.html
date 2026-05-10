@@ -25,7 +25,7 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>Профиль пользователя</h1>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><h1>Профиль пользователя</h1><button type="button" id="logout-top-btn" class="secondary" style="background:#7f1d1d;color:#fee2e2;">Выйти</button></div>
       <p>Редактирование личных данных пользователя GameGor.</p>
 
       <form id="profile-form">
@@ -59,6 +59,7 @@
         <div class="row">
           <button type="submit">Сохранить профиль</button>
           <a class="btn secondary" href="/api/stats-page/">К статистике достижений</a>
+          <a class="btn secondary" href="/">На главную</a>
         </div>
       </form>
       <div id="result" class="result"></div>
@@ -68,6 +69,7 @@
   <script>
     const form = document.getElementById('profile-form');
     const result = document.getElementById('result');
+    const logoutTopBtn = document.getElementById('logout-top-btn');
 
     function show(message, ok=true) {
       result.textContent = message;
@@ -136,6 +138,14 @@
       show('Профиль успешно обновлён.');
       form.registration_date.value = data.registration_date || '';
     });
+
+    function doLogout() {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      window.location.href = '/api/auth/';
+    }
+
+    logoutTopBtn.addEventListener('click', doLogout);
 
     loadProfile();
   </script>
