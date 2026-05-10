@@ -35,3 +35,8 @@ class GameSessionCreatePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["game_id"] = kwargs.get("game_id")
         return context
+
+
+class MySessionsPageView(TemplateView):
+    """Страница со списком игровых сессий текущего пользователя."""
+    template_name = "gamesessions/my_sessions.html"

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameGor — Мои сессии</title>
+  <style>
+    body { margin:0; font-family: Inter, Arial, sans-serif; background:#0b1220; color:#e5e7eb; }
+    .wrap { max-width:1000px; margin:24px auto; padding:0 16px; }
+    .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:10px; flex-wrap:wrap; }
+    .btn { background:#334155; color:#e2e8f0; text-decoration:none; padding:10px 14px; border-radius:10px; }
+    .muted { color:#9ca3af; }
+    .grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); margin-top:14px; }
+    .card { background:#111827; border:1px solid #253042; border-radius:14px; padding:14px; }
+    .rating { font-size:24px; font-weight:800; color:#4ade80; }
+    .tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+    .tag { background:#1e293b; border:1px solid #2e3c54; color:#cbd5e1; padding:4px 8px; border-radius:999px; font-size:12px; }
+    .warn { color:#fbbf24; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <h1>Мои игровые сессии</h1>
+      <a class="btn" href="/">← На главную</a>
+    </div>
+    <p class="muted">Список ваших созданных игровых сессий с оценками и комментариями.</p>
+    <div id="warning" class="warn"></div>
+    <section id="sessions-grid" class="grid"></section>
+  </div>
+
+  <script>
+    const warningEl = document.getElementById('warning');
+    const grid = document.getElementById('sessions-grid');
+
+    function token() {
+      return localStorage.getItem('access_token');
+    }
+
+    function renderCard(session) {
+      const tags = Array.isArray(session.tags) ? session.tags : [];
+      return `
+        <article class="card">
+          <div class="muted">Игра ID: ${session.game}</div>
+          <div class="rating">Оценка: ${session.rating}/10</div>
+          <p>${session.comment || 'Без комментария'}</p>
+          <div class="muted">Создано: ${session.created_at ? new Date(session.created_at).toLocaleString() : '—'}</div>
+          <div class="tags">${tags.length ? tags.map((tag) => `<span class="tag">${tag}</span>`).join('') : '<span class="muted">Теги не указаны</span>'}</div>
+        </article>
+      `;
+    }
+
+    async function loadSessions() {
+      if (!token()) {
+        warningEl.textContent = 'Доступ только для авторизованных пользователей. Сначала выполните вход на /api/auth/.';
+        grid.innerHTML = '';
+        return;
+      }
+
+      const response = await fetch('/api/sessions/', {
+        headers: { Authorization: `Bearer ${token()}` }
+      });
+
+      if (response.status === 401) {
+        warningEl.textContent = 'Сессия недействительна. Авторизуйтесь повторно.';
+        return;
+      }
+
+      if (!response.ok) {
+        warningEl.textContent = 'Не удалось загрузить список сессий.';
+        return;
+      }
+
+      warningEl.textContent = '';
+      const data = await response.json();
+      const sessions = Array.isArray(data) ? data : (data.results || []);
+      grid.innerHTML = sessions.length
+        ? sessions.map(renderCard).join('')
+        : '<div class="muted">У вас пока нет игровых сессий.</div>';
+    }
+
+    loadSessions();
+  </script>
+</body>
+</html>

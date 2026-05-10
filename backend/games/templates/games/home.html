@@ -34,6 +34,7 @@
         <a href="/api/auth/" id="auth-link">Вход/регистрация</a>
         <a href="/api/profile-page/" id="profile-link">Профиль</a>
         <a href="/api/stats-page/" id="stats-link">Статистика</a>
+        <a href="/api/sessions-page/" id="sessions-link">Мои сессии</a>
         <a href="/videos/" id="videos-link">Видеоконтент</a>
       </div>
     </div>
@@ -54,6 +55,7 @@
     const count = document.getElementById('count');
     const profileLink = document.getElementById('profile-link');
     const statsLink = document.getElementById('stats-link');
+    const sessionsLink = document.getElementById('sessions-link');
 
     function isAuthenticated() {
       return Boolean(localStorage.getItem('access_token'));
@@ -68,8 +70,18 @@
       });
     }
 
+    function applyAuthUiState() {
+      if (!isAuthenticated()) {
+        profileLink.style.display = 'none';
+        statsLink.style.display = 'none';
+        sessionsLink.style.display = 'none';
+      }
+    }
+
     protectNavigation(profileLink, 'Профиль');
     protectNavigation(statsLink, 'Статистика');
+    protectNavigation(sessionsLink, 'Мои сессии');
+    applyAuthUiState();
 
     function gameCard(game) {
       const image = game.cover_image || 'https://placehold.co/640x360?text=GameGor';
