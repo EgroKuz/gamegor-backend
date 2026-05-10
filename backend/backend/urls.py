@@ -18,16 +18,19 @@ from django.contrib import admin
 from django.urls import path, include
 from games.views import HomePageView, GameDetailPageView
 from gamesessions.views import GameSessionCreatePageView
+from videos.views import VideoListPageView
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home_page'),
     path('games/<int:game_id>/', GameDetailPageView.as_view(), name='game_detail_page'),
     path('games/<int:game_id>/session/new/', GameSessionCreatePageView.as_view(), name='game_session_create_page'),
     path('admin/', admin.site.urls),
+    path('videos/', VideoListPageView.as_view(), name='videos_page'),
     path('api/', include('users.urls')),
     path('api/', include('games.urls')),
     path('api/', include('videos.urls')),
     path('api/', include('gamesessions.urls')),
     path('api/', include('recommendations.urls')),
+    path('api/', include('stats.urls')),
     path('api-auth/', include('rest_framework.urls')),
 ]

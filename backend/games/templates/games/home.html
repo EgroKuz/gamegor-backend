@@ -31,9 +31,10 @@
         <div class="muted">Поиск по названиям игр и переход к карточке игры</div>
       </div>
       <div class="links">
-        <a href="/api/auth/">Вход/регистрация</a>
-        <a href="/api/profile-page/">Профиль</a>
-        <a href="/api/stats-page/">Статистика</a>
+        <a href="/api/auth/" id="auth-link">Вход/регистрация</a>
+        <a href="/api/profile-page/" id="profile-link">Профиль</a>
+        <a href="/api/stats-page/" id="stats-link">Статистика</a>
+        <a href="/videos/" id="videos-link">Видеоконтент</a>
       </div>
     </div>
 
@@ -51,6 +52,29 @@
     const input = document.getElementById('search-input');
     const grid = document.getElementById('games-grid');
     const count = document.getElementById('count');
+    const profileLink = document.getElementById('profile-link');
+    const statsLink = document.getElementById('stats-link');
+    const authLink = document.getElementById('auth-link');
+
+    function isAuthenticated() {
+      return Boolean(localStorage.getItem('access_token'));
+    }
+
+    if (isAuthenticated()) {
+      authLink.style.display = 'none';
+    }
+
+    function protectNavigation(link, label) {
+      link.addEventListener('click', (event) => {
+        if (!isAuthenticated()) {
+          event.preventDefault();
+          alert(`Для перехода в раздел «${label}» сначала авторизуйтесь.`);
+        }
+      });
+    }
+
+    protectNavigation(profileLink, 'Профиль');
+    protectNavigation(statsLink, 'Статистика');
 
     function gameCard(game) {
       const image = game.cover_image || 'https://placehold.co/640x360?text=GameGor';

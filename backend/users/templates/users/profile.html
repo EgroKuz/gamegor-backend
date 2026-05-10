@@ -59,6 +59,7 @@
         <div class="row">
           <button type="submit">Сохранить профиль</button>
           <a class="btn secondary" href="/api/stats-page/">К статистике достижений</a>
+          <button type="button" id="logout-btn" class="secondary" style="border:none;cursor:pointer;">Выйти</button>
         </div>
       </form>
       <div id="result" class="result"></div>
@@ -68,6 +69,7 @@
   <script>
     const form = document.getElementById('profile-form');
     const result = document.getElementById('result');
+    const logoutBtn = document.getElementById('logout-btn');
 
     function show(message, ok=true) {
       result.textContent = message;
@@ -135,6 +137,12 @@
 
       show('Профиль успешно обновлён.');
       form.registration_date.value = data.registration_date || '';
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      window.location.href = '/';
     });
 
     loadProfile();

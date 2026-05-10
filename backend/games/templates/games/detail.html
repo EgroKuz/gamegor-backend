@@ -15,7 +15,8 @@
     .meta { color:#cbd5e1; margin-bottom:8px; }
     .desc { color:#d1d5db; line-height:1.5; white-space:pre-line; }
     .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-    .chip { background:#1e293b; color:#e2e8f0; border-radius:999px; padding:6px 10px; font-size:13px; }
+    .chip { background:#1e293b; color:#e2e8f0; border-radius:999px; padding:6px 10px; font-size:13px; text-decoration:none; }
+    .chip.disabled { opacity:0.6; cursor:not-allowed; }
   </style>
 </head>
 <body>
@@ -32,6 +33,8 @@
         <div class="desc" id="description"></div>
         <div class="chips" style="margin-top:14px;">
           <a id="session-link" class="chip" href="#">Добавить игровую сессию</a>
+          <a id="stats-link" class="chip" href="/api/stats-page/">Статистика</a>
+          <a id="videos-link" class="chip" href="#">Видео по игре</a>
         </div>
         <div id="platforms" class="chips"></div>
       </div>
@@ -40,6 +43,21 @@
 
   <script>
     const gameId = '{{ game_id }}';
+    const sessionLink = document.getElementById('session-link');
+    const statsLink = document.getElementById('stats-link');
+    const videosLink = document.getElementById('videos-link');
+
+    function isAuthenticated() {
+      return Boolean(localStorage.getItem('access_token'));
+    }
+
+    function disableLink(link, message) {
+      link.classList.add('disabled');
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        alert(message);
+      });
+    }
 
     async function loadGame() {
       const response = await fetch(`/api/games/${gameId}/`);
@@ -58,7 +76,17 @@
       document.getElementById('release').textContent = `Дата релиза: ${game.release_date || '—'}`;
       document.getElementById('achievements').textContent = `Достижений в игре: ${game.total_achievements ?? 0}`;
       document.getElementById('description').textContent = game.description || 'Описание пока не добавлено.';
-      document.getElementById('session-link').href = `/games/${game.id}/session/new/`;
+      videosLink.href = `/videos/?game=${game.id}`;
+      if (isAuthenticated()) {
+        sessionLink.href = `/games/${game.id}/session/new/`;
+      } else {
+        sessionLink.textContent = 'Авторизуйтесь, чтобы добавить сессию';
+        disableLink(sessionLink, 'Для создания игровой сессии нужно войти в систему.');
+      }
+
+      if (!isAuthenticated()) {
+        disableLink(statsLink, 'Для просмотра статистики нужно войти в систему.');
+      }
 
       const platforms = document.getElementById('platforms');
       const list = game.platforms || [];
