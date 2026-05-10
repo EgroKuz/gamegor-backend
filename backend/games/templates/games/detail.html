@@ -34,6 +34,7 @@
         <div class="chips" style="margin-top:14px;">
           <a id="session-link" class="chip" href="#">Добавить игровую сессию</a>
           <a id="stats-link" class="chip" href="/api/stats-page/">Статистика</a>
+          <button id="edit-game-btn" class="chip" style="display:none;border:none;cursor:pointer;" type="button">Редактировать игру (admin)</button>
         </div>
         <div id="platforms" class="chips"></div>
       </div>
@@ -44,6 +45,7 @@
     const gameId = '{{ game_id }}';
     const sessionLink = document.getElementById('session-link');
     const statsLink = document.getElementById('stats-link');
+    const editGameBtn = document.getElementById('edit-game-btn');
 
     function isAuthenticated() {
       return Boolean(localStorage.getItem('access_token'));
@@ -57,6 +59,42 @@
       });
     }
 
+
+    async function isAdminUser() {
+      const token = localStorage.getItem('access_token');
+      if (!token) return false;
+      const response = await fetch('/api/users/profile/', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!response.ok) return false;
+      const user = await response.json();
+      return user.username === 'admin';
+    }
+
+    async function editGame(game) {
+      const title = prompt('Новое название игры:', game.title);
+      if (title === null) return;
+      const description = prompt('Новое описание игры:', game.description || '');
+      if (description === null) return;
+
+      const response = await fetch(`/api/games/${game.id}/`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+        body: JSON.stringify({ title: title.trim(), description: description.trim() }),
+      });
+
+      if (!response.ok) {
+        alert('Не удалось обновить игру. Проверьте права доступа.');
+        return;
+      }
+
+      alert('Игра обновлена.');
+      loadGame();
+    }
+
     async function loadGame() {
       const response = await fetch(`/api/games/${gameId}/`);
       if (!response.ok) {
@@ -65,6 +103,10 @@
       }
 
       const game = await response.json();
+      if (await isAdminUser()) {
+        editGameBtn.style.display = 'inline-block';
+        editGameBtn.onclick = () => editGame(game);
+      }
       document.title = `GameGor — ${game.title}`;
       document.getElementById('cover').src = game.cover_image || 'https://placehold.co/1200x600?text=GameGor';
       document.getElementById('cover').alt = game.title;

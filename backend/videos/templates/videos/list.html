@@ -46,12 +46,52 @@
     const input = document.getElementById('search-input');
     const grid = document.getElementById('videos-grid');
     const count = document.getElementById('count');
+    let isAdmin = false;
     const params = new URLSearchParams(window.location.search);
     const initialTags = params.get('tags') || '';
     if (initialTags) {
       input.value = initialTags;
     }
 
+
+
+    async function detectAdmin() {
+      const token = localStorage.getItem('access_token');
+      if (!token) return false;
+      const response = await fetch('/api/users/profile/', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!response.ok) return false;
+      const user = await response.json();
+      return user.username === 'admin';
+    }
+
+    async function editVideo(videoId) {
+      const title = prompt('Новое название видео:');
+      if (title === null) return;
+      const tags = prompt('Новые теги через запятую:');
+      if (tags === null) return;
+
+      const response = await fetch(`/api/videos/${videoId}/`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+        body: JSON.stringify({
+          title: title.trim(),
+          tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+        }),
+      });
+
+      if (!response.ok) {
+        alert('Не удалось обновить видео.');
+        return;
+      }
+
+      alert('Видео обновлено.');
+      loadVideos(input.value.trim());
+    }
 
     function card(v) {
       return `
@@ -63,6 +103,7 @@
           <div class="meta">Тип: ${v.video_type || '—'}</div>
           <div class="meta">Теги: ${Array.isArray(v.tags) && v.tags.length ? v.tags.join(', ') : '—'}</div>
         </div>
+        ${isAdmin ? `<button class="watch" type="button" onclick="editVideo(${v.id})">Редактировать видео (admin)</button>` : ''}
         <a class="watch" href="${v.url}" target="_blank" rel="noopener noreferrer">Смотреть видео</a>
       </article>`;
     }
@@ -86,7 +127,7 @@
       loadVideos(input.value.trim());
     });
 
-    loadVideos(initialTags);
+    detectAdmin().then((value) => { isAdmin = value; loadVideos(initialTags); });
   </script>
 </body>
 </html>
