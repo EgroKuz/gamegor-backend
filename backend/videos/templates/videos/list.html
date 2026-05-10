@@ -46,6 +46,12 @@
     const input = document.getElementById('search-input');
     const grid = document.getElementById('videos-grid');
     const count = document.getElementById('count');
+    const params = new URLSearchParams(window.location.search);
+    const initialTags = params.get('tags') || '';
+    if (initialTags) {
+      input.value = initialTags;
+    }
+
 
     function card(v) {
       return `
@@ -80,7 +86,7 @@
       loadVideos(input.value.trim());
     });
 
-    loadVideos();
+    loadVideos(initialTags);
   </script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+from django.views.generic import TemplateView
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -52,3 +53,7 @@ class RecommendationViewSet(viewsets.ModelViewSet):
         recommendation.viewed = True
         recommendation.save()
         return Response({'status': 'marked as viewed'})
+
+class RecommendationPageView(TemplateView):
+    """Страница текстовой рекомендации после сохранения сессии."""
+    template_name = "recommendations/session_recommendation.html"
