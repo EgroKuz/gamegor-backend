@@ -54,14 +54,9 @@
     const count = document.getElementById('count');
     const profileLink = document.getElementById('profile-link');
     const statsLink = document.getElementById('stats-link');
-    const authLink = document.getElementById('auth-link');
 
     function isAuthenticated() {
       return Boolean(localStorage.getItem('access_token'));
-    }
-
-    if (isAuthenticated()) {
-      authLink.style.display = 'none';
     }
 
     function protectNavigation(link, label) {

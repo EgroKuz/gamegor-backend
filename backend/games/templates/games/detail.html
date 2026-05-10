@@ -34,7 +34,6 @@
         <div class="chips" style="margin-top:14px;">
           <a id="session-link" class="chip" href="#">Добавить игровую сессию</a>
           <a id="stats-link" class="chip" href="/api/stats-page/">Статистика</a>
-          <a id="videos-link" class="chip" href="#">Видео по игре</a>
         </div>
         <div id="platforms" class="chips"></div>
       </div>
@@ -45,7 +44,6 @@
     const gameId = '{{ game_id }}';
     const sessionLink = document.getElementById('session-link');
     const statsLink = document.getElementById('stats-link');
-    const videosLink = document.getElementById('videos-link');
 
     function isAuthenticated() {
       return Boolean(localStorage.getItem('access_token'));
@@ -76,7 +74,6 @@
       document.getElementById('release').textContent = `Дата релиза: ${game.release_date || '—'}`;
       document.getElementById('achievements').textContent = `Достижений в игре: ${game.total_achievements ?? 0}`;
       document.getElementById('description').textContent = game.description || 'Описание пока не добавлено.';
-      videosLink.href = `/videos/?game=${game.id}`;
       if (isAuthenticated()) {
         sessionLink.href = `/games/${game.id}/session/new/`;
       } else {
