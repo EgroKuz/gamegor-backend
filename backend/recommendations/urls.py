@@ -6,5 +6,6 @@ router = DefaultRouter()
 router.register(r'recommendations', views.RecommendationViewSet, basename='recommendation')
 
 urlpatterns = [
+    path('recommendations-page/', views.RecommendationPageView.as_view(), name='recommendation_page'),
     path('', include(router.urls)),
 ]

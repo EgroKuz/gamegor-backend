@@ -1,100 +1,21 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GameGor — Страница игры</title>
-  <style>
-    body { margin:0; font-family: Inter, Arial, sans-serif; background:#0b1220; color:#e5e7eb; }
-    .wrap { max-width:920px; margin:24px auto; padding:0 16px; }
-    a { color:#93c5fd; text-decoration:none; }
-    .card { background:#111827; border:1px solid #253042; border-radius:14px; overflow:hidden; }
-    .cover { width:100%; height:320px; object-fit:cover; background:#0f172a; }
-    .content { padding:18px; }
-    .title { font-size:30px; margin:0 0 10px; }
-    .meta { color:#cbd5e1; margin-bottom:8px; }
-    .desc { color:#d1d5db; line-height:1.5; white-space:pre-line; }
-    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-    .chip { background:#1e293b; color:#e2e8f0; border-radius:999px; padding:6px 10px; font-size:13px; text-decoration:none; }
-    .chip.disabled { opacity:0.6; cursor:not-allowed; }
-  </style>
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>GameGor — Страница игры</title>
+<style>body{margin:0;font-family:Inter,Arial,sans-serif;background:#0b1220;color:#e5e7eb}.wrap{max-width:920px;margin:24px auto;padding:0 16px}a{color:#93c5fd;text-decoration:none}.card{background:#111827;border:1px solid #253042;border-radius:14px;overflow:hidden}.cover{width:100%;height:320px;object-fit:cover;background:#0f172a}.content{padding:18px}.title{font-size:30px;margin:0 0 10px}.meta{color:#cbd5e1;margin-bottom:8px}.desc{color:#d1d5db;line-height:1.5;white-space:pre-line}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.chip{background:#1e293b;color:#e2e8f0;border-radius:999px;padding:6px 10px;font-size:13px;text-decoration:none}.chip.disabled{opacity:.6;cursor:not-allowed}</style>
 </head>
 <body>
-  <div class="wrap">
-    <p><a href="/">← На главную</a></p>
-    <article class="card" id="game-card">
-      <img class="cover" id="cover" alt="cover" />
-      <div class="content">
-        <h1 class="title" id="title">Загрузка...</h1>
-        <div class="meta" id="genre"></div>
-        <div class="meta" id="developer"></div>
-        <div class="meta" id="release"></div>
-        <div class="meta" id="achievements"></div>
-        <div class="desc" id="description"></div>
-        <div class="chips" style="margin-top:14px;">
-          <a id="session-link" class="chip" href="#">Добавить игровую сессию</a>
-          <a id="stats-link" class="chip" href="/api/stats-page/">Статистика</a>
-        </div>
-        <div id="platforms" class="chips"></div>
-      </div>
-    </article>
-  </div>
-
-  <script>
-    const gameId = '{{ game_id }}';
-    const sessionLink = document.getElementById('session-link');
-    const statsLink = document.getElementById('stats-link');
-
-    function isAuthenticated() {
-      return Boolean(localStorage.getItem('access_token'));
-    }
-
-    function disableLink(link, message) {
-      link.classList.add('disabled');
-      link.addEventListener('click', (event) => {
-        event.preventDefault();
-        alert(message);
-      });
-    }
-
-    async function loadGame() {
-      const response = await fetch(`/api/games/${gameId}/`);
-      if (!response.ok) {
-        document.getElementById('title').textContent = 'Игра не найдена';
-        return;
-      }
-
-      const game = await response.json();
-      document.title = `GameGor — ${game.title}`;
-      document.getElementById('cover').src = game.cover_image || 'https://placehold.co/1200x600?text=GameGor';
-      document.getElementById('cover').alt = game.title;
-      document.getElementById('title').textContent = game.title;
-      document.getElementById('genre').textContent = `Жанр: ${game.genre || '—'}`;
-      document.getElementById('developer').textContent = `Разработчик: ${game.developer || '—'}`;
-      document.getElementById('release').textContent = `Дата релиза: ${game.release_date || '—'}`;
-      document.getElementById('achievements').textContent = `Достижений в игре: ${game.total_achievements ?? 0}`;
-      document.getElementById('description').textContent = game.description || 'Описание пока не добавлено.';
-      if (isAuthenticated()) {
-        sessionLink.href = `/games/${game.id}/session/new/`;
-      } else {
-        sessionLink.textContent = 'Авторизуйтесь, чтобы добавить сессию';
-        disableLink(sessionLink, 'Для создания игровой сессии нужно войти в систему.');
-      }
-
-      if (!isAuthenticated()) {
-        disableLink(statsLink, 'Для просмотра статистики нужно войти в систему.');
-      }
-
-      const platforms = document.getElementById('platforms');
-      const list = game.platforms || [];
-      if (!list.length) {
-        platforms.innerHTML = '<span class="chip">Платформы не указаны</span>';
-      } else {
-        platforms.innerHTML = list.map(p => `<span class="chip">${p.name} (${p.type})</span>`).join('');
-      }
-    }
-
-    loadGame();
-  </script>
-</body>
-</html>
+<div class="wrap"><p><a href="/">← На главную</a></p><article class="card"><img class="cover" id="cover" alt="cover" /><div class="content"><h1 class="title" id="title">Загрузка...</h1><div class="meta" id="genre"></div><div class="meta" id="developer"></div><div class="meta" id="release"></div><div class="meta" id="achievements"></div><div class="desc" id="description"></div><div class="chips" style="margin-top:14px;"><a id="session-link" class="chip" href="#">Добавить игровую сессию</a><a id="stats-link" class="chip" href="/api/stats-page/">Статистика</a><button id="edit-game-btn" class="chip" style="display:none;border:none;cursor:pointer;" type="button">Редактировать игру (admin)</button></div><div id="platforms" class="chips"></div></div></article></div>
+<div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;"><div style="width:min(560px,92vw);background:#111827;border:1px solid #253042;border-radius:14px;padding:16px;"><h3 style="margin-top:0;">Редактирование игры</h3><label>Название</label><input id="edit-title" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/><label>Описание</label><textarea id="edit-description" rows="5" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"></textarea><div style="display:flex;gap:10px;"><button id="save-game-btn" class="chip" style="border:none;cursor:pointer;">Сохранить</button><button id="cancel-game-btn" class="chip" style="border:none;cursor:pointer;">Отмена</button></div></div></div>
+<script>
+const gameId='{{ game_id }}'; const sessionLink=document.getElementById('session-link'); const statsLink=document.getElementById('stats-link'); const editGameBtn=document.getElementById('edit-game-btn');
+const editModal=document.getElementById('edit-modal'); const editTitle=document.getElementById('edit-title'); const editDescription=document.getElementById('edit-description'); const saveGameBtn=document.getElementById('save-game-btn'); const cancelGameBtn=document.getElementById('cancel-game-btn');
+let currentGame=null;
+function token(){return localStorage.getItem('access_token')} function isAuthenticated(){return Boolean(token())}
+function disableLink(link,message){link.classList.add('disabled');link.addEventListener('click',(e)=>{e.preventDefault();alert(message);});}
+async function isAdminUser(){if(!token())return false; const r=await fetch('/api/users/profile/',{headers:{Authorization:`Bearer ${token()}`}}); if(!r.ok)return false; const u=await r.json(); return u.username==='admin';}
+function openEditModal(){editTitle.value=currentGame.title||''; editDescription.value=currentGame.description||''; editModal.style.display='flex';}
+cancelGameBtn.onclick=()=>{editModal.style.display='none';};
+saveGameBtn.onclick=async()=>{const r=await fetch(`/api/games/${currentGame.id}/`,{method:'PATCH',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token()}`},body:JSON.stringify({title:editTitle.value.trim(),description:editDescription.value.trim()})}); if(!r.ok){alert('Не удалось обновить игру.');return;} editModal.style.display='none'; loadGame();};
+async function loadGame(){const response=await fetch(`/api/games/${gameId}/`); if(!response.ok){document.getElementById('title').textContent='Игра не найдена';return;} const game=await response.json(); currentGame=game; if(await isAdminUser()){editGameBtn.style.display='inline-block'; editGameBtn.onclick=openEditModal;} document.getElementById('cover').src=game.cover_image||'https://placehold.co/1200x600?text=GameGor'; document.getElementById('title').textContent=game.title; document.getElementById('genre').textContent=`Жанр: ${game.genre||'—'}`; document.getElementById('developer').textContent=`Разработчик: ${game.developer||'—'}`; document.getElementById('release').textContent=`Дата релиза: ${game.release_date||'—'}`; document.getElementById('achievements').textContent=`Достижений в игре: ${game.total_achievements??0}`; document.getElementById('description').textContent=game.description||'Описание пока не добавлено.'; if(isAuthenticated()){sessionLink.href=`/games/${game.id}/session/new/`;} else {sessionLink.textContent='Авторизуйтесь, чтобы добавить сессию'; disableLink(sessionLink,'Для создания игровой сессии нужно войти в систему.'); disableLink(statsLink,'Для просмотра статистики нужно войти в систему.');} const list=game.platforms||[]; document.getElementById('platforms').innerHTML=list.length?list.map(p=>`<span class="chip">${p.name} (${p.type})</span>`).join(''):'<span class="chip">Платформы не указаны</span>';}
+loadGame();
+</script></body></html>
