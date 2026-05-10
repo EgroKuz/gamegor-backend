@@ -122,8 +122,9 @@
         return;
       }
 
-      show('Игровая сессия успешно сохранена.');
-      form.reset();
+      show('Игровая сессия успешно сохранена. Переход к рекомендациям...');
+      const tagsQuery = encodeURIComponent(payload.tags.join(','));
+      window.location.href = `/api/recommendations-page/?game=${gameId}&tags=${tagsQuery}`;
     });
 
     loadGameInfo();
