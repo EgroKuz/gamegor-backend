@@ -181,7 +181,8 @@
 
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
-        showResult(loginResult, 'Вход успешен. JWT сохранен в localStorage.');
+        showResult(loginResult, 'Вход успешен. Переход на главную...');
+        window.location.href = '/';
       } catch {
         showResult(loginResult, 'Не удалось выполнить запрос на авторизацию', false);
       }
@@ -212,8 +213,27 @@
           return;
         }
 
-        showResult(registerResult, 'Регистрация успешна. Теперь выполните вход.');
+        const loginResponse = await fetch('/api/token/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: registerForm.username.value,
+            password: registerForm.password.value,
+          }),
+        });
+
+        const loginData = await loginResponse.json();
+        if (!loginResponse.ok) {
+          showResult(registerResult, 'Регистрация успешна, но не удалось выполнить автовход. Выполните вход вручную.', false);
+          registerForm.reset();
+          return;
+        }
+
+        localStorage.setItem('access_token', loginData.access);
+        localStorage.setItem('refresh_token', loginData.refresh);
+        showResult(registerResult, 'Регистрация и вход успешны. Переход на главную...');
         registerForm.reset();
+        window.location.href = '/';
       } catch {
         showResult(registerResult, 'Не удалось выполнить запрос на регистрацию', false);
       }
