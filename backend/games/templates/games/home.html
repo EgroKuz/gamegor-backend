@@ -48,6 +48,25 @@
     <section id="games-grid" class="grid"></section>
   </div>
 
+  <button id="add-game-fab" type="button" style="display:none;position:fixed;right:20px;bottom:20px;z-index:20;background:#16a34a;color:#ecfdf5;border:none;border-radius:999px;padding:14px 18px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.35);">+ Добавить игру</button>
+
+  <div id="add-game-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:30;align-items:center;justify-content:center;">
+    <div style="width:min(620px,92vw);background:#111827;border:1px solid #253042;border-radius:14px;padding:16px;">
+      <h3 style="margin-top:0;">Новая игра</h3>
+      <div style="display:grid;gap:8px;">
+        <input id="new-game-title" placeholder="Название"/>
+        <input id="new-game-genre" placeholder="Жанр"/>
+        <input id="new-game-developer" placeholder="Разработчик"/>
+        <input id="new-game-release-date" placeholder="Дата релиза (YYYY-MM-DD)"/>
+        <input id="new-game-cover" placeholder="Ссылка на обложку (URL)"/>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px;">
+        <button id="save-game-btn" type="button">Сохранить</button>
+        <button id="cancel-game-btn" type="button" style="background:#334155;color:#e2e8f0;">Отмена</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const form = document.getElementById('search-form');
     const input = document.getElementById('search-input');
@@ -57,6 +76,8 @@
     const statsLink = document.getElementById('stats-link');
     const sessionsLink = document.getElementById('sessions-link');
     const authLink = document.getElementById('auth-link');
+    const addGameFab = document.getElementById('add-game-fab');
+    const addGameModal = document.getElementById('add-game-modal');
 
     function token() { return localStorage.getItem('access_token'); }
 
@@ -77,6 +98,15 @@
           alert(`Для перехода в раздел «${label}» сначала авторизуйтесь.`);
         }
       });
+    }
+
+    async function isAdminUser() {
+      const t = token();
+      if (!t) return false;
+      const response = await fetch('/api/users/profile/', { headers: { Authorization: `Bearer ${t}` } });
+      if (!response.ok) return false;
+      const user = await response.json();
+      return user.username === 'admin';
     }
 
     async function applyAuthUiState() {
@@ -113,8 +143,28 @@
       grid.innerHTML = games.length ? games.map(gameCard).join('') : '<div class="muted">По вашему запросу ничего не найдено.</div>';
     }
 
+    async function createGame() {
+      const t = token();
+      const payload = {
+        title: document.getElementById('new-game-title').value.trim(),
+        genre: document.getElementById('new-game-genre').value.trim(),
+        developer: document.getElementById('new-game-developer').value.trim(),
+        release_date: document.getElementById('new-game-release-date').value.trim() || null,
+        cover_image: document.getElementById('new-game-cover').value.trim() || null,
+      };
+      if (!payload.title) { alert('Введите название игры.'); return; }
+      const response = await fetch('/api/games/', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${t}` }, body: JSON.stringify(payload) });
+      if (!response.ok) { alert('Не удалось добавить игру. Проверьте поля.'); return; }
+      addGameModal.style.display = 'none';
+      loadGames(input.value.trim());
+    }
+
+    document.getElementById('cancel-game-btn').addEventListener('click', () => { addGameModal.style.display = 'none'; });
+    document.getElementById('save-game-btn').addEventListener('click', createGame);
+    addGameFab.addEventListener('click', () => { addGameModal.style.display = 'flex'; });
+
     form.addEventListener('submit', (e) => { e.preventDefault(); loadGames(input.value.trim()); });
-    applyAuthUiState();
+    applyAuthUiState().then(async () => { addGameFab.style.display = (await isAdminUser()) ? 'block' : 'none'; });
     loadGames('');
   </script>
 </body>

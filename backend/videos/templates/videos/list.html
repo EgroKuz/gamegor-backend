@@ -42,6 +42,26 @@
     <section id="videos-grid" class="grid"></section>
   </div>
 
+  <button id="add-video-fab" type="button" style="display:none;position:fixed;right:20px;bottom:20px;z-index:20;background:#16a34a;color:#ecfdf5;border:none;border-radius:999px;padding:14px 18px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.35);">+ Добавить видео</button>
+
+  <div id="add-video-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:30;align-items:center;justify-content:center;">
+    <div style="width:min(620px,92vw);background:#111827;border:1px solid #253042;border-radius:14px;padding:16px;">
+      <h3 style="margin-top:0;">Новое видео</h3>
+      <div style="display:grid;gap:8px;">
+        <input id="new-video-title" placeholder="Название"/>
+        <input id="new-video-url" placeholder="Ссылка на видео (URL)"/>
+        <input id="new-video-thumbnail" placeholder="Ссылка на превью (URL)"/>
+        <input id="new-video-author" placeholder="Автор (ID или имя)"/>
+        <input id="new-video-tags" placeholder="Теги через запятую"/>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px;">
+        <button id="save-new-video-btn" type="button">Сохранить</button>
+        <button id="cancel-new-video-btn" type="button" style="background:#334155;color:#e2e8f0;">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+
   <div id="video-edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;">
     <div style="width:min(560px,92vw);background:#111827;border:1px solid #253042;border-radius:14px;padding:16px;">
       <h3 style="margin-top:0;">Редактирование видео</h3>
@@ -71,6 +91,8 @@
     const tagsContainer = document.getElementById('tags-container');
     const applyFilterBtn = document.getElementById('apply-filter-btn');
     const resetFilterBtn = document.getElementById('reset-filter-btn');
+    const addVideoFab = document.getElementById('add-video-fab');
+    const addVideoModal = document.getElementById('add-video-modal');
 
     let isAdmin = false;
     let editingVideoId = null;
@@ -175,8 +197,30 @@
       renderVideos(applyFilters(allVideos, input.value.trim()));
     });
 
+    async function createVideo() {
+      const token = localStorage.getItem('access_token');
+      const authorRaw = document.getElementById('new-video-author').value.trim();
+      const payload = {
+        title: document.getElementById('new-video-title').value.trim(),
+        url: document.getElementById('new-video-url').value.trim(),
+        thumbnail: document.getElementById('new-video-thumbnail').value.trim() || null,
+        tags: document.getElementById('new-video-tags').value.split(',').map((t) => t.trim()).filter(Boolean),
+      };
+      if (/^\d+$/.test(authorRaw)) payload.author = Number(authorRaw);
+      else if (authorRaw) payload.author_name = authorRaw;
+      if (!payload.title || !payload.url) { alert('Заполните название и ссылку.'); return; }
+      const response = await fetch('/api/videos/', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(payload) });
+      if (!response.ok) { alert('Не удалось добавить видео. Проверьте поля автора/URL.'); return; }
+      addVideoModal.style.display = 'none';
+      loadVideos(input.value.trim());
+    }
+
+    document.getElementById('cancel-new-video-btn').addEventListener('click', () => { addVideoModal.style.display = 'none'; });
+    document.getElementById('save-new-video-btn').addEventListener('click', createVideo);
+    addVideoFab.addEventListener('click', () => { addVideoModal.style.display = 'flex'; });
+
     form.addEventListener('submit', (e) => { e.preventDefault(); renderVideos(applyFilters(allVideos, input.value.trim())); });
-    detectAdmin().then((value) => { isAdmin = value; loadVideos(input.value.trim()); });
+    detectAdmin().then((value) => { isAdmin = value; addVideoFab.style.display = value ? 'block' : 'none'; loadVideos(input.value.trim()); });
   </script>
 </body>
 </html>
