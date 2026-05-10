@@ -58,63 +58,74 @@
     const sessionsLink = document.getElementById('sessions-link');
     const authLink = document.getElementById('auth-link');
 
-    function token() { return localStorage.getItem('access_token'); }
-
-    async function hasValidSession() {
-      if (!token()) return false;
-      const response = await fetch('/api/users/profile/', { headers: { Authorization: `Bearer ${token()}` } });
-      return response.ok;
+    function isAuthenticated() {
+      return Boolean(localStorage.getItem('access_token'));
     }
 
     function protectNavigation(link, label) {
       link.addEventListener('click', (event) => {
-        if (link.style.display === 'none') {
-          event.preventDefault();
-          return;
-        }
-        if (!token()) {
+        if (!isAuthenticated()) {
           event.preventDefault();
           alert(`Для перехода в раздел «${label}» сначала авторизуйтесь.`);
         }
       });
     }
 
-    async function applyAuthUiState() {
-      const valid = await hasValidSession();
-      if (valid) {
-        authLink.style.display = 'none';
-        profileLink.style.display = 'inline';
-        statsLink.style.display = 'inline';
-        sessionsLink.style.display = 'inline';
-      } else {
+    function applyAuthUiState() {
+      if (!isAuthenticated()) {
         profileLink.style.display = 'none';
         statsLink.style.display = 'none';
         sessionsLink.style.display = 'none';
-        authLink.style.display = 'inline';
+      } else {
+        authLink.style.display = 'none';
       }
     }
 
     protectNavigation(profileLink, 'Профиль');
     protectNavigation(statsLink, 'Статистика');
     protectNavigation(sessionsLink, 'Мои сессии');
+    applyAuthUiState();
 
     function gameCard(game) {
       const image = game.cover_image || 'https://placehold.co/640x360?text=GameGor';
-      return `<article class="card"><img class="cover" src="${image}" alt="${game.title}" /><div class="content"><div class="title">${game.title}</div><div class="meta">Жанр: ${game.genre || '—'}</div><div class="meta">Разработчик: ${game.developer || '—'}</div><div class="meta">Релиз: ${game.release_date || '—'}</div></div><a href="/games/${game.id}/">Открыть страницу игры</a></article>`;
+      return `
+      <article class="card">
+        <img class="cover" src="${image}" alt="${game.title}" />
+        <div class="content">
+          <div class="title">${game.title}</div>
+          <div class="meta">Жанр: ${game.genre || '—'}</div>
+          <div class="meta">Разработчик: ${game.developer || '—'}</div>
+          <div class="meta">Релиз: ${game.release_date || '—'}</div>
+        </div>
+        <a href="/games/${game.id}/">Открыть страницу игры</a>
+      </article>`;
     }
 
     async function loadGames(search = '') {
       const query = search ? `?search=${encodeURIComponent(search)}` : '';
       const response = await fetch(`/api/games/${query}`);
-      if (!response.ok) { count.textContent = 'Не удалось загрузить список игр'; return; }
+      if (!response.ok) {
+        count.textContent = 'Не удалось загрузить список игр';
+        return;
+      }
+
       const data = await response.json();
       const games = Array.isArray(data) ? data : (data.results || []);
       count.textContent = `Найдено игр: ${games.length}`;
-      grid.innerHTML = games.length ? games.map(gameCard).join('') : '<div class="muted">По вашему запросу ничего не найдено.</div>';
+
+      if (!games.length) {
+        grid.innerHTML = '<div class="muted">По вашему запросу ничего не найдено.</div>';
+        return;
+      }
+
+      grid.innerHTML = games.map(gameCard).join('');
     }
 
-    form.addEventListener('submit', (e) => { e.preventDefault(); loadGames(input.value.trim()); });
-    applyAuthUiState();
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      loadGames(input.value.trim());
+    });
+
     loadGames('');
   </script>
 </body>
