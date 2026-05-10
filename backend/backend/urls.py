@@ -29,5 +29,6 @@ urlpatterns = [
     path('api/', include('videos.urls')),
     path('api/', include('gamesessions.urls')),
     path('api/', include('recommendations.urls')),
+    path('api/', include('stats.urls')),
     path('api-auth/', include('rest_framework.urls')),
 ]
