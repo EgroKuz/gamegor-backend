@@ -21,6 +21,7 @@
     .title { font-size:16px; font-weight:700; margin-bottom:6px; }
     .meta { font-size:13px; color:#9ca3af; margin-bottom:8px; }
     .card a { margin-top:auto; display:block; text-align:center; text-decoration:none; color:#e2e8f0; background:#1e293b; padding:10px; }
+    .btn-danger { background:#dc2626; color:#fef2f2; border:none; padding:8px; width:100%; margin-top:8px; border-radius:8px; cursor:pointer; font-weight:700; }
   </style>
 </head>
 <body>
@@ -128,9 +129,18 @@
     protectNavigation(statsLink, 'Статистика');
     protectNavigation(sessionsLink, 'Мои сессии');
 
-    function gameCard(game) {
+    async function deleteGame(gameId) {
+      if (!confirm('Вы уверены, что хотите удалить эту игру?')) return;
+      const t = token();
+      const response = await fetch(`/api/games/${gameId}/`, { method: 'DELETE', headers: { Authorization: `Bearer ${t}` } });
+      if (!response.ok) { alert('Не удалось удалить игру.'); return; }
+      loadGames(input.value.trim());
+    }
+
+    function gameCard(game, isAdmin) {
       const image = game.cover_image || 'https://placehold.co/640x360?text=GameGor';
-      return `<article class="card"><img class="cover" src="${image}" alt="${game.title}" /><div class="content"><div class="title">${game.title}</div><div class="meta">Жанр: ${game.genre || '—'}</div><div class="meta">Разработчик: ${game.developer || '—'}</div><div class="meta">Релиз: ${game.release_date || '—'}</div></div><a href="/games/${game.id}/">Открыть страницу игры</a></article>`;
+      const deleteBtn = isAdmin ? `<button class="btn-danger" type="button" onclick="deleteGame(${game.id})">Удалить игру</button>` : '';
+      return `<article class="card"><img class="cover" src="${image}" alt="${game.title}" /><div class="content"><div class="title">${game.title}</div><div class="meta">Жанр: ${game.genre || '—'}</div><div class="meta">Разработчик: ${game.developer || '—'}</div><div class="meta">Релиз: ${game.release_date || '—'}</div></div><a href="/games/${game.id}/">Открыть страницу игры</a>${deleteBtn}</article>`;
     }
 
     async function loadGames(search = '') {
@@ -139,8 +149,9 @@
       if (!response.ok) { count.textContent = 'Не удалось загрузить список игр'; return; }
       const data = await response.json();
       const games = Array.isArray(data) ? data : (data.results || []);
+      const admin = await isAdminUser();
       count.textContent = `Найдено игр: ${games.length}`;
-      grid.innerHTML = games.length ? games.map(gameCard).join('') : '<div class="muted">По вашему запросу ничего не найдено.</div>';
+      grid.innerHTML = games.length ? games.map((g) => gameCard(g, admin)).join('') : '<div class="muted">По вашему запросу ничего не найдено.</div>';
     }
 
     async function createGame() {
