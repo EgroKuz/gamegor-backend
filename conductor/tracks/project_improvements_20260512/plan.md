@@ -14,6 +14,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Performance (ORM) Optimization' (Protocol in workflow.md)
 
 ## Phase 3: Dockerization
-- [ ] Task: Create a `Dockerfile` for the Django backend using Gunicorn/Uvicorn
+- [x] Task: Create a `Dockerfile` for the Django backend using Gunicorn/Uvicorn 3ab2886
 - [ ] Task: Update `docker-compose.yml` to include the `backend` service and proper network routing
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Dockerization' (Protocol in workflow.md)
