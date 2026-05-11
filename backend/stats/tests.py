@@ -62,7 +62,6 @@ class StatisticsAggregationTest(TestCase):
         UserVideoInteraction.objects.create(user=self.user, video=self.video, rating=5)
 
     def test_get_user_statistics(self):
-        # We expect to import this service which doesn't exist yet
         from .services.aggregator import get_user_statistics
         
         stats = get_user_statistics(self.user)
@@ -70,3 +69,48 @@ class StatisticsAggregationTest(TestCase):
         self.assertEqual(stats['reviews_written'], 2)
         self.assertEqual(stats['videos_watched'], 1)
         self.assertIn("RPG", stats['top_genres'])
+
+
+class AchievementEvaluationTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="evaluser", password="password123")
+        self.game = Game.objects.create(title="Test Game", genre="RPG", release_date="2020-01-01")
+        
+        self.ach_games = Achievement.objects.create(
+            title="Gamer", description="Play 1 game", criteria_type="games_played", threshold=1
+        )
+        self.ach_reviews = Achievement.objects.create(
+            title="Critic", description="Write 1 review", criteria_type="reviews_written", threshold=1
+        )
+
+    def test_evaluate_achievements_unlocks_new(self):
+        # User has 0 games played and 0 reviews initially
+        from .services.achievements import evaluate_achievements
+        
+        # User plays a game and writes a review
+        GameSession.objects.create(user=self.user, game=self.game, rating=8, comment="Good")
+        
+        # Evaluate achievements
+        unlocked = evaluate_achievements(self.user)
+        
+        # Both achievements should be unlocked
+        self.assertEqual(len(unlocked), 2)
+        self.assertEqual(UserAchievement.objects.filter(user=self.user).count(), 2)
+
+    def test_evaluate_achievements_ignores_already_unlocked(self):
+        from .services.achievements import evaluate_achievements
+        
+        # Pre-unlock the 'Gamer' achievement
+        UserAchievement.objects.create(user=self.user, achievement=self.ach_games)
+        
+        # User plays a game and writes a review
+        GameSession.objects.create(user=self.user, game=self.game, rating=8, comment="Good")
+        
+        # Evaluate
+        unlocked = evaluate_achievements(self.user)
+        
+        # Only 'Critic' should be newly unlocked
+        self.assertEqual(len(unlocked), 1)
+        self.assertEqual(unlocked[0], self.ach_reviews)
+        # Total unlocked should be 2
+        self.assertEqual(UserAchievement.objects.filter(user=self.user).count(), 2)
