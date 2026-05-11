@@ -65,9 +65,14 @@
 
 
   <div id="video-edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;">
-    <div style="width:min(560px,92vw);background:#111827;border:1px solid #253042;border-radius:14px;padding:16px;">
+    <div style="width:min(620px,92vw);background:#111827;border:1px solid #253042;border-radius:14px;padding:16px;max-height:90vh;overflow-y:auto;">
       <h3 style="margin-top:0;">Редактирование видео</h3>
       <label>Название</label><input id="video-edit-title" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <label>URL видео</label><input id="video-edit-url" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <label>URL превью</label><input id="video-edit-thumbnail" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <label>Автор (ID)</label><input id="video-edit-author" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <label>Тип видео (guide/analysis/news/stream/tip)</label><input id="video-edit-type" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
+      <label>Длительность (сек)</label><input id="video-edit-duration" type="number" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
       <label>Теги через запятую</label><input id="video-edit-tags" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:8px;border:1px solid #2b3a52;background:#0b1020;color:#e5e7eb;"/>
       <div style="display:flex;gap:10px;"><button id="save-video-btn" class="watch" type="button">Сохранить</button><button id="cancel-video-btn" class="watch" type="button">Отмена</button></div>
     </div>
@@ -81,6 +86,11 @@
     const activeFilters = document.getElementById('active-filters');
     const videoEditModal = document.getElementById('video-edit-modal');
     const videoEditTitle = document.getElementById('video-edit-title');
+    const videoEditUrl = document.getElementById('video-edit-url');
+    const videoEditThumbnail = document.getElementById('video-edit-thumbnail');
+    const videoEditAuthor = document.getElementById('video-edit-author');
+    const videoEditType = document.getElementById('video-edit-type');
+    const videoEditDuration = document.getElementById('video-edit-duration');
     const videoEditTags = document.getElementById('video-edit-tags');
     const saveVideoBtn = document.getElementById('save-video-btn');
     const cancelVideoBtn = document.getElementById('cancel-video-btn');
@@ -113,6 +123,11 @@
     function openEditVideoModal(video) {
       editingVideoId = video.id;
       videoEditTitle.value = video.title || '';
+      videoEditUrl.value = video.url || '';
+      videoEditThumbnail.value = video.thumbnail || '';
+      videoEditAuthor.value = video.author || '';
+      videoEditType.value = video.video_type || '';
+      videoEditDuration.value = video.duration || '';
       videoEditTags.value = Array.isArray(video.tags) ? video.tags.join(', ') : '';
       videoEditModal.style.display = 'flex';
     }
@@ -122,7 +137,15 @@
       const response = await fetch(`/api/videos/${editingVideoId}/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ title: videoEditTitle.value.trim(), tags: videoEditTags.value.split(',').map((t) => t.trim()).filter(Boolean) })
+        body: JSON.stringify({ 
+          title: videoEditTitle.value.trim(), 
+          url: videoEditUrl.value.trim(), 
+          thumbnail: videoEditThumbnail.value.trim(), 
+          author: Number(videoEditAuthor.value) || video.author, 
+          video_type: videoEditType.value.trim() || 'guide', 
+          duration: Number(videoEditDuration.value) || 300,
+          tags: videoEditTags.value.split(',').map((t) => t.trim()).filter(Boolean) 
+        })
       });
       if (!response.ok) { alert('Не удалось обновить видео.'); return; }
       videoEditModal.style.display = 'none';
@@ -143,6 +166,7 @@
           <div class="meta">Теги: ${Array.isArray(v.tags) && v.tags.length ? v.tags.join(', ') : '—'}</div>
         </div>
         ${isAdmin ? `<button class="watch edit-video-btn" type="button" data-video='${JSON.stringify(v).replace(/'/g, '&#39;')}'>Редактировать видео (admin)</button>` : ''}
+        ${isAdmin ? `<button class="watch delete-video-btn" type="button" style="background:#dc2626;color:#fef2f2;margin-top:8px;" data-video-id="${v.id}">Удалить видео (admin)</button>` : ''}
         <a class="watch" href="${v.url}" target="_blank" rel="noopener noreferrer">Смотреть видео</a>
       </article>`;
     }
@@ -172,6 +196,18 @@
       grid.innerHTML = videos.length ? videos.map(card).join('') : '<div class="muted">Видео не найдены.</div>';
       document.querySelectorAll('.edit-video-btn').forEach((btn) => {
         btn.addEventListener('click', () => openEditVideoModal(JSON.parse(btn.dataset.video)));
+      });
+      document.querySelectorAll('.delete-video-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Вы уверены, что хотите удалить это видео?')) return;
+          const token = localStorage.getItem('access_token');
+          const response = await fetch(`/api/videos/${btn.dataset.videoId}/`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (!response.ok) { alert('Не удалось удалить видео.'); return; }
+          loadVideos(input.value.trim());
+        });
       });
     }
 
