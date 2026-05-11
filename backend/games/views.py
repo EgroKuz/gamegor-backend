@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import TemplateView
@@ -10,7 +11,7 @@ class GameViewSet(viewsets.ModelViewSet):
     ViewSet для просмотра и редактирования игр.
     Предоставляет CRUD операции для модели Game.
     """
-    queryset = Game.objects.all().order_by('-release_date')
+    queryset = Game.objects.prefetch_related('platforms').order_by('-release_date')
     serializer_class = GameSerializer
     permission_classes = [IsModeratorOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -22,7 +23,7 @@ class PlatformViewSet(viewsets.ModelViewSet):
     """
     ViewSet для просмотра и редактирования платформ.
     """
-    queryset = Platform.objects.all().order_by('name')
+    queryset = Platform.objects.annotate(annotated_game_count=Count('games')).order_by('name')
     serializer_class = PlatformSerializer
     permission_classes = [IsModeratorOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]

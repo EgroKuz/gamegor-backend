@@ -2,14 +2,11 @@ from rest_framework import serializers
 from .models import Game, Platform
 
 class PlatformSerializer(serializers.ModelSerializer):
-    game_count = serializers.SerializerMethodField()
+    game_count = serializers.IntegerField(source='annotated_game_count', read_only=True)
 
     class Meta:
         model = Platform
         fields = ['id', 'name', 'type', 'specs', 'game_count']
-
-    def get_game_count(self, obj):
-        return obj.games.count()
 
 class GameSerializer(serializers.ModelSerializer):
     platforms = PlatformSerializer(many=True, read_only=True)
@@ -18,9 +15,3 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = ['id', 'title', 'genre', 'developer', 'release_date',
                   'cover_image', 'description', 'platforms', 'total_achievements']
-    
-    def create(self, validated_data):
-        return super().create(validated_data)
-    
-    def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
