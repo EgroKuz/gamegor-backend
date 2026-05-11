@@ -70,7 +70,7 @@ class RecommendationPageView(TemplateView):
             try:
                 from games.models import Game
                 game = Game.objects.get(id=game_id)
-                context['game_name'] = game.name
+                context['game_name'] = game.title  # Исправлено: было game.name
             except (Game.DoesNotExist, ValueError):
                 context['game_name'] = None
         else:
