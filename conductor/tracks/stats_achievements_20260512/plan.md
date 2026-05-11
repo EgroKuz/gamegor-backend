@@ -18,6 +18,6 @@
 
 ## Phase 4: API Endpoints
 - [x] Task: Write failing API tests for `/api/stats/` and `/api/achievements/` endpoints 0d58903
-- [ ] Task: Implement ViewSets and Serializers for stats and achievements (with N+1 query optimization)
-- [ ] Task: Register endpoints in `stats/urls.py` and update global routing
+- [x] Task: Implement ViewSets and Serializers for stats and achievements (with N+1 query optimization) 2641878
+- [x] Task: Register endpoints in `stats/urls.py` and update global routing 2641878
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: API Endpoints' (Protocol in workflow.md)
