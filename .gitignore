@@ -1,43 +1,56 @@
 ```gitignore
-# Python cache
-__pycache__/
+# Compiled Python files
 *.pyc
-*.pyo
-*.pyd
+__pycache__/
 
-# Django specific
-*.sqlite3
-*.log
-local_settings.py
-
-# Dependencies
+# Virtual environments
 venv/
 .venv/
+env/
+
+# Logs
+*.log
+
+# Environment variables
 .env
 .env.local
-.env.*
+*.env.*
 
-# IDE and editor files
+# Coverage reports
+.coverage
+coverage/
+htmlcov/
+
+# IDE specific
 .vscode/
 .idea/
 *.swp
 *.swo
+*.tmp
 
 # OS generated files
 .DS_Store
 Thumbs.db
 
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
-
-# Build and distribution artifacts
-dist/
+# Build outputs
 build/
-*.egg-info/
+dist/
+target/
 
-# Temporary files
-*.tmp
-*.temp
+# Dependency caches
+.mypy_cache/
+.pytest_cache/
+.node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Compressed files
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.gz
+*.rar
+*.7z
 ```
