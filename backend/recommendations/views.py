@@ -64,29 +64,8 @@ class RecommendationPageView(TemplateView):
         tags = self.request.GET.get('tags', '')
         comment = self.request.GET.get('comment', '')  # Получаем комментарий из URL
         
-        context['game_id'] = game_id
-        context['tags'] = tags
-        context['comment'] = comment
+        from .services.session_service import SessionRecommendationService
+        session_context = SessionRecommendationService.get_context_data(game_id, tags, comment)
         
-        # Получаем название игры если есть game_id
-        if game_id and game_id != '—':
-            try:
-                from games.models import Game
-                game = Game.objects.get(id=game_id)
-                context['game_name'] = game.title
-            except (Game.DoesNotExist, ValueError):
-                context['game_name'] = None
-        else:
-            context['game_name'] = None
-        
-        # Получаем рекомендацию от ИИ
-        ai_advice = ""
-        if game_id or comment or tags:
-            from .services.ai_advisor import AIAdvisor
-            # Преобразуем строку тегов в список
-            tags_list = tags.split(',') if tags else []
-            ai_advice = AIAdvisor.get_advice_for_session(game_id, comment, tags_list)
-        
-        context['ai_advice'] = ai_advice
-        
+        context.update(session_context)
         return context
