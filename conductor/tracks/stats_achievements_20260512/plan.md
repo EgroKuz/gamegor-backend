@@ -7,7 +7,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Data Models and Basic Setup' (Protocol in workflow.md)
 
 ## Phase 2: Statistics Aggregation Services
-- [ ] Task: Write failing tests for user statistics aggregation logic (games played, genres, etc.)
+- [x] Task: Write failing tests for user statistics aggregation logic (games played, genres, etc.) 31a6da8
 - [ ] Task: Implement statistics aggregation services inside `stats/services/`
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Statistics Aggregation Services' (Protocol in workflow.md)
 
