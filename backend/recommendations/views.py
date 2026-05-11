@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from .models import Recommendation
 from .serializers import RecommendationSerializer
 from .services.recommender import Recommender
+from .services.tag_analyzer import TagAnalyzer
+from .services.session_service import SessionRecommendationService
+from videos.serializers import VideoSerializer
 
 class RecommendationViewSet(viewsets.ModelViewSet):
     """
@@ -31,7 +34,6 @@ class RecommendationViewSet(viewsets.ModelViewSet):
         Возвращает персонализированные рекомендации (без сохранения).
         """
         recommendations = Recommender.get_personalized_recommendations(request.user.id)
-        from videos.serializers import VideoSerializer
         serializer = VideoSerializer(recommendations, many=True)
         return Response(serializer.data)
     
@@ -40,7 +42,6 @@ class RecommendationViewSet(viewsets.ModelViewSet):
         """
         Возвращает слабые места пользователя.
         """
-        from .services.tag_analyzer import TagAnalyzer
         weak_skills = TagAnalyzer.get_weak_skills(request.user.id)
         return Response(weak_skills)
     
@@ -64,7 +65,6 @@ class RecommendationPageView(TemplateView):
         tags = self.request.GET.get('tags', '')
         comment = self.request.GET.get('comment', '')  # Получаем комментарий из URL
         
-        from .services.session_service import SessionRecommendationService
         session_context = SessionRecommendationService.get_context_data(game_id, tags, comment)
         
         context.update(session_context)

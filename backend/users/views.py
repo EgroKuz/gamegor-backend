@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.views.generic import TemplateView
 from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer
+from .services.user_service import UserService
 
 User = get_user_model()
 
@@ -34,7 +35,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def change_password(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
         if serializer.is_valid():
-            from .services.user_service import UserService
             success, message = UserService.change_password(
                 request.user, 
                 serializer.data.get('old_password'), 
