@@ -124,7 +124,8 @@
 
       show('Игровая сессия успешно сохранена. Переход к рекомендациям...');
       const tagsQuery = encodeURIComponent(payload.tags.join(','));
-      window.location.href = `/api/recommendations-page/?game=${gameId}&tags=${tagsQuery}`;
+      const commentQuery = encodeURIComponent(payload.comment);
+      window.location.href = `/api/recommendations-page/?game=${gameId}&tags=${tagsQuery}&comment=${commentQuery}`;
     });
 
     loadGameInfo();

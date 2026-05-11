@@ -170,3 +170,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'users.User'
+
+# Ollama Configuration
+# Если Django и Ollama в одном docker-compose, используйте имя сервиса: http://ollama:11434
+# Если Django в контейнере, а Ollama на хосте (localhost), используйте special DNS:
+# - Для Docker Desktop (Mac/Windows): http://host.docker.internal:11434
+# - Для Linux Docker: http://172.17.0.1:11434 (IP хоста docker0)
+OLLAMA_HOST = "http://host.docker.internal:11434"
+OLLAMA_MODEL = "qwen"  # Или "qwen2.5", проверьте название через `docker exec ollama ollama list`
