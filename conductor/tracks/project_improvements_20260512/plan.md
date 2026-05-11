@@ -15,5 +15,5 @@
 
 ## Phase 3: Dockerization
 - [x] Task: Create a `Dockerfile` for the Django backend using Gunicorn/Uvicorn 3ab2886
-- [ ] Task: Update `docker-compose.yml` to include the `backend` service and proper network routing
+- [x] Task: Update `docker-compose.yml` to include the `backend` service and proper network routing 71a15d1
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Dockerization' (Protocol in workflow.md)
