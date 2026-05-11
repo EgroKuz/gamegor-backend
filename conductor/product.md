@@ -12,5 +12,10 @@ A backend API on Django + Django REST Framework for a video game aggregator with
 ## Core Value Proposition
 - **All-in-One Aggregator:** A unified platform that consolidates tracking for games, platforms, video content, and user gaming sessions into a single, cohesive ecosystem.
 
+## Key Features
+- **Game & Video Tracking:** Centralized search and rating for games and content.
+- **AI Recommendations:** Smart matching of games and videos based on user preferences.
+- **Stats & Achievements:** Comprehensive user statistics aggregation (games played, genres, videos watched) and unlockable achievements based on platform activity.
+
 ## Key Technical Priorities
-- **Missing Features:** Implementing the pending 'stats' logic and 'achievements' modules to fully align the codebase with the project's ER diagram and IDEF0 models.
+- **Performance & Security:** Fixing N+1 query problems across Django ViewSets and removing insecure configuration from settings.
