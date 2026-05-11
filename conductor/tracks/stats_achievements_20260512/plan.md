@@ -1,10 +1,10 @@
 # Implementation Plan: Stats and Achievements
 
-## Phase 1: Data Models and Basic Setup
+## Phase 1: Data Models and Basic Setup [checkpoint: 606d75a]
 - [x] Task: Write failing tests for Achievement and UserAchievement models e9bfd1b
 - [x] Task: Implement Achievement and UserAchievement models in `stats` app e551be0
 - [x] Task: Create and run database migrations d0899d2
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Data Models and Basic Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Data Models and Basic Setup' (Protocol in workflow.md)
 
 ## Phase 2: Statistics Aggregation Services
 - [ ] Task: Write failing tests for user statistics aggregation logic (games played, genres, etc.)
