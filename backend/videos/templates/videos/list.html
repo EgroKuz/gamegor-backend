@@ -52,6 +52,8 @@
         <input id="new-video-url" placeholder="Ссылка на видео (URL)"/>
         <input id="new-video-thumbnail" placeholder="Ссылка на превью (URL)"/>
         <input id="new-video-author" placeholder="Автор (ID или имя)"/>
+        <input id="new-video-type" placeholder="Тип: guide / analysis / news / stream / tip"/>
+        <input id="new-video-duration" placeholder="Длительность (сек)"/>
         <input id="new-video-tags" placeholder="Теги через запятую"/>
       </div>
       <div style="display:flex;gap:10px;margin-top:12px;">
@@ -197,20 +199,57 @@
       renderVideos(applyFilters(allVideos, input.value.trim()));
     });
 
+    async function resolveAuthorId(token, authorRaw) {
+      if (!authorRaw) return null;
+      if (/^\d+$/.test(authorRaw)) return Number(authorRaw);
+
+      const searchResponse = await fetch(`/api/authors/?search=${encodeURIComponent(authorRaw)}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (searchResponse.ok) {
+        const data = await searchResponse.json();
+        const authors = Array.isArray(data) ? data : (data.results || []);
+        const exact = authors.find((a) => (a.name || '').toLowerCase() === authorRaw.toLowerCase());
+        if (exact) return exact.id;
+      }
+
+      const createResponse = await fetch('/api/authors/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          name: authorRaw,
+          channel_url: `https://youtube.com/@${authorRaw.replace(/\s+/g, '').toLowerCase()}`,
+          avatar: 'https://placehold.co/128x128?text=Author',
+          subscribers_count: 0,
+        }),
+      });
+      if (!createResponse.ok) return null;
+      const created = await createResponse.json();
+      return created.id;
+    }
+
     async function createVideo() {
       const token = localStorage.getItem('access_token');
       const authorRaw = document.getElementById('new-video-author').value.trim();
+      const authorId = await resolveAuthorId(token, authorRaw);
       const payload = {
         title: document.getElementById('new-video-title').value.trim(),
+        author: authorId,
         url: document.getElementById('new-video-url').value.trim(),
-        thumbnail: document.getElementById('new-video-thumbnail').value.trim() || null,
+        thumbnail: document.getElementById('new-video-thumbnail').value.trim() || 'https://placehold.co/640x360?text=Video',
+        video_type: document.getElementById('new-video-type').value.trim() || 'guide',
+        duration: Number(document.getElementById('new-video-duration').value.trim() || 300),
         tags: document.getElementById('new-video-tags').value.split(',').map((t) => t.trim()).filter(Boolean),
+        uploaded_at: new Date().toISOString(),
+        moderated: true,
       };
-      if (/^\d+$/.test(authorRaw)) payload.author = Number(authorRaw);
-      else if (authorRaw) payload.author_name = authorRaw;
-      if (!payload.title || !payload.url) { alert('Заполните название и ссылку.'); return; }
+      if (!payload.title || !payload.url || !payload.author) { alert('Заполните название, ссылку и автора.'); return; }
       const response = await fetch('/api/videos/', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(payload) });
-      if (!response.ok) { alert('Не удалось добавить видео. Проверьте поля автора/URL.'); return; }
+      if (!response.ok) {
+        const error = await response.text();
+        alert(`Не удалось добавить видео: ${error}`);
+        return;
+      }
       addVideoModal.style.display = 'none';
       loadVideos(input.value.trim());
     }
