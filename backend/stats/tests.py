@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from rest_framework.test import APIClient
 from .models import Achievement, UserAchievement
 from games.models import Game, Platform
 from gamesessions.models import GameSession
@@ -84,33 +85,47 @@ class AchievementEvaluationTest(TestCase):
         )
 
     def test_evaluate_achievements_unlocks_new(self):
-        # User has 0 games played and 0 reviews initially
         from .services.achievements import evaluate_achievements
         
-        # User plays a game and writes a review
         GameSession.objects.create(user=self.user, game=self.game, rating=8, comment="Good")
-        
-        # Evaluate achievements
         unlocked = evaluate_achievements(self.user)
         
-        # Both achievements should be unlocked
         self.assertEqual(len(unlocked), 2)
         self.assertEqual(UserAchievement.objects.filter(user=self.user).count(), 2)
 
     def test_evaluate_achievements_ignores_already_unlocked(self):
         from .services.achievements import evaluate_achievements
         
-        # Pre-unlock the 'Gamer' achievement
         UserAchievement.objects.create(user=self.user, achievement=self.ach_games)
-        
-        # User plays a game and writes a review
         GameSession.objects.create(user=self.user, game=self.game, rating=8, comment="Good")
-        
-        # Evaluate
         unlocked = evaluate_achievements(self.user)
         
-        # Only 'Critic' should be newly unlocked
         self.assertEqual(len(unlocked), 1)
         self.assertEqual(unlocked[0], self.ach_reviews)
-        # Total unlocked should be 2
         self.assertEqual(UserAchievement.objects.filter(user=self.user).count(), 2)
+
+class StatsAPIEndpointsTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username="apiuser", password="password123")
+        self.client.force_authenticate(user=self.user)
+        
+        self.achievement = Achievement.objects.create(
+            title="Test Ach", description="Desc", criteria_type="games_played", threshold=1
+        )
+        UserAchievement.objects.create(user=self.user, achievement=self.achievement)
+
+    def test_get_statistics_endpoint(self):
+        response = self.client.get('/api/stats/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('games_played', response.data)
+
+    def test_get_achievements_endpoint(self):
+        response = self.client.get('/api/achievements/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(response.data) > 0)
+
+    def test_get_user_achievements_endpoint(self):
+        response = self.client.get('/api/users/me/achievements/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)
