@@ -34,12 +34,15 @@ class UserViewSet(viewsets.ModelViewSet):
     def change_password(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
         if serializer.is_valid():
-            user = request.user
-            if user.check_password(serializer.data.get('old_password')):
-                user.set_password(serializer.data.get('new_password'))
-                user.save()
-                return Response({'message': 'Пароль успешно изменён'}, status=status.HTTP_200_OK)
-            return Response({'old_password': 'Неверный пароль'}, status=status.HTTP_400_BAD_REQUEST)
+            from .services.user_service import UserService
+            success, message = UserService.change_password(
+                request.user, 
+                serializer.data.get('old_password'), 
+                serializer.data.get('new_password')
+            )
+            if success:
+                return Response({'message': message}, status=status.HTTP_200_OK)
+            return Response({'old_password': message}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RegisterView(generics.CreateAPIView):
