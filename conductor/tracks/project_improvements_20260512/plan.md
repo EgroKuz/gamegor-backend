@@ -2,7 +2,7 @@
 
 ## Phase 1: Security and Configuration
 - [x] Task: Remove `passwords.txt` from source control af07d8a
-- [ ] Task: Refactor `settings.py` to use `python-dotenv` for `DEBUG`, `ALLOWED_HOSTS`, and `CORS`
+- [x] Task: Refactor `settings.py` to use `python-dotenv` for `DEBUG`, `ALLOWED_HOSTS`, and `CORS` e288c97
 - [ ] Task: Write basic tests to verify settings are loaded from environment variables
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Security and Configuration' (Protocol in workflow.md)
 
