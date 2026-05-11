@@ -19,6 +19,7 @@
     a.secondary { background:#334155; color:#e2e8f0; }
     .result { margin-top:12px; min-height:20px; }
     .ok { color:#4ade80; } .error { color:#f87171; }
+    .avatar-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; }
     @media (max-width: 700px){ .grid { grid-template-columns:1fr; } }
   </style>
 </head>
@@ -30,6 +31,15 @@
 
       <form id="profile-form">
         <div class="grid">
+          <div class="field">
+            <label>Аватарка</label>
+            <img id="avatar-preview-img" class="avatar-preview" src="" alt="Аватар" style="display:none;" />
+            <input name="avatar" type="url" placeholder="https://example.com/avatar.jpg" />
+          </div>
+          <div class="field">
+            <label>Роль</label>
+            <input name="role" readonly />
+          </div>
           <div class="field">
             <label>Username</label>
             <input name="username" required />
@@ -60,6 +70,7 @@
           <button type="submit">Сохранить профиль</button>
           <a class="btn secondary" href="/api/stats-page/">К статистике достижений</a>
           <a class="btn secondary" href="/">На главную</a>
+          <button type="button" id="logout-btn" style="background:#ef4444; color:white;">Выйти</button>
         </div>
       </form>
       <div id="result" class="result"></div>
@@ -69,6 +80,8 @@
   <script>
     const form = document.getElementById('profile-form');
     const result = document.getElementById('result');
+    const logoutBtn = document.getElementById('logout-btn');
+    const avatarPreviewImg = document.getElementById('avatar-preview-img');
 
     function show(message, ok=true) {
       result.textContent = message;
@@ -101,6 +114,12 @@
           form[key].value = data[key] || '';
         }
       });
+      
+      // Отображение аватарки
+      if (data.avatar) {
+        avatarPreviewImg.src = data.avatar;
+        avatarPreviewImg.style.display = 'block';
+      }
     }
 
     form.addEventListener('submit', async (e) => {
@@ -117,6 +136,7 @@
         email: form.email.value,
         first_name: form.first_name.value,
         last_name: form.last_name.value,
+        avatar: form.avatar.value,
       };
 
       const response = await fetch('/api/users/profile/', {
@@ -136,6 +156,21 @@
 
       show('Профиль успешно обновлён.');
       form.registration_date.value = data.registration_date || '';
+      if (data.avatar) {
+        avatarPreviewImg.src = data.avatar;
+        avatarPreviewImg.style.display = 'block';
+      } else {
+        avatarPreviewImg.style.display = 'none';
+      }
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      show('Вы успешно вышли из системы. Перенаправление...');
+      setTimeout(() => {
+        window.location.href = '/api/auth/';
+      }, 1000);
     });
 
     loadProfile();

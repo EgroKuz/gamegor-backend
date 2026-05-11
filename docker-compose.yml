@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: gamegor_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${PG_USER:-gamegor}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-gamegor_password}
+      POSTGRES_DB: ${PG_DB:-gamegor}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER:-gamegor}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: gamegor_ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    # Для использования GPU раскомментируйте:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  minio:
+    image: minio/minio:latest
+    container_name: gamegor_minio
+    restart: always
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gamegor_backend
+    restart: always
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-insecure-change-me-in-production}
+      DB_NAME: ${PG_DB:-gamegor}
+      DB_USER: ${PG_USER:-gamegor}
+      DB_PASSWORD: ${PG_PASSWORD:-gamegor_password}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      OLLAMA_HOST: http://ollama:11434
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - static_volume:/app/static
+      - media_volume:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      minio:
+        condition: service_healthy
+    command: >
+      sh -c "python backend/manage.py migrate &&
+             python backend/manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  postgres_data:
+  minio_data:
+  ollama_models:
+  static_volume:
+  media_volume:
+
+networks:
+  default:
+    name: gamegor_network
