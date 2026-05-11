@@ -20,6 +20,7 @@
     .edit-form { margin-top:10px; border-top:1px solid #2e3c54; padding-top:10px; display:none; }
     .edit-form input, .edit-form textarea { width:100%; margin:6px 0; border:1px solid #2b3a52; background:#0b1020; color:#e5e7eb; border-radius:8px; padding:8px 10px; }
     .edit-actions { display:flex; gap:8px; margin-top:8px; }
+    .btn-rec { margin-top:10px; border:none; background:#3b82f6; color:#dbeafe; font-weight:700; border-radius:10px; padding:8px 12px; cursor:pointer; text-decoration:none; display:inline-block; }
   </style>
 </head>
 <body>
@@ -51,6 +52,7 @@
           <div class="muted">Создано: ${session.created_at ? new Date(session.created_at).toLocaleString() : '—'}</div>
           <div class="tags">${tags.length ? tags.map((tag) => `<span class="tag">${tag}</span>`).join('') : '<span class="muted">Теги не указаны</span>'}</div>
           <button class="btn-edit" type="button" onclick="toggleEdit(${session.id})">Редактировать</button>
+          <a class="btn-rec" href="/api/recommendations-page/?game=${session.game}&tags=${encodeURIComponent(tags.join(','))}">Рекомендации</a>
           <form class="edit-form" id="edit-${session.id}" onsubmit="saveSession(event, ${session.id})">
             <label>Оценка (1-10)</label>
             <input name="rating" type="number" min="1" max="10" value="${session.rating}" required />
