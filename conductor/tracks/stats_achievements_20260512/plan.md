@@ -3,7 +3,7 @@
 ## Phase 1: Data Models and Basic Setup
 - [x] Task: Write failing tests for Achievement and UserAchievement models e9bfd1b
 - [x] Task: Implement Achievement and UserAchievement models in `stats` app e551be0
-- [ ] Task: Create and run database migrations
+- [x] Task: Create and run database migrations d0899d2
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Data Models and Basic Setup' (Protocol in workflow.md)
 
 ## Phase 2: Statistics Aggregation Services
