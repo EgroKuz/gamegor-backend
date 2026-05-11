@@ -8,7 +8,7 @@
 
 ## Phase 2: Performance (ORM) Optimization
 - [x] Task: Write failing tests capturing current query counts for `GameViewSet` and `PlatformViewSet` 5309aaa
-- [ ] Task: Implement `prefetch_related` and `annotate` in `games/views.py` and `games/serializers.py` to fix N+1 queries
+- [x] Task: Implement `prefetch_related` and `annotate` in `games/views.py` and `games/serializers.py` to fix N+1 queries df52490
 - [ ] Task: Write failing tests capturing current query counts for `VideoViewSet` and `GameSessionViewSet`
 - [ ] Task: Implement `select_related` in `videos/views.py` and `gamesessions/views.py` to fix N+1 queries
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Performance (ORM) Optimization' (Protocol in workflow.md)
