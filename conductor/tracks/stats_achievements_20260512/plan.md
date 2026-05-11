@@ -6,10 +6,10 @@
 - [x] Task: Create and run database migrations d0899d2
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Data Models and Basic Setup' (Protocol in workflow.md)
 
-## Phase 2: Statistics Aggregation Services
+## Phase 2: Statistics Aggregation Services [checkpoint: 4d8fa56]
 - [x] Task: Write failing tests for user statistics aggregation logic (games played, genres, etc.) 31a6da8
 - [x] Task: Implement statistics aggregation services inside `stats/services/` ceeca51
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Statistics Aggregation Services' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Statistics Aggregation Services' (Protocol in workflow.md)
 
 ## Phase 3: Achievement Evaluation Logic
 - [ ] Task: Write failing tests for achievement unlock logic
