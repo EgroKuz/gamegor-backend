@@ -14,7 +14,7 @@ class GameSessionViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'rating']
     
     def get_queryset(self):
-        return GameSession.objects.filter(user=self.request.user).order_by('-created_at')
+        return GameSession.objects.filter(user=self.request.user).select_related('game', 'user').order_by('-created_at')
     
     def get_serializer_class(self):
         if self.action == 'create':

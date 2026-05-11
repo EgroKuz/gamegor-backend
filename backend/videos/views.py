@@ -9,7 +9,7 @@ class VideoViewSet(viewsets.ModelViewSet):
     """
     ViewSet для просмотра и редактирования видео.
     """
-    queryset = Video.objects.filter(moderated=True).order_by('-uploaded_at')
+    queryset = Video.objects.filter(moderated=True).select_related('author', 'game').order_by('-uploaded_at')
     serializer_class = VideoSerializer
     permission_classes = [IsModeratorOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
