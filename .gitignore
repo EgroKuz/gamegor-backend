@@ -1,61 +1,43 @@
-```
-# Python
+```gitignore
+# Python cache
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+*.pyc
+*.pyo
+*.pyd
 
-# Virtual environments
-venv/
-env/
-ENV/
-.venv/
-.env/
-
-# Django
+# Django specific
+*.sqlite3
 *.log
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
 
-# IDE
+# Dependencies
+venv/
+.venv/
+.env
+.env.local
+.env.*
+
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+# OS generated files
 .DS_Store
 Thumbs.db
 
-# Environment variables
-.env
-.env.local
-*.env.*
-
-# Coverage
-.coverage
-htmlcov/
+# Coverage reports
 coverage/
+htmlcov/
+.coverage
 
-# Build outputs
-target/
-build/
+# Build and distribution artifacts
 dist/
+build/
+*.egg-info/
+
+# Temporary files
+*.tmp
+*.temp
 ```

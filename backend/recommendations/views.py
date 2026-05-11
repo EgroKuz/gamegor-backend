@@ -57,3 +57,23 @@ class RecommendationViewSet(viewsets.ModelViewSet):
 class RecommendationPageView(TemplateView):
     """Страница текстовой рекомендации после сохранения сессии."""
     template_name = "recommendations/session_recommendation.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        game_id = self.request.GET.get('game')
+        tags = self.request.GET.get('tags', '')
+        context['game_id'] = game_id
+        context['tags'] = tags
+        
+        # Получаем название игры если есть game_id
+        if game_id and game_id != '—':
+            try:
+                from games.models import Game
+                game = Game.objects.get(id=game_id)
+                context['game_name'] = game.name
+            except (Game.DoesNotExist, ValueError):
+                context['game_name'] = None
+        else:
+            context['game_name'] = None
+        
+        return context
