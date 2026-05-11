@@ -8,16 +8,6 @@ class User(AbstractUser):
     """
     nickname = models.CharField(max_length=50, unique=True, verbose_name="Никнейм")
     registration_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата регистрации")
-    avatar = models.URLField(null=True, blank=True, verbose_name="Аватар")
-    role = models.CharField(
-        max_length=20,
-        choices=[
-            ('user', 'Пользователь'),
-            ('moderator', 'Модератор'),
-        ],
-        default='user',
-        verbose_name="Роль"
-    )
     
     class Meta:
         db_table = 'users'

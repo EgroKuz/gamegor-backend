@@ -1,54 +1,56 @@
-```
-# Environment variables
-.env
-.env.local
-.env.*
-
-# Docker
-Dockerfile
-docker-compose.yml
-
-# Dependencies
-node_modules/
-.venv/
+# Python
 venv/
 __pycache__/
 *.pyc
-
-# Logs
-*.log
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# IDE files
-.vscode/
-.idea/
-
-# Build artifacts
-dist/
-build/
-target/
-
-# Python specific
-*.pyc
-__pycache__/
 *.pyo
 *.pyd
 .Python
 *.so
+*.egg
+*.egg-info/
+dist/
+build/
 
-# Coverage reports
-.coverage
-htmlcov/
-coverage/
+# Django
+*.log
+db.sqlite3
+*.sqlite3
+*.sqlite3-journal
+media/
+staticfiles/
+*.pot
 
-# Temporary files
-*.tmp
+# Настройки с паролями
+.env
+.venv
+secrets.py
+
+# IDE
+.vscode/
+.idea/
 *.swp
 *.swo
+*~
 
-# Configuration backup
-.env.example
-```
+# Windows
+Thumbs.db
+Desktop.ini
+
+gitignore
+# Secrets
+.env
+.venv
+secrets.py
+*.env
+
+# Django
+*.log
+db.sqlite3
+
+
+passwords.txt
+requirements.txt
+
+# Миграции (опционально - иногда их тоже загружают)
+# */migrations/*.py
+# !*/migrations/__init__.py
