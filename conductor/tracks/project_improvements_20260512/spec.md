@@ -1,29 +1,31 @@
-# Specification: Project Improvements and Optimization
+# Specification: Project Improvements 2026-05-12
 
 ## Overview
-This track focuses on executing a comprehensive improvement plan based on the initial codebase analysis. The goal is to address critical performance bottlenecks, enhance security configurations, and complete the project's infrastructure setup for deployment.
+This track focuses on enhancing the project's robustness, performance, and security in preparation for the diploma defense. Key areas include optimizing database queries, improving AI service reliability, hardening authentication, and establishing a cleaner architectural pattern to resolve circular dependencies.
 
 ## Functional Requirements
-- **Performance (ORM):**
-  - Identify and fix N+1 query problems in all ViewSets (`games`, `platforms`, `videos`, `gamesessions`).
-  - Use `select_related` for foreign key relationships.
-  - Use `prefetch_related` for many-to-many relationships (e.g., `platforms` in `GameSerializer`).
-  - Use `annotate` for aggregations (e.g., `game_count` in `PlatformSerializer`).
-- **Security Settings:**
-  - Refactor `backend/settings.py` to remove hardcoded values.
-  - Ensure `DEBUG`, `SECRET_KEY`, `ALLOWED_HOSTS`, and Database credentials are read exclusively from environment variables using `python-dotenv`.
-  - Delete `passwords.txt` from the repository.
-  - Configure `CORS_ALLOWED_ORIGINS` securely instead of allowing all origins.
-- **Dockerization:**
-  - Create a `Dockerfile` for the Django backend.
-  - Use an ASGI/WSGI production server (e.g., `gunicorn` or `uvicorn`) inside the Docker container instead of `manage.py runserver`.
-  - Integrate the new `backend` service into the existing `docker-compose.yml`.
+- **Optimization:**
+    - Eliminate N+1 query problems in `GameViewSet`, `VideoViewSet`, and `RecommendationViewSet`.
+    - Improve AI advisor (`AIAdvisor`) performance and implement robust error handling for Ollama service timeouts or failures.
+- **Security:**
+    - Implement stricter password validation policies.
+    - Enhance session security settings (e.g., `SESSION_COOKIE_SECURE`, `CSRF_COOKIE_SECURE`).
+- **Refactoring:**
+    - Introduce a clear Service Layer to house business logic, moving it out of ViewSets and Models to resolve circular dependencies cleanly.
+- **Testing:**
+    - Achieve significant test coverage for `recommendations` and `users` apps.
 
 ## Non-Functional Requirements
-- **Strict TDD:** All modifications (especially performance fixes) must be verified by automated tests to ensure existing functionality is not broken and query counts are actually reduced.
+- **Performance:** API response times for lists should be significantly reduced after N+1 fixes.
+- **Reliability:** The system should gracefully handle Ollama service unavailability.
+- **Maintainability:** Circular dependencies should be eliminated, making the codebase easier to navigate.
 
 ## Acceptance Criteria
-- No ViewSet triggers N+1 queries when fetching lists.
-- `settings.py` contains no hardcoded secrets or insecure defaults.
-- Running `docker-compose up` successfully starts the entire stack, including the Django backend serving requests via a production-ready server.
-- All unit tests pass.
+- All N+1 query warnings are resolved for primary list/detail endpoints.
+- AI advisor returns a fallback message instead of crashing when Ollama is offline.
+- New tests for `recommendations` and `users` pass with >80% coverage in those apps.
+- Circular imports no longer require manual imports inside methods.
+
+## Out of Scope
+- Major UI/UX redesign of the templates.
+- Adding entirely new features not mentioned in the current product definition.

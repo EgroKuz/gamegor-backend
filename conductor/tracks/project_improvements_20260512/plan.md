@@ -1,19 +1,27 @@
-# Implementation Plan: Project Improvements and Optimization
+# Implementation Plan: Project Improvements 2026-05-12
 
-## Phase 1: Security and Configuration [checkpoint: c9642e5]
-- [x] Task: Remove `passwords.txt` from source control af07d8a
-- [x] Task: Refactor `settings.py` to use `python-dotenv` for `DEBUG`, `ALLOWED_HOSTS`, and `CORS` e288c97
-- [x] Task: Write basic tests to verify settings are loaded from environment variables 6a61836
-- [x] Task: Conductor - User Manual Verification 'Phase 1: Security and Configuration' (Protocol in workflow.md)
+**Phase 1: Architecture & Refactoring**
+- [ ] Task: Create a Service Layer for `recommendations` and `users` to centralize business logic.
+- [ ] Task: Move complex logic from `recommendations/views.py` and models to `recommendations/services/`.
+- [ ] Task: Move user-related business logic (profile updates, stats aggregation) to `users/services/`.
+- [ ] Task: Eliminate circular imports by routing dependencies through the service layer.
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Architecture & Refactoring' (Protocol in workflow.md)
 
-## Phase 2: Performance (ORM) Optimization [checkpoint: fb90f98]
-- [x] Task: Write failing tests capturing current query counts for `GameViewSet` and `PlatformViewSet` 5309aaa
-- [x] Task: Implement `prefetch_related` and `annotate` in `games/views.py` and `games/serializers.py` to fix N+1 queries df52490
-- [x] Task: Write failing tests capturing current query counts for `VideoViewSet` and `GameSessionViewSet` e80be63
-- [x] Task: Implement `select_related` in `videos/views.py` and `gamesessions/views.py` to fix N+1 queries 70ca664
-- [x] Task: Conductor - User Manual Verification 'Phase 2: Performance (ORM) Optimization' (Protocol in workflow.md)
+**Phase 2: Optimization**
+- [ ] Task: Optimize `VideoViewSet` and `UserVideoInteractionViewSet` to eliminate N+1 queries using `select_related` and `prefetch_related`.
+- [ ] Task: Resolve N+1 queries in `RecommendationViewSet` actions, ensuring efficient retrieval of related videos and games.
+- [ ] Task: Implement robust error handling and timeouts for `AIAdvisor` to handle Ollama service unavailability gracefully.
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Optimization' (Protocol in workflow.md)
 
-## Phase 3: Dockerization
-- [x] Task: Create a `Dockerfile` for the Django backend using Gunicorn/Uvicorn 3ab2886
-- [x] Task: Update `docker-compose.yml` to include the `backend` service and proper network routing 71a15d1
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Dockerization' (Protocol in workflow.md)
+**Phase 3: Security & Auth**
+- [ ] Task: Implement stricter password validation policies in `settings.py`.
+- [ ] Task: Configure session and CSRF security settings (Secure, HttpOnly, SameSite) for production readiness.
+- [ ] Task: Review and restrict `CORS_ALLOWED_ORIGINS` using environment variables to prevent unauthorized cross-origin requests.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Security & Auth' (Protocol in workflow.md)
+
+**Phase 4: Testing & Quality**
+- [ ] Task: Implement comprehensive unit tests for the new `recommendations` service layer.
+- [ ] Task: Implement unit and integration tests for `users` app, focusing on authentication and profile management.
+- [ ] Task: Implement end-to-end integration tests for the AI recommendation flow.
+- [ ] Task: Verify that code coverage for `recommendations` and `users` apps exceeds 80%.
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Testing & Quality' (Protocol in workflow.md)
