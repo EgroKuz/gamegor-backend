@@ -1,7 +1,7 @@
 # Implementation Plan: Project Improvements and Optimization
 
 ## Phase 1: Security and Configuration
-- [ ] Task: Remove `passwords.txt` from source control
+- [~] Task: Remove `passwords.txt` from source control
 - [ ] Task: Refactor `settings.py` to use `python-dotenv` for `DEBUG`, `ALLOWED_HOSTS`, and `CORS`
 - [ ] Task: Write basic tests to verify settings are loaded from environment variables
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Security and Configuration' (Protocol in workflow.md)
