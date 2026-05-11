@@ -1,16 +1,28 @@
 services:
+  backend:
+    build: .
+    container_name: gamegor_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=postgres
+      - OLLAMA_HOST=http://ollama:11434
+    depends_on:
+      - postgres
+      - minio
+      - ollama
+
   postgres:
     image: postgres:15-alpine
     container_name: gamegor_postgres
-
+    restart: always
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-
-    ports:
-      - "5432:5432"
-
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
