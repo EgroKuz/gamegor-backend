@@ -1,7 +1,7 @@
 # Implementation Plan: Project Improvements 2026-05-12
 
 **Phase 1: Architecture & Refactoring**
-- [ ] Task: Create a Service Layer for `recommendations` and `users` to centralize business logic.
+- [x] Task: Create a Service Layer for `recommendations` and `users` to centralize business logic. 17af810
 - [ ] Task: Move complex logic from `recommendations/views.py` and models to `recommendations/services/`.
 - [ ] Task: Move user-related business logic (profile updates, stats aggregation) to `users/services/`.
 - [ ] Task: Eliminate circular imports by routing dependencies through the service layer.
