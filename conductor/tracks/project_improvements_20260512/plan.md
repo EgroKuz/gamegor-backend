@@ -7,7 +7,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Security and Configuration' (Protocol in workflow.md)
 
 ## Phase 2: Performance (ORM) Optimization
-- [ ] Task: Write failing tests capturing current query counts for `GameViewSet` and `PlatformViewSet`
+- [x] Task: Write failing tests capturing current query counts for `GameViewSet` and `PlatformViewSet` 5309aaa
 - [ ] Task: Implement `prefetch_related` and `annotate` in `games/views.py` and `games/serializers.py` to fix N+1 queries
 - [ ] Task: Write failing tests capturing current query counts for `VideoViewSet` and `GameSessionViewSet`
 - [ ] Task: Implement `select_related` in `videos/views.py` and `gamesessions/views.py` to fix N+1 queries
