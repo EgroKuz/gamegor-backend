@@ -12,7 +12,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Statistics Aggregation Services' (Protocol in workflow.md)
 
 ## Phase 3: Achievement Evaluation Logic
-- [ ] Task: Write failing tests for achievement unlock logic
+- [x] Task: Write failing tests for achievement unlock logic ab718b5
 - [ ] Task: Implement service to evaluate and unlock achievements based on user activity
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Achievement Evaluation Logic' (Protocol in workflow.md)
 
