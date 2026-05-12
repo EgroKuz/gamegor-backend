@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
+import { AuthProvider } from './context/AuthContext';
 
 describe('App Routing', () => {
   it('renders Login page on /login route', () => {
     render(
       <MemoryRouter initialEntries={['/login']}>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </MemoryRouter>
     );
     expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
@@ -15,18 +18,23 @@ describe('App Routing', () => {
   it('renders Register page on /register route', () => {
     render(
       <MemoryRouter initialEntries={['/register']}>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </MemoryRouter>
     );
     expect(screen.getByRole('heading', { name: /register/i })).toBeInTheDocument();
   });
 
-  it('renders Dashboard page on / route', () => {
+  it('redirects to login on / route when unauthenticated', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </MemoryRouter>
     );
-    expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
+    // Since not authenticated, dashboard should not render, login should
+    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
   });
 });
