@@ -18,13 +18,13 @@ class AIAdvisorTests(TestCase):
     @patch('recommendations.services.ai_advisor.requests.post')
     def test_get_advice_timeout_fallback(self, mock_post):
         mock_post.side_effect = requests.exceptions.Timeout("Request timed out")
-        
+
         advice = AIAdvisor.get_advice_for_session(
             game_id=None,
             comment="This is a test comment",
             tags=["tag1", "tag2"]
         )
-        
+
         self.assertIn("Рекомендация:", advice)
         self.assertIn("tag1, tag2", advice)
 
@@ -71,22 +71,22 @@ class RecommendationPerformanceTests(TestCase):
 class SessionRecommendationServiceTests(TestCase):
     def setUp(self):
         self.game = Game.objects.create(
-            title="Test Game", 
-            genre="Action", 
-            developer="Test Dev", 
+            title="Test Game",
+            genre="Action",
+            developer="Test Dev",
             release_date="2026-01-01"
         )
-        
+
     @patch('recommendations.services.ai_advisor.AIAdvisor.get_advice_for_session')
     def test_get_context_data_with_game(self, mock_get_advice):
         mock_get_advice.return_value = "Test advice"
-        
+
         context = SessionRecommendationService.get_context_data(
             game_id=self.game.id,
             tags_string="tag1,tag2",
             comment="Test comment"
         )
-        
+
         self.assertEqual(context['game_name'], "Test Game")
         self.assertEqual(context['ai_advice'], "Test advice")
         mock_get_advice.assert_called_once_with(self.game.id, "Test comment", ["tag1", "tag2"])
@@ -97,7 +97,7 @@ class SessionRecommendationServiceTests(TestCase):
             tags_string="",
             comment=""
         )
-        
+
         self.assertIsNone(context['game_name'])
 
 class TagAnalyzerTests(TestCase):
@@ -105,10 +105,10 @@ class TagAnalyzerTests(TestCase):
         self.user = User.objects.create_user(username="tag_user", password="pwd", nickname="tag_user")
         self.user2 = User.objects.create_user(username="tag_user2", password="pwd", nickname="tag_user2")
         self.game = Game.objects.create(title="Game", genre="FPS", release_date="2020-01-01")
-        
+
         GameSession.objects.create(user=self.user, game=self.game, tags=["shooting", "strategy"], rating=5, comment="test")
         GameSession.objects.create(user=self.user, game=self.game, tags=["shooting"], rating=5, comment="test")
-        
+
         GameSession.objects.create(user=self.user2, game=self.game, tags=["grenades", "movement", "aim"], rating=5, comment="test")
 
     def test_get_user_tags_profile(self):
@@ -134,9 +134,9 @@ class RecommenderTests(TestCase):
         self.user = User.objects.create_user(username="rec_user", password="pwd", nickname="rec_user")
         self.author = Author.objects.create(name="Author", channel_url="http://test")
         self.game = Game.objects.create(title="Game", genre="FPS", release_date="2020-01-01")
-        
+
         GameSession.objects.create(user=self.user, game=self.game, tags=["shooting"], rating=5, comment="test")
-        
+
         self.vid1 = Video.objects.create(
             title="Aim Guide", author=self.author, game=self.game,
             video_type="guide", url="http://vid1", duration=10,
@@ -159,3 +159,49 @@ class RecommenderTests(TestCase):
         recs = Recommender.generate_and_save_recommendations(self.user.id, limit=2)
         self.assertTrue(len(recs) > 0)
         self.assertTrue(Recommendation.objects.filter(user=self.user).exists())
+
+class AIRecommendationIntegrationTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username="ai_user", password="pwd", nickname="ai_user")
+        self.author = Author.objects.create(name="Author", channel_url="http://test")
+        self.game = Game.objects.create(title="Game", genre="FPS", release_date="2020-01-01")
+
+        self.vid1 = Video.objects.create(
+            title="Aim Guide", author=self.author, game=self.game,
+            video_type="guide", url="http://vid1", duration=10,
+            uploaded_at="2021-01-01T00:00:00Z", moderated=True,
+            tags=["shooting", "aim"], views_count=100
+        )
+
+    def test_e2e_session_creation_triggers_recommendation(self):
+        # 1. Authenticate user
+        self.client.force_authenticate(user=self.user)
+
+        # 2. User creates a game session with weak tags
+        session_data = {
+            'game': self.game.id,
+            'rating': 4,
+            'comment': "I can't aim properly",
+            'tags': ["shooting"]
+        }
+        response = self.client.post('/api/sessions/', session_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # 3. User requests to generate recommendations based on profile
+        response = self.client.get('/api/recommendations/generate/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # 4. Assert that the correct video was recommended
+        self.assertTrue(len(response.data) > 0)
+        self.assertEqual(response.data[0]['video_detail']['id'], self.vid1.id)
+
+    @patch('recommendations.services.ai_advisor.AIAdvisor._call_ollama')
+    def test_e2e_session_page_loads_ai_advice(self, mock_ollama):
+        mock_ollama.return_value = "Try adjusting your crosshair placement."
+        
+        # This page is public/template view, requires session context
+        url = f"/api/recommendations-page/?game={self.game.id}&comment=I%20can't%20aim&tags=shooting"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, "Try adjusting your crosshair placement.")
