@@ -34,7 +34,7 @@
     - [x] Implement the main page logic, handling loading, error, and empty states.
 - [x] **Task: Conductor - User Manual Verification 'Phase 3: Game Sessions Page' (Protocol in workflow.md)** [1077150]
 
-## Phase 4: Final Verification
+## Phase 4: Final Verification [checkpoint: 26837f2]
 - [x] **Task: Run Full Test Suite & Coverage Check**
     - [x] Ensure all frontend tests pass.
     - [x] Verify coverage is >80% for the new pages and components.
