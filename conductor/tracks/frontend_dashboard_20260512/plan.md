@@ -12,10 +12,10 @@
 - [x] **Task: Create Reusable Stats Components** [0d01ce8]
     - [x] Write tests for `StatsCard` and `StatsGrid`.
     - [x] Implement `StatsCard` and `StatsGrid` with Tailwind styling.
-- [~] **Task: Create Achievement Components**
-    - [ ] Write tests for `AchievementList` and `AchievementItem`.
-    - [ ] Implement `AchievementList` and `AchievementItem`.
-- [ ] **Task: Create Recommendation Components**
+- [x] **Task: Create Achievement Components** [f13de0b]
+    - [x] Write tests for `AchievementList` and `AchievementItem`.
+    - [x] Implement `AchievementList` and `AchievementItem`.
+- [~] **Task: Create Recommendation Components**
     - [ ] Write tests for `RecommendationGrid` and `RecommendationCard`.
     - [ ] Implement `RecommendationGrid` and `RecommendationCard`.
 
