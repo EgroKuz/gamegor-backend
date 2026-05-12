@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import Login from './Login';
 import api from '../api/client';
+import { AuthContext } from '../context/AuthContext';
 
 vi.mock('../api/client', () => ({
   default: {
@@ -12,30 +13,49 @@ vi.mock('../api/client', () => ({
 }));
 
 describe('Login Component', () => {
+  const mockLogin = vi.fn();
+
+  const renderWithAuth = (ui) => {
+    return render(
+      <AuthContext.Provider value={{ login: mockLogin }}>
+        <MemoryRouter>
+          {ui}
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+  };
+
   beforeEach(() => {
     localStorage.clear();
     vi.clearAllMocks();
   });
 
-  it('renders login form', () => {
-    render(<MemoryRouter><Login /></MemoryRouter>);
-    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+  it('renders login form with new aesthetic', () => {
+    renderWithAuth(<Login />);
+    // AuthLayout title
+    expect(screen.getByRole('heading', { name: 'Welcome Back' })).toBeInTheDocument();
+    expect(screen.getByLabelText(/^username$/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
+    // Verify the AuthLayout graphic section is rendered
+    expect(screen.getByTestId('auth-graphic')).toBeInTheDocument();
+
+    // Check for the link to registration
+    const registerLink = screen.getByRole('link', { name: /create an account/i });
+    expect(registerLink).toBeInTheDocument();
+    expect(registerLink).toHaveAttribute('href', '/register');
   });
 
   it('submits form, saves token, and redirects', async () => {
     api.post.mockResolvedValueOnce({ data: { access: 'fake-access-token', refresh: 'fake-refresh' } });
-    
-    render(<MemoryRouter><Login /></MemoryRouter>);
-    
+
+    renderWithAuth(<Login />);
+
     const user = userEvent.setup();
-    await user.type(screen.getByLabelText(/username/i), 'testuser');
-    await user.type(screen.getByLabelText(/password/i), 'password123');
-    
+    await user.type(screen.getByLabelText(/^username$/i), 'testuser');
+    await user.type(screen.getByLabelText(/^password$/i), 'password123');
+
     await user.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     await waitFor(() => {
       expect(api.post).toHaveBeenCalledWith('/token/', {
         username: 'testuser',
@@ -43,6 +63,7 @@ describe('Login Component', () => {
       });
       expect(localStorage.getItem('access_token')).toBe('fake-access-token');
       expect(localStorage.getItem('refresh_token')).toBe('fake-refresh');
+      expect(mockLogin).toHaveBeenCalled();
     });
   });
 
@@ -50,17 +71,18 @@ describe('Login Component', () => {
     api.post.mockRejectedValueOnce({
       response: { data: { detail: 'No active account found with the given credentials' }, status: 401 },
     });
-    
-    render(<MemoryRouter><Login /></MemoryRouter>);
-    
+
+    renderWithAuth(<Login />);
+
     const user = userEvent.setup();
-    await user.type(screen.getByLabelText(/username/i), 'wronguser');
-    await user.type(screen.getByLabelText(/password/i), 'wrongpass');
-    
+    await user.type(screen.getByLabelText(/^username$/i), 'wronguser');
+    await user.type(screen.getByLabelText(/^password$/i), 'wrongpass');
+
     await user.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     await waitFor(() => {
       expect(screen.getByText(/no active account found/i)).toBeInTheDocument();
     });
   });
 });
+
