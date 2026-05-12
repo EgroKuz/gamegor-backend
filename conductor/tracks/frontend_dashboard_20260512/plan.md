@@ -9,10 +9,10 @@
     - [x] Update `Dashboard.jsx` (or a dedicated hook) to fetch and store data on mount.
 
 ## Phase 2: UI Components Development
-- [ ] **Task: Create Reusable Stats Components**
-    - [ ] Write tests for `StatsCard` and `StatsGrid`.
-    - [ ] Implement `StatsCard` and `StatsGrid` with Tailwind styling.
-- [ ] **Task: Create Achievement Components**
+- [x] **Task: Create Reusable Stats Components** [0d01ce8]
+    - [x] Write tests for `StatsCard` and `StatsGrid`.
+    - [x] Implement `StatsCard` and `StatsGrid` with Tailwind styling.
+- [~] **Task: Create Achievement Components**
     - [ ] Write tests for `AchievementList` and `AchievementItem`.
     - [ ] Implement `AchievementList` and `AchievementItem`.
 - [ ] **Task: Create Recommendation Components**
