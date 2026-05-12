@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getProfile } from '../api/users';
+import { getProfile, updateProfile } from '../api/users';
+import FormInput from '../components/auth/FormInput'; // Reusing auth input component
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({ nickname: '', email: '' });
+  const [updateError, setUpdateError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -13,6 +18,7 @@ const ProfilePage = () => {
         setLoading(true);
         const data = await getProfile();
         setProfile(data);
+        setFormData({ nickname: data.nickname || '', email: data.email });
         setError(null);
       } catch (err) {
         console.error('Error fetching profile:', err);
@@ -24,6 +30,36 @@ const ProfilePage = () => {
 
     fetchProfile();
   }, []);
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+    // Reset form to current profile data if canceling
+    if (isEditing) {
+      setFormData({ nickname: profile.nickname || '', email: profile.email });
+      setUpdateError('');
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setUpdateError('');
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSaving(true);
+    setUpdateError('');
+
+    try {
+      const updatedData = await updateProfile(formData);
+      setProfile({ ...profile, ...updatedData });
+      setIsEditing(false);
+    } catch (err) {
+      setUpdateError(err.response?.data?.error || err.response?.data?.detail || 'Failed to update profile.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -91,27 +127,75 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* Info Section */}
-        <div className="w-full md:w-2/3 space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-800">
-              <span className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Email Address</span>
-              <span className="text-gray-200">{profile.email}</span>
-            </div>
-            <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-800">
-              <span className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nickname</span>
-              <span className="text-gray-200">{profile.nickname || 'Not set'}</span>
-            </div>
-          </div>
+        {/* Info/Edit Section */}
+        <div className="w-full md:w-2/3">
+          {isEditing ? (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {updateError && (
+                <div className="bg-red-900/30 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm text-center">
+                  {updateError}
+                </div>
+              )}
+              <FormInput
+                id="email"
+                name="email"
+                type="email"
+                label="Email Address"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <FormInput
+                id="nickname"
+                name="nickname"
+                label="Nickname"
+                value={formData.nickname}
+                onChange={handleChange}
+              />
+              <div className="pt-4 flex gap-4 border-t border-gray-800">
+                <button 
+                  type="submit"
+                  disabled={isSaving}
+                  className="bg-neon-teal text-gray-950 px-6 py-2 rounded-lg font-bold hover:bg-teal-400 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.3)] disabled:opacity-50"
+                >
+                  {isSaving ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button 
+                  type="button" 
+                  onClick={handleEditToggle}
+                  disabled={isSaving}
+                  className="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors border border-gray-700 disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-800">
+                  <span className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Email Address</span>
+                  <span className="text-gray-200">{profile.email}</span>
+                </div>
+                <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-800">
+                  <span className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nickname</span>
+                  <span className="text-gray-200">{profile.nickname || 'Not set'}</span>
+                </div>
+              </div>
 
-          <div className="pt-6 flex gap-4 border-t border-gray-800">
-            <button className="bg-neon-teal text-gray-950 px-6 py-2 rounded-lg font-bold hover:bg-teal-400 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.3)]">
-              Edit Profile
-            </button>
-            <button className="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors border border-gray-700">
-              Change Password
-            </button>
-          </div>
+              <div className="pt-6 flex gap-4 border-t border-gray-800">
+                <button 
+                  onClick={handleEditToggle}
+                  className="bg-neon-teal text-gray-950 px-6 py-2 rounded-lg font-bold hover:bg-teal-400 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.3)]"
+                >
+                  Edit Profile
+                </button>
+                <button className="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors border border-gray-700">
+                  Change Password
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
       </div>
