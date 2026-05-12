@@ -17,11 +17,11 @@
     - [x] Refactor `Login.jsx` to use `AuthLayout`, `FormInput`, and `PasswordInput`.
     - [x] Apply neon aesthetic to the submit button and add the "Switch to Register" link.
     - [x] Ensure existing AuthContext login logic works seamlessly with the new form.
-- [~] **Task: Redesign Registration Page**
-    - [ ] Update `Register.test.jsx` to reflect the new DOM structure and interactions.
-    - [ ] Refactor `Register.jsx` to use the new UI components.
-    - [ ] Implement inline validation checks (e.g., password matching) before submission.
-    - [ ] Apply styling and add the "Switch to Login" link.
+- [x] **Task: Redesign Registration Page** [60b52e7]
+    - [x] Update `Register.test.jsx` to reflect the new DOM structure and interactions.
+    - [x] Refactor `Register.jsx` to use the new UI components.
+    - [x] Implement inline validation checks (e.g., password matching) before submission.
+    - [x] Apply styling and add the "Switch to Login" link.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Refactoring Login & Registration' (Protocol in workflow.md)**
 
 ## Phase 3: Final Verification
