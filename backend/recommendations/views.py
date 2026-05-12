@@ -17,6 +17,8 @@ class RecommendationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False) or not self.request.user.is_authenticated:
+            return Recommendation.objects.none()
         return Recommendation.objects.filter(user=self.request.user).select_related(
             'video', 'video__author', 'video__game', 'game'
         ).prefetch_related('game__platforms')

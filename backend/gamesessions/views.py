@@ -14,6 +14,8 @@ class GameSessionViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'rating']
     
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False) or not self.request.user.is_authenticated:
+            return GameSession.objects.none()
         return GameSession.objects.filter(user=self.request.user).select_related('game', 'user').order_by('-created_at')
     
     def get_serializer_class(self):

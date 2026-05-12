@@ -35,6 +35,8 @@ class UserVideoInteractionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False) or not self.request.user.is_authenticated:
+            return UserVideoInteraction.objects.none()
         return UserVideoInteraction.objects.filter(user=self.request.user).select_related('video', 'video__author', 'video__game')
     
     def perform_create(self, serializer):
