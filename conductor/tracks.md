@@ -19,5 +19,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Create the main application layout**
+- [x] **Track: Create the main application layout**
 *Link: [./tracks/main_layout_20260512/](./tracks/main_layout_20260512/)*
