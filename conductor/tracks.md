@@ -19,10 +19,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [x] **Track: Frontend Dashboard UI (Stats, Achievements & Recommendations)**
-*Link: [./tracks/frontend_dashboard_20260512/](./tracks/frontend_dashboard_20260512/)*
-
----
-
 - [x] **Track: Create the main application layout**
 *Link: [./tracks/main_layout_20260512/](./tracks/main_layout_20260512/)*
