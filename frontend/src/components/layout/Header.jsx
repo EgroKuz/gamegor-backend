@@ -4,11 +4,11 @@ const Header = () => {
   return (
     <header role="banner" className="bg-gray-900 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-xl font-bold text-teal-400">GameAggregator</div>
+        <div className="text-xl font-bold text-neon-teal">GameAggregator</div>
         <nav>
           <ul className="flex space-x-4">
-            <li><a href="/" className="hover:text-teal-300">Home</a></li>
-            <li><a href="/games" className="hover:text-teal-300">Games</a></li>
+            <li><a href="/" className="hover:text-neon-teal">Home</a></li>
+            <li><a href="/games" className="hover:text-neon-teal">Games</a></li>
           </ul>
         </nav>
         <div>
