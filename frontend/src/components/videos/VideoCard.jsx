@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const VideoCard = ({ video }) => {
   if (!video) return null;
 
-  const { title, youtube_id, game } = video;
+  const { title, youtube_id, game, author, type, tags } = video;
 
   return (
     <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-neon-teal/20 transition-all duration-300 flex flex-col h-full">
@@ -22,10 +22,27 @@ const VideoCard = ({ video }) => {
       </div>
 
       {/* Content Section */}
-      <div className="p-4 flex flex-col flex-1 justify-between gap-4">
-        <h3 className="text-lg font-bold text-white line-clamp-2 leading-tight">
-          {title}
-        </h3>
+      <div className="p-4 flex flex-col flex-1 justify-between gap-3">
+        <div>
+          <h3 className="text-lg font-bold text-white line-clamp-2 leading-tight mb-1">
+            {title}
+          </h3>
+          
+          <div className="flex items-center justify-between text-xs text-gray-400">
+            {author && <span className="font-medium text-gray-300">{author}</span>}
+            {type && <span className="uppercase tracking-wider px-2 py-0.5 bg-gray-700 rounded-full">{type}</span>}
+          </div>
+        </div>
+
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-1">
+            {tags.map((tag, index) => (
+              <span key={index} className="text-[10px] px-2 py-0.5 bg-neon-violet/10 text-neon-violet border border-neon-violet/20 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
         
         {game && (
           <div className="flex items-center gap-2 mt-auto pt-2 border-t border-gray-700/50">

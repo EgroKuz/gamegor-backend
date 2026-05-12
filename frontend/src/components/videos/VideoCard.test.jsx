@@ -9,10 +9,13 @@ describe('VideoCard Component', () => {
     id: 1,
     title: 'Hollow Knight Boss Fight',
     youtube_id: 'dQw4w9WgXcQ',
+    author: 'GamerPro',
+    type: 'gameplay',
+    tags: ['boss', 'no-damage'],
     game: { id: 10, title: 'Hollow Knight' }
   };
 
-  it('renders video title and game association', () => {
+  it('renders video metadata (title, author, type, tags, game)', () => {
     render(
       <MemoryRouter>
         <VideoCard video={mockVideo} />
@@ -20,6 +23,10 @@ describe('VideoCard Component', () => {
     );
     expect(screen.getByText('Hollow Knight Boss Fight')).toBeInTheDocument();
     expect(screen.getByText('Hollow Knight')).toBeInTheDocument();
+    expect(screen.getByText('GamerPro')).toBeInTheDocument();
+    expect(screen.getByText('gameplay')).toBeInTheDocument();
+    expect(screen.getByText('boss')).toBeInTheDocument();
+    expect(screen.getByText('no-damage')).toBeInTheDocument();
   });
 
   it('renders a YouTube iframe with the correct URL', () => {
