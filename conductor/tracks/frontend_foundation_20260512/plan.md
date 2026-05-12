@@ -14,7 +14,7 @@
     - [x] Configure test scripts in `package.json`.
 - [x] Task: Conductor - User Manual Verification 'Project Setup' (Protocol in workflow.md) [784dee8]
 
-## Phase 2: Authentication Implementation
+## Phase 2: Authentication Implementation [checkpoint: c67455a]
 - [x] Task: Implement Routing Foundation. [e73b47a]
     - [x] Install `react-router-dom`.
     - [x] Define routes for Login, Register, and a placeholder Protected Dashboard.
@@ -33,4 +33,4 @@
     - [x] Write tests for the Protected Route component (redirects if unauthenticated).
     - [x] Implement an Auth Provider/Context to manage global authentication state.
     - [x] Implement Logout functionality to clear tokens and redirect to login.
-- [ ] Task: Conductor - User Manual Verification 'Authentication Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Authentication Implementation' (Protocol in workflow.md) [c67455a]
