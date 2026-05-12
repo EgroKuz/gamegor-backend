@@ -4,7 +4,7 @@
 - [x] **Task: Create Base Layout Components** [0896d8f]
     - [ ] Write tests for `MainLayout`, `Header`, `Sidebar`, and `Footer` components (ensuring they render correctly)
     - [ ] Implement skeleton versions of `MainLayout`, `Header`, `Sidebar`, and `Footer`
-- [ ] **Task: Integrate Layout with App Routing**
+- [x] **Task: Integrate Layout with App Routing** [934defb]
     - [ ] Write tests for `App.jsx` to ensure it wraps routes with the `MainLayout`
     - [ ] Update `App.jsx` to use the `MainLayout` component as a wrapper for pages
 - [ ] **Task: Conductor - User Manual Verification 'Phase 1: Foundation and Structural Components' (Protocol in workflow.md)**
