@@ -6,16 +6,19 @@ import { MemoryRouter } from 'react-router-dom';
 
 describe('SessionItem Component', () => {
   const mockSession = {
-    id: 1,
+    id: 99,
+    game_id: 101,
     game: {
       id: 101,
       title: 'Hollow Knight',
       cover_image_url: 'http://example.com/hk.jpg'
     },
-    date_played: '2026-05-10T14:00:00Z',
+    created_at: '2026-05-10T14:00:00Z',
+    updated_at: '2026-05-11T10:00:00Z',
     duration_minutes: 120,
     rating: 9,
-    review_text: 'Amazing game!'
+    comment: 'Amazing game!',
+    tags: ['metroidvania', 'hard']
   };
 
   const renderComponent = (session) => {
@@ -34,12 +37,18 @@ describe('SessionItem Component', () => {
     expect(img).toHaveAttribute('src', 'http://example.com/hk.jpg');
   });
 
-  it('renders session metrics (date, duration, rating)', () => {
+  it('renders session metrics (id, dates, duration, rating)', () => {
     renderComponent(mockSession);
-    // Testing specific formatted output
-    expect(screen.getByText(/may 10, 2026/i)).toBeInTheDocument();
+    expect(screen.getByText(/may 10, 2026/i)).toBeInTheDocument(); // created_at
     expect(screen.getByText(/2h 0m/i)).toBeInTheDocument();
     expect(screen.getByText('9/10')).toBeInTheDocument();
+    expect(screen.getByText(/ID: 99/i)).toBeInTheDocument();
+  });
+
+  it('renders tags if available', () => {
+    renderComponent(mockSession);
+    expect(screen.getByText('metroidvania')).toBeInTheDocument();
+    expect(screen.getByText('hard')).toBeInTheDocument();
   });
 
   it('renders a fallback if no cover image is provided', () => {
@@ -53,3 +62,4 @@ describe('SessionItem Component', () => {
     expect(container).toBeEmptyDOMElement();
   });
 });
+

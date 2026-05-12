@@ -6,9 +6,9 @@ const SessionItem = ({ session }) => {
 
   if (!session || !session.game) return null;
 
-  const { game, date_played, duration_minutes, rating, review_text } = session;
+  const { id, game, created_at, duration_minutes, rating, comment, tags } = session;
 
-  const formattedDate = new Date(date_played).toLocaleDateString('en-US', {
+  const formattedDate = new Date(created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
@@ -42,31 +42,47 @@ const SessionItem = ({ session }) => {
                 {game.title}
               </Link>
             </h3>
-            {rating && (
-              <span className="bg-gray-900 text-neon-teal font-bold px-2 py-1 rounded border border-gray-700 text-sm whitespace-nowrap">
-                {rating}/10
-              </span>
-            )}
+            <div className="flex items-center gap-2">
+              {rating && (
+                <span className="bg-gray-900 text-neon-teal font-bold px-2 py-1 rounded border border-gray-700 text-sm whitespace-nowrap">
+                  {rating}/10
+                </span>
+              )}
+            </div>
           </div>
           
-          <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-400">
-            <span className="flex items-center gap-1">
-              📅 {formattedDate}
-            </span>
-            <span className="flex items-center gap-1">
-              ⏱️ {formattedDuration}
-            </span>
+          <div className="flex flex-col gap-2 mt-4 text-sm text-gray-400">
+            <div className="flex flex-wrap gap-4">
+               <span className="flex items-center gap-1">
+                 🆔 ID: {id}
+               </span>
+              <span className="flex items-center gap-1">
+                📅 {formattedDate}
+              </span>
+              <span className="flex items-center gap-1">
+                ⏱️ {formattedDuration}
+              </span>
+            </div>
+            {tags && tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-1">
+                    {tags.map((tag, idx) => (
+                        <span key={idx} className="bg-gray-700 text-gray-300 px-2 py-0.5 rounded text-xs">
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Expandable Review Section */}
-      {isExpanded && review_text && (
+      {isExpanded && comment && (
         <div className="p-4 bg-gray-900/50 border-t border-gray-700 text-gray-300 text-sm leading-relaxed animate-in slide-in-from-top-2 duration-200">
-          <p className="whitespace-pre-line">{review_text}</p>
+          <p className="whitespace-pre-line">{comment}</p>
         </div>
       )}
-      {isExpanded && !review_text && (
+      {isExpanded && !comment && (
         <div className="p-4 bg-gray-900/50 border-t border-gray-700 text-gray-500 italic text-sm">
           No review text provided for this session.
         </div>
@@ -76,3 +92,4 @@ const SessionItem = ({ session }) => {
 };
 
 export default SessionItem;
+
