@@ -13,10 +13,10 @@
 - [x] **Task: Create GameCard Component** [a26f3fa]
     - [x] Write tests for `GameCard` rendering title and image.
     - [x] Implement `GameCard` with Tailwind styling and hover effects.
-- [~] **Task: Implement GamesPage Logic and Grid**
-    - [ ] Write tests for fetching games on mount and rendering the grid.
-    - [ ] Implement `GamesPage.jsx` fetching data via API and mapping over `GameCard`s.
-- [ ] **Task: Implement Text Search Filtering**
+- [x] **Task: Implement GamesPage Logic and Grid** [5c42c7b]
+    - [x] Write tests for fetching games on mount and rendering the grid.
+    - [x] Implement `GamesPage.jsx` fetching data via API and mapping over `GameCard`s.
+- [~] **Task: Implement Text Search Filtering**
     - [ ] Write tests for search input updating state and filtering the rendered list.
     - [ ] Add search input to `GamesPage` and implement client-side (or server-side if supported) filtering logic.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Games Catalog Page' (Protocol in workflow.md)**
