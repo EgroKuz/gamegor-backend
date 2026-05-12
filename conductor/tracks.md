@@ -31,6 +31,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Create Not Found Page (404) and Video Content page**
+- [~] **Track: Create Not Found Page (404) and Video Content page**
 *Link: [./tracks/not_found_videos_20260513/](./tracks/not_found_videos_20260513/)*
 

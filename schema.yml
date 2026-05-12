@@ -1,0 +1,2818 @@
+openapi: 3.0.3
+info:
+  title: Game Aggregator API
+  version: 1.0.0
+  description: API documentation for the Video Game Aggregator with AI Recommendations.
+paths:
+  /api/achievements/:
+    get:
+      operationId: achievements_list
+      description: ViewSet for viewing all available achievements.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - achievements
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Achievement'
+          description: ''
+  /api/achievements/{id}/:
+    get:
+      operationId: achievements_retrieve
+      description: ViewSet for viewing all available achievements.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this achievement.
+        required: true
+      tags:
+      - achievements
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+          description: ''
+  /api/authors/:
+    get:
+      operationId: authors_list
+      description: ViewSet для просмотра авторов видеоконтента.
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - authors
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+          description: ''
+    post:
+      operationId: authors_create
+      description: ViewSet для просмотра авторов видеоконтента.
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+          description: ''
+  /api/authors/{id}/:
+    get:
+      operationId: authors_retrieve
+      description: ViewSet для просмотра авторов видеоконтента.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Автор.
+        required: true
+      tags:
+      - authors
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+          description: ''
+    put:
+      operationId: authors_update
+      description: ViewSet для просмотра авторов видеоконтента.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Автор.
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+          description: ''
+    patch:
+      operationId: authors_partial_update
+      description: ViewSet для просмотра авторов видеоконтента.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Автор.
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthorRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthorRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+          description: ''
+    delete:
+      operationId: authors_destroy
+      description: ViewSet для просмотра авторов видеоконтента.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Автор.
+        required: true
+      tags:
+      - authors
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/games/:
+    get:
+      operationId: games_list
+      description: |-
+        ViewSet для просмотра и редактирования игр.
+        Предоставляет CRUD операции для модели Game.
+      parameters:
+      - in: query
+        name: developer
+        schema:
+          type: string
+      - in: query
+        name: genre
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - games
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+          description: ''
+    post:
+      operationId: games_create
+      description: |-
+        ViewSet для просмотра и редактирования игр.
+        Предоставляет CRUD операции для модели Game.
+      tags:
+      - games
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: ''
+  /api/games/{id}/:
+    get:
+      operationId: games_retrieve
+      description: |-
+        ViewSet для просмотра и редактирования игр.
+        Предоставляет CRUD операции для модели Game.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Игра.
+        required: true
+      tags:
+      - games
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: ''
+    put:
+      operationId: games_update
+      description: |-
+        ViewSet для просмотра и редактирования игр.
+        Предоставляет CRUD операции для модели Game.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Игра.
+        required: true
+      tags:
+      - games
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: ''
+    patch:
+      operationId: games_partial_update
+      description: |-
+        ViewSet для просмотра и редактирования игр.
+        Предоставляет CRUD операции для модели Game.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Игра.
+        required: true
+      tags:
+      - games
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGameRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGameRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGameRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: ''
+    delete:
+      operationId: games_destroy
+      description: |-
+        ViewSet для просмотра и редактирования игр.
+        Предоставляет CRUD операции для модели Game.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Игра.
+        required: true
+      tags:
+      - games
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/interactions/:
+    get:
+      operationId: interactions_list
+      description: ViewSet для взаимодействий пользователя с видео.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - interactions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserVideoInteraction'
+          description: ''
+    post:
+      operationId: interactions_create
+      description: ViewSet для взаимодействий пользователя с видео.
+      tags:
+      - interactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserVideoInteractionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserVideoInteractionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserVideoInteractionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVideoInteraction'
+          description: ''
+  /api/interactions/{id}/:
+    get:
+      operationId: interactions_retrieve
+      description: ViewSet для взаимодействий пользователя с видео.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Взаимодействие с видео.
+        required: true
+      tags:
+      - interactions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVideoInteraction'
+          description: ''
+    put:
+      operationId: interactions_update
+      description: ViewSet для взаимодействий пользователя с видео.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Взаимодействие с видео.
+        required: true
+      tags:
+      - interactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserVideoInteractionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserVideoInteractionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserVideoInteractionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVideoInteraction'
+          description: ''
+    patch:
+      operationId: interactions_partial_update
+      description: ViewSet для взаимодействий пользователя с видео.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Взаимодействие с видео.
+        required: true
+      tags:
+      - interactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserVideoInteractionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserVideoInteractionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserVideoInteractionRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVideoInteraction'
+          description: ''
+    delete:
+      operationId: interactions_destroy
+      description: ViewSet для взаимодействий пользователя с видео.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Взаимодействие с видео.
+        required: true
+      tags:
+      - interactions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/platforms/:
+    get:
+      operationId: platforms_list
+      description: ViewSet для просмотра и редактирования платформ.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - platforms
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Platform'
+          description: ''
+    post:
+      operationId: platforms_create
+      description: ViewSet для просмотра и редактирования платформ.
+      tags:
+      - platforms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlatformRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PlatformRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Platform'
+          description: ''
+  /api/platforms/{id}/:
+    get:
+      operationId: platforms_retrieve
+      description: ViewSet для просмотра и редактирования платформ.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Платформа.
+        required: true
+      tags:
+      - platforms
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Platform'
+          description: ''
+    put:
+      operationId: platforms_update
+      description: ViewSet для просмотра и редактирования платформ.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Платформа.
+        required: true
+      tags:
+      - platforms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlatformRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PlatformRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Platform'
+          description: ''
+    patch:
+      operationId: platforms_partial_update
+      description: ViewSet для просмотра и редактирования платформ.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Платформа.
+        required: true
+      tags:
+      - platforms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPlatformRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPlatformRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPlatformRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Platform'
+          description: ''
+    delete:
+      operationId: platforms_destroy
+      description: ViewSet для просмотра и редактирования платформ.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Платформа.
+        required: true
+      tags:
+      - platforms
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/recommendations/:
+    get:
+      operationId: recommendations_list
+      description: ViewSet для работы с рекомендациями.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - recommendations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recommendation'
+          description: ''
+    post:
+      operationId: recommendations_create
+      description: ViewSet для работы с рекомендациями.
+      tags:
+      - recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+          description: ''
+  /api/recommendations/{id}/:
+    get:
+      operationId: recommendations_retrieve
+      description: ViewSet для работы с рекомендациями.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Рекомендация.
+        required: true
+      tags:
+      - recommendations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+          description: ''
+    put:
+      operationId: recommendations_update
+      description: ViewSet для работы с рекомендациями.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Рекомендация.
+        required: true
+      tags:
+      - recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+          description: ''
+    patch:
+      operationId: recommendations_partial_update
+      description: ViewSet для работы с рекомендациями.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Рекомендация.
+        required: true
+      tags:
+      - recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRecommendationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRecommendationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRecommendationRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+          description: ''
+    delete:
+      operationId: recommendations_destroy
+      description: ViewSet для работы с рекомендациями.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Рекомендация.
+        required: true
+      tags:
+      - recommendations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/recommendations/{id}/mark_viewed/:
+    post:
+      operationId: recommendations_mark_viewed_create
+      description: Отмечает рекомендацию как просмотренную.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Рекомендация.
+        required: true
+      tags:
+      - recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+          description: ''
+  /api/recommendations/generate/:
+    get:
+      operationId: recommendations_generate_retrieve
+      description: Генерирует новые рекомендации для текущего пользователя.
+      tags:
+      - recommendations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+          description: ''
+  /api/recommendations/personalized/:
+    get:
+      operationId: recommendations_personalized_retrieve
+      description: Возвращает персонализированные рекомендации (без сохранения).
+      tags:
+      - recommendations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+          description: ''
+  /api/recommendations/weak_skills/:
+    get:
+      operationId: recommendations_weak_skills_retrieve
+      description: Возвращает слабые места пользователя.
+      tags:
+      - recommendations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+          description: ''
+  /api/register/:
+    post:
+      operationId: register_create
+      tags:
+      - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /api/sessions/:
+    get:
+      operationId: sessions_list
+      description: ViewSet для управления игровыми сессиями пользователя.
+      parameters:
+      - in: query
+        name: game
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: rating
+        schema:
+          type: integer
+          title: Оценка (1-10)
+          enum:
+          - 1
+          - 10
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+        description: |-
+          * `1` - 1
+          * `2` - 2
+          * `3` - 3
+          * `4` - 4
+          * `5` - 5
+          * `6` - 6
+          * `7` - 7
+          * `8` - 8
+          * `9` - 9
+          * `10` - 10
+      tags:
+      - sessions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameSession'
+          description: ''
+    post:
+      operationId: sessions_create
+      description: ViewSet для управления игровыми сессиями пользователя.
+      tags:
+      - sessions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameSessionCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GameSessionCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GameSessionCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSessionCreate'
+          description: ''
+  /api/sessions/{id}/:
+    get:
+      operationId: sessions_retrieve
+      description: ViewSet для управления игровыми сессиями пользователя.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Игровая сессия.
+        required: true
+      tags:
+      - sessions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSession'
+          description: ''
+    put:
+      operationId: sessions_update
+      description: ViewSet для управления игровыми сессиями пользователя.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Игровая сессия.
+        required: true
+      tags:
+      - sessions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameSessionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GameSessionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GameSessionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSession'
+          description: ''
+    patch:
+      operationId: sessions_partial_update
+      description: ViewSet для управления игровыми сессиями пользователя.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Игровая сессия.
+        required: true
+      tags:
+      - sessions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGameSessionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGameSessionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGameSessionRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSession'
+          description: ''
+    delete:
+      operationId: sessions_destroy
+      description: ViewSet для управления игровыми сессиями пользователя.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Игровая сессия.
+        required: true
+      tags:
+      - sessions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/stats/:
+    get:
+      operationId: get_user_statistics
+      description: |-
+        Returns aggregated statistics for the current user.
+        Also evaluates and unlocks achievements seamlessly.
+      tags:
+      - stats
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: User statistics successfully retrieved
+  /api/token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/users/:
+    get:
+      operationId: users_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+    post:
+      operationId: users_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/{id}/:
+    get:
+      operationId: users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/users/change_password/:
+    post:
+      operationId: users_change_password_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/me/achievements/:
+    get:
+      operationId: users_me_achievements_list
+      description: ViewSet for viewing the current user's unlocked achievements.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserAchievement'
+          description: ''
+  /api/users/profile/:
+    get:
+      operationId: users_profile_retrieve
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_profile_update
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/videos/:
+    get:
+      operationId: videos_list
+      description: ViewSet для просмотра и редактирования видео.
+      parameters:
+      - in: query
+        name: game
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: video_type
+        schema:
+          type: string
+          title: Тип видео
+          enum:
+          - analysis
+          - guide
+          - news
+          - stream
+          - tip
+        description: |-
+          * `guide` - Гайд
+          * `analysis` - Разбор
+          * `news` - Новости
+          * `stream` - Стрим
+          * `tip` - Лайфхак
+      tags:
+      - videos
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Video'
+          description: ''
+    post:
+      operationId: videos_create
+      description: ViewSet для просмотра и редактирования видео.
+      tags:
+      - videos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+          description: ''
+  /api/videos/{id}/:
+    get:
+      operationId: videos_retrieve
+      description: ViewSet для просмотра и редактирования видео.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Видео.
+        required: true
+      tags:
+      - videos
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+          description: ''
+    put:
+      operationId: videos_update
+      description: ViewSet для просмотра и редактирования видео.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Видео.
+        required: true
+      tags:
+      - videos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+          description: ''
+    patch:
+      operationId: videos_partial_update
+      description: ViewSet для просмотра и редактирования видео.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Видео.
+        required: true
+      tags:
+      - videos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVideoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVideoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVideoRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+          description: ''
+    delete:
+      operationId: videos_destroy
+      description: ViewSet для просмотра и редактирования видео.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Видео.
+        required: true
+      tags:
+      - videos
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        criteria_type:
+          $ref: '#/components/schemas/CriteriaTypeEnum'
+        threshold:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - criteria_type
+      - description
+      - id
+      - threshold
+      - title
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Имя автора
+          maxLength: 100
+        channel_url:
+          type: string
+          format: uri
+          title: Ссылка на канал
+          maxLength: 200
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+          title: Аватар
+          maxLength: 200
+        subscribers_count:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Подписчики
+      required:
+      - channel_url
+      - id
+      - name
+    AuthorRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Имя автора
+          maxLength: 100
+        channel_url:
+          type: string
+          format: uri
+          minLength: 1
+          title: Ссылка на канал
+          maxLength: 200
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+          title: Аватар
+          maxLength: 200
+        subscribers_count:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Подписчики
+      required:
+      - channel_url
+      - name
+    CriteriaTypeEnum:
+      enum:
+      - games_played
+      - videos_watched
+      - reviews_written
+      type: string
+      description: |-
+        * `games_played` - Games Played
+        * `videos_watched` - Videos Watched
+        * `reviews_written` - Reviews Written
+    Game:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: Название
+          maxLength: 200
+        genre:
+          type: string
+          title: Жанр
+          maxLength: 100
+        developer:
+          type: string
+          title: Разработчик
+          maxLength: 200
+        release_date:
+          type: string
+          format: date
+          title: Дата релиза
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          title: Обложка
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+          title: Описание
+        platforms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Platform'
+          readOnly: true
+        total_achievements:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Всего достижений
+      required:
+      - developer
+      - genre
+      - id
+      - platforms
+      - release_date
+      - title
+    GameRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          title: Название
+          maxLength: 200
+        genre:
+          type: string
+          minLength: 1
+          title: Жанр
+          maxLength: 100
+        developer:
+          type: string
+          minLength: 1
+          title: Разработчик
+          maxLength: 200
+        release_date:
+          type: string
+          format: date
+          title: Дата релиза
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          title: Обложка
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+          title: Описание
+        total_achievements:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Всего достижений
+      required:
+      - developer
+      - genre
+      - release_date
+      - title
+    GameSession:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        game:
+          type: integer
+          title: Игра
+        game_detail:
+          type: string
+          readOnly: true
+        rating:
+          allOf:
+          - $ref: '#/components/schemas/Rating72bEnum'
+          title: Оценка (1-10)
+          minimum: -2147483648
+          maximum: 2147483647
+        comment:
+          type: string
+          title: Комментарий
+        tags:
+          title: Теги
+          description: 'Массив тегов, например: [''aim'', ''tactics'', ''map_knowledge'']'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Дата создания
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Дата обновления
+        user_name:
+          type: string
+          readOnly: true
+      required:
+      - comment
+      - created_at
+      - game
+      - game_detail
+      - id
+      - rating
+      - updated_at
+      - user_name
+    GameSessionCreate:
+      type: object
+      properties:
+        game:
+          type: integer
+          title: Игра
+        rating:
+          allOf:
+          - $ref: '#/components/schemas/Rating72bEnum'
+          title: Оценка (1-10)
+          minimum: -2147483648
+          maximum: 2147483647
+        comment:
+          type: string
+          title: Комментарий
+        tags:
+          title: Теги
+          description: 'Массив тегов, например: [''aim'', ''tactics'', ''map_knowledge'']'
+      required:
+      - comment
+      - game
+      - rating
+    GameSessionCreateRequest:
+      type: object
+      properties:
+        game:
+          type: integer
+          title: Игра
+        rating:
+          allOf:
+          - $ref: '#/components/schemas/Rating72bEnum'
+          title: Оценка (1-10)
+          minimum: -2147483648
+          maximum: 2147483647
+        comment:
+          type: string
+          minLength: 1
+          title: Комментарий
+        tags:
+          title: Теги
+          description: 'Массив тегов, например: [''aim'', ''tactics'', ''map_knowledge'']'
+      required:
+      - comment
+      - game
+      - rating
+    GameSessionRequest:
+      type: object
+      properties:
+        game:
+          type: integer
+          title: Игра
+        rating:
+          allOf:
+          - $ref: '#/components/schemas/Rating72bEnum'
+          title: Оценка (1-10)
+          minimum: -2147483648
+          maximum: 2147483647
+        comment:
+          type: string
+          minLength: 1
+          title: Комментарий
+        tags:
+          title: Теги
+          description: 'Массив тегов, например: [''aim'', ''tactics'', ''map_knowledge'']'
+      required:
+      - comment
+      - game
+      - rating
+    NullEnum:
+      enum:
+      - null
+    PatchedAuthorRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Имя автора
+          maxLength: 100
+        channel_url:
+          type: string
+          format: uri
+          minLength: 1
+          title: Ссылка на канал
+          maxLength: 200
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+          title: Аватар
+          maxLength: 200
+        subscribers_count:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Подписчики
+    PatchedGameRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          title: Название
+          maxLength: 200
+        genre:
+          type: string
+          minLength: 1
+          title: Жанр
+          maxLength: 100
+        developer:
+          type: string
+          minLength: 1
+          title: Разработчик
+          maxLength: 200
+        release_date:
+          type: string
+          format: date
+          title: Дата релиза
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+          title: Обложка
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+          title: Описание
+        total_achievements:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Всего достижений
+    PatchedGameSessionRequest:
+      type: object
+      properties:
+        game:
+          type: integer
+          title: Игра
+        rating:
+          allOf:
+          - $ref: '#/components/schemas/Rating72bEnum'
+          title: Оценка (1-10)
+          minimum: -2147483648
+          maximum: 2147483647
+        comment:
+          type: string
+          minLength: 1
+          title: Комментарий
+        tags:
+          title: Теги
+          description: 'Массив тегов, например: [''aim'', ''tactics'', ''map_knowledge'']'
+    PatchedPlatformRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Название
+          maxLength: 50
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          title: Тип платформы
+        specs:
+          nullable: true
+          title: Технические характеристики
+    PatchedRecommendationRequest:
+      type: object
+      properties:
+        recommendation_type:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationTypeEnum'
+          title: Тип рекомендации
+        video:
+          type: integer
+          nullable: true
+          title: Рекомендуемое видео
+        game:
+          type: integer
+          nullable: true
+          title: Рекомендуемая игра
+        skill_tag:
+          type: string
+          nullable: true
+          title: Тег навыка
+          maxLength: 50
+        score:
+          type: number
+          format: double
+          title: Оценка релевантности
+        viewed:
+          type: boolean
+          title: Просмотрено
+    PatchedUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        nickname:
+          type: string
+          minLength: 1
+          title: Никнейм
+          maxLength: 50
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    PatchedUserVideoInteractionRequest:
+      type: object
+      properties:
+        video:
+          type: integer
+          title: Видео
+        watch_duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Длительность просмотра (сек)
+        rating:
+          nullable: true
+          title: Оценка
+          minimum: -2147483648
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/UserVideoInteractionRatingEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        comment:
+          type: string
+          nullable: true
+          title: Комментарий
+    PatchedVideoRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          title: Название
+          maxLength: 300
+        author:
+          type: integer
+          title: Автор
+        game:
+          type: integer
+          nullable: true
+          title: Игра
+        video_type:
+          allOf:
+          - $ref: '#/components/schemas/VideoTypeEnum'
+          title: Тип видео
+        url:
+          type: string
+          format: uri
+          minLength: 1
+          title: Ссылка на видео
+          maxLength: 200
+        thumbnail:
+          type: string
+          format: uri
+          minLength: 1
+          title: Превью
+          maxLength: 200
+        duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Длительность (сек)
+        tags:
+          title: Теги
+          description: Теги для связи с игровыми сессиями
+        uploaded_at:
+          type: string
+          format: date-time
+          title: Дата загрузки
+        moderated:
+          type: boolean
+          title: Промодерировано
+    Platform:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название
+          maxLength: 50
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          title: Тип платформы
+        specs:
+          nullable: true
+          title: Технические характеристики
+        game_count:
+          type: integer
+          readOnly: true
+      required:
+      - game_count
+      - id
+      - name
+      - type
+    PlatformRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Название
+          maxLength: 50
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          title: Тип платформы
+        specs:
+          nullable: true
+          title: Технические характеристики
+      required:
+      - name
+      - type
+    Rating72bEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      type: integer
+      description: |-
+        * `1` - 1
+        * `2` - 2
+        * `3` - 3
+        * `4` - 4
+        * `5` - 5
+        * `6` - 6
+        * `7` - 7
+        * `8` - 8
+        * `9` - 9
+        * `10` - 10
+    Recommendation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        recommendation_type:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationTypeEnum'
+          title: Тип рекомендации
+        video:
+          type: integer
+          nullable: true
+          title: Рекомендуемое видео
+        video_detail:
+          allOf:
+          - $ref: '#/components/schemas/Video'
+          readOnly: true
+        game:
+          type: integer
+          nullable: true
+          title: Рекомендуемая игра
+        game_detail:
+          allOf:
+          - $ref: '#/components/schemas/Game'
+          readOnly: true
+        skill_tag:
+          type: string
+          nullable: true
+          title: Тег навыка
+          maxLength: 50
+        score:
+          type: number
+          format: double
+          title: Оценка релевантности
+        viewed:
+          type: boolean
+          title: Просмотрено
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Дата создания
+      required:
+      - created_at
+      - game_detail
+      - id
+      - recommendation_type
+      - video_detail
+    RecommendationRequest:
+      type: object
+      properties:
+        recommendation_type:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationTypeEnum'
+          title: Тип рекомендации
+        video:
+          type: integer
+          nullable: true
+          title: Рекомендуемое видео
+        game:
+          type: integer
+          nullable: true
+          title: Рекомендуемая игра
+        skill_tag:
+          type: string
+          nullable: true
+          title: Тег навыка
+          maxLength: 50
+        score:
+          type: number
+          format: double
+          title: Оценка релевантности
+        viewed:
+          type: boolean
+          title: Просмотрено
+      required:
+      - recommendation_type
+    RecommendationTypeEnum:
+      enum:
+      - video
+      - game
+      - skill
+      type: string
+      description: |-
+        * `video` - Видео
+        * `game` - Игра
+        * `skill` - Навык
+    Register:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        nickname:
+          type: string
+          title: Никнейм
+          maxLength: 50
+      required:
+      - nickname
+      - username
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        nickname:
+          type: string
+          minLength: 1
+          title: Никнейм
+          maxLength: 50
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password2:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - nickname
+      - password
+      - password2
+      - username
+    TokenObtainPair:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - refresh
+    TokenObtainPairRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+      required:
+      - access
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - refresh
+    TypeEnum:
+      enum:
+      - pc
+      - console
+      - mobile
+      type: string
+      description: |-
+        * `pc` - ПК
+        * `console` - Консоль
+        * `mobile` - Мобильная
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        nickname:
+          type: string
+          title: Никнейм
+          maxLength: 50
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        registration_date:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Дата регистрации
+      required:
+      - id
+      - nickname
+      - registration_date
+      - username
+    UserAchievement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        achievement:
+          allOf:
+          - $ref: '#/components/schemas/Achievement'
+          readOnly: true
+        earned_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - achievement
+      - earned_at
+      - id
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        nickname:
+          type: string
+          minLength: 1
+          title: Никнейм
+          maxLength: 50
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - nickname
+      - username
+    UserVideoInteraction:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        video:
+          type: integer
+          title: Видео
+        video_detail:
+          allOf:
+          - $ref: '#/components/schemas/Video'
+          readOnly: true
+        watch_duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Длительность просмотра (сек)
+        rating:
+          nullable: true
+          title: Оценка
+          minimum: -2147483648
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/UserVideoInteractionRatingEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        comment:
+          type: string
+          nullable: true
+          title: Комментарий
+        watched_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Время просмотра
+      required:
+      - id
+      - video
+      - video_detail
+      - watched_at
+    UserVideoInteractionRatingEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      type: integer
+      description: |-
+        * `1` - 1
+        * `2` - 2
+        * `3` - 3
+        * `4` - 4
+        * `5` - 5
+    UserVideoInteractionRequest:
+      type: object
+      properties:
+        video:
+          type: integer
+          title: Видео
+        watch_duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Длительность просмотра (сек)
+        rating:
+          nullable: true
+          title: Оценка
+          minimum: -2147483648
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/UserVideoInteractionRatingEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        comment:
+          type: string
+          nullable: true
+          title: Комментарий
+      required:
+      - video
+    Video:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: Название
+          maxLength: 300
+        author:
+          type: integer
+          title: Автор
+        author_detail:
+          allOf:
+          - $ref: '#/components/schemas/Author'
+          readOnly: true
+        game:
+          type: integer
+          nullable: true
+          title: Игра
+        game_title:
+          type: string
+          readOnly: true
+        video_type:
+          allOf:
+          - $ref: '#/components/schemas/VideoTypeEnum'
+          title: Тип видео
+        url:
+          type: string
+          format: uri
+          title: Ссылка на видео
+          maxLength: 200
+        thumbnail:
+          type: string
+          format: uri
+          title: Превью
+          maxLength: 200
+        duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Длительность (сек)
+        views_count:
+          type: integer
+          readOnly: true
+          title: Просмотры
+        likes_count:
+          type: integer
+          readOnly: true
+          title: Лайки
+        tags:
+          title: Теги
+          description: Теги для связи с игровыми сессиями
+        uploaded_at:
+          type: string
+          format: date-time
+          title: Дата загрузки
+        moderated:
+          type: boolean
+          title: Промодерировано
+      required:
+      - author
+      - author_detail
+      - duration
+      - game_title
+      - id
+      - likes_count
+      - thumbnail
+      - title
+      - uploaded_at
+      - url
+      - video_type
+      - views_count
+    VideoRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          title: Название
+          maxLength: 300
+        author:
+          type: integer
+          title: Автор
+        game:
+          type: integer
+          nullable: true
+          title: Игра
+        video_type:
+          allOf:
+          - $ref: '#/components/schemas/VideoTypeEnum'
+          title: Тип видео
+        url:
+          type: string
+          format: uri
+          minLength: 1
+          title: Ссылка на видео
+          maxLength: 200
+        thumbnail:
+          type: string
+          format: uri
+          minLength: 1
+          title: Превью
+          maxLength: 200
+        duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Длительность (сек)
+        tags:
+          title: Теги
+          description: Теги для связи с игровыми сессиями
+        uploaded_at:
+          type: string
+          format: date-time
+          title: Дата загрузки
+        moderated:
+          type: boolean
+          title: Промодерировано
+      required:
+      - author
+      - duration
+      - thumbnail
+      - title
+      - uploaded_at
+      - url
+      - video_type
+    VideoTypeEnum:
+      enum:
+      - guide
+      - analysis
+      - news
+      - stream
+      - tip
+      type: string
+      description: |-
+        * `guide` - Гайд
+        * `analysis` - Разбор
+        * `news` - Новости
+        * `stream` - Стрим
+        * `tip` - Лайфхак
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

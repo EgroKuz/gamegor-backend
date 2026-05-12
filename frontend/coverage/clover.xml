@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1778629121971" clover="3.2.0">
+  <project timestamp="1778629121972" name="All files">
+    <metrics statements="336" coveredstatements="306" conditionals="199" coveredconditionals="162" methods="74" coveredmethods="67" elements="609" coveredelements="535" complexity="0" loc="336" ncloc="336" packages="11" files="32" classes="32"/>
+    <package name="src">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="App.jsx" path="D:\game_aggregator_diplom\frontend\src\App.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="17" count="12" type="stmt"/>
+        <line num="19" count="12" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.api">
+      <metrics statements="44" coveredstatements="38" conditionals="11" coveredconditionals="7" methods="14" coveredmethods="11"/>
+      <file name="client.js" path="D:\game_aggregator_diplom\frontend\src\api\client.js">
+        <metrics statements="13" coveredstatements="7" conditionals="8" coveredconditionals="4" methods="4" coveredmethods="1"/>
+        <line num="3" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="17" count="13" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="20" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+      </file>
+      <file name="dashboard.js" path="D:\game_aggregator_diplom\frontend\src\api\dashboard.js">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+      </file>
+      <file name="games.js" path="D:\game_aggregator_diplom\frontend\src\api\games.js">
+        <metrics statements="7" coveredstatements="7" conditionals="3" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <line num="3" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+      </file>
+      <file name="sessions.js" path="D:\game_aggregator_diplom\frontend\src\api\sessions.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+      </file>
+      <file name="users.js" path="D:\game_aggregator_diplom\frontend\src\api\users.js">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+      </file>
+      <file name="videos.js" path="D:\game_aggregator_diplom\frontend\src\api\videos.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components">
+      <metrics statements="7" coveredstatements="6" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
+      <file name="ProtectedRoute.jsx" path="D:\game_aggregator_diplom\frontend\src\components\ProtectedRoute.jsx">
+        <metrics statements="7" coveredstatements="6" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="9" type="stmt"/>
+        <line num="8" count="9" type="cond" truecount="1" falsecount="1"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="12" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="16" count="6" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.auth">
+      <metrics statements="9" coveredstatements="9" conditionals="18" coveredconditionals="18" methods="4" coveredmethods="4"/>
+      <file name="AuthLayout.jsx" path="D:\game_aggregator_diplom\frontend\src\components\auth\AuthLayout.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="168" type="stmt"/>
+      </file>
+      <file name="FormInput.jsx" path="D:\game_aggregator_diplom\frontend\src\components\auth\FormInput.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="9" coveredconditionals="9" methods="1" coveredmethods="1"/>
+        <line num="3" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="857" type="stmt"/>
+      </file>
+      <file name="PasswordInput.jsx" path="D:\game_aggregator_diplom\frontend\src\components\auth\PasswordInput.jsx">
+        <metrics statements="5" coveredstatements="5" conditionals="9" coveredconditionals="9" methods="2" coveredmethods="2"/>
+        <line num="4" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="395" type="stmt"/>
+        <line num="7" count="395" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="11" count="395" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.dashboard">
+      <metrics statements="23" coveredstatements="23" conditionals="36" coveredconditionals="34" methods="8" coveredmethods="8"/>
+      <file name="AchievementItem.jsx" path="D:\game_aggregator_diplom\frontend\src\components\dashboard\AchievementItem.jsx">
+        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+      </file>
+      <file name="AchievementList.jsx" path="D:\game_aggregator_diplom\frontend\src\components\dashboard\AchievementList.jsx">
+        <metrics statements="3" coveredstatements="3" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+      </file>
+      <file name="RecommendationCard.jsx" path="D:\game_aggregator_diplom\frontend\src\components\dashboard\RecommendationCard.jsx">
+        <metrics statements="5" coveredstatements="5" conditionals="12" coveredconditionals="12" methods="1" coveredmethods="1"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="6" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="7" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="6" type="stmt"/>
+      </file>
+      <file name="RecommendationGrid.jsx" path="D:\game_aggregator_diplom\frontend\src\components\dashboard\RecommendationGrid.jsx">
+        <metrics statements="3" coveredstatements="3" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+      </file>
+      <file name="StatsCard.jsx" path="D:\game_aggregator_diplom\frontend\src\components\dashboard\StatsCard.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="15" type="stmt"/>
+      </file>
+      <file name="StatsGrid.jsx" path="D:\game_aggregator_diplom\frontend\src\components\dashboard\StatsGrid.jsx">
+        <metrics statements="5" coveredstatements="5" conditionals="12" coveredconditionals="10" methods="1" coveredmethods="1"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="8" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="10" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.games">
+      <metrics statements="3" coveredstatements="3" conditionals="6" coveredconditionals="4" methods="1" coveredmethods="1"/>
+      <file name="GameCard.jsx" path="D:\game_aggregator_diplom\frontend\src\components\games\GameCard.jsx">
+        <metrics statements="3" coveredstatements="3" conditionals="6" coveredconditionals="4" methods="1" coveredmethods="1"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="19" type="cond" truecount="1" falsecount="1"/>
+        <line num="7" count="19" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.layout">
+      <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+      <file name="Footer.jsx" path="D:\game_aggregator_diplom\frontend\src\components\layout\Footer.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="3" type="stmt"/>
+        <line num="4" count="15" type="stmt"/>
+      </file>
+      <file name="Header.jsx" path="D:\game_aggregator_diplom\frontend\src\components\layout\Header.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="16" type="stmt"/>
+      </file>
+      <file name="MainLayout.jsx" path="D:\game_aggregator_diplom\frontend\src\components\layout\MainLayout.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="14" type="stmt"/>
+      </file>
+      <file name="Sidebar.jsx" path="D:\game_aggregator_diplom\frontend\src\components\layout\Sidebar.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="17" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.profile">
+      <metrics statements="12" coveredstatements="10" conditionals="17" coveredconditionals="13" methods="4" coveredmethods="2"/>
+      <file name="SessionItem.jsx" path="D:\game_aggregator_diplom\frontend\src\components\profile\SessionItem.jsx">
+        <metrics statements="12" coveredstatements="10" conditionals="17" coveredconditionals="13" methods="4" coveredmethods="2"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="7" type="stmt"/>
+        <line num="7" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="11" count="6" type="stmt"/>
+        <line num="17" count="6" type="stmt"/>
+        <line num="18" count="6" type="stmt"/>
+        <line num="19" count="6" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="69" count="8" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.context">
+      <metrics statements="21" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="2"/>
+      <file name="AuthContext.jsx" path="D:\game_aggregator_diplom\frontend\src\context\AuthContext.jsx">
+        <metrics statements="21" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="2"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="22" type="stmt"/>
+        <line num="8" count="22" type="stmt"/>
+        <line num="9" count="22" type="stmt"/>
+        <line num="11" count="22" type="stmt"/>
+        <line num="12" count="10" type="stmt"/>
+        <line num="13" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="16" count="10" type="stmt"/>
+        <line num="19" count="22" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="26" count="22" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="33" count="22" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.hooks">
+      <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+      <file name="useDashboardData.js" path="D:\game_aggregator_diplom\frontend\src\hooks\useDashboardData.js">
+        <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.pages">
+      <metrics statements="187" coveredstatements="174" conditionals="103" coveredconditionals="79" methods="30" coveredmethods="30"/>
+      <file name="Dashboard.jsx" path="D:\game_aggregator_diplom\frontend\src\pages\Dashboard.jsx">
+        <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="11" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="21" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+      </file>
+      <file name="GameDetailsPage.jsx" path="D:\game_aggregator_diplom\frontend\src\pages\GameDetailsPage.jsx">
+        <metrics statements="23" coveredstatements="23" conditionals="14" coveredconditionals="13" methods="3" coveredmethods="3"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="7" type="stmt"/>
+        <line num="7" count="7" type="stmt"/>
+        <line num="8" count="7" type="stmt"/>
+        <line num="9" count="7" type="stmt"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="29" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="4" type="stmt"/>
+        <line num="39" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="52" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="54" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="7" type="stmt"/>
+      </file>
+      <file name="GameSessionsPage.jsx" path="D:\game_aggregator_diplom\frontend\src\pages\GameSessionsPage.jsx">
+        <metrics statements="21" coveredstatements="21" conditionals="6" coveredconditionals="6" methods="4" coveredmethods="4"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="7" type="stmt"/>
+        <line num="8" count="7" type="stmt"/>
+        <line num="9" count="7" type="stmt"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="29" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="4" type="stmt"/>
+        <line num="39" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="49" count="2" type="stmt"/>
+        <line num="85" count="2" type="stmt"/>
+      </file>
+      <file name="GamesPage.jsx" path="D:\game_aggregator_diplom\frontend\src\pages\GamesPage.jsx">
+        <metrics statements="22" coveredstatements="22" conditionals="8" coveredconditionals="8" methods="7" coveredmethods="7"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="15" type="stmt"/>
+        <line num="7" count="15" type="stmt"/>
+        <line num="8" count="15" type="stmt"/>
+        <line num="9" count="15" type="stmt"/>
+        <line num="11" count="15" type="stmt"/>
+        <line num="12" count="10" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="15" count="5" type="stmt"/>
+        <line num="16" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="27" count="10" type="stmt"/>
+        <line num="28" count="5" type="stmt"/>
+        <line num="31" count="10" type="stmt"/>
+        <line num="34" count="15" type="stmt"/>
+        <line num="35" count="5" type="stmt"/>
+        <line num="38" count="15" type="stmt"/>
+        <line num="82" count="15" type="stmt"/>
+      </file>
+      <file name="Login.jsx" path="D:\game_aggregator_diplom\frontend\src\pages\Login.jsx">
+        <metrics statements="20" coveredstatements="20" conditionals="8" coveredconditionals="7" methods="3" coveredmethods="3"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="10" count="47" type="stmt"/>
+        <line num="11" count="47" type="stmt"/>
+        <line num="12" count="47" type="stmt"/>
+        <line num="14" count="47" type="stmt"/>
+        <line num="15" count="47" type="stmt"/>
+        <line num="17" count="47" type="stmt"/>
+        <line num="18" count="37" type="stmt"/>
+        <line num="19" count="37" type="stmt"/>
+        <line num="22" count="47" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="42" count="47" type="stmt"/>
+      </file>
+      <file name="ProfilePage.jsx" path="D:\game_aggregator_diplom\frontend\src\pages\ProfilePage.jsx">
+        <metrics statements="73" coveredstatements="62" conditionals="45" coveredconditionals="26" methods="9" coveredmethods="9"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="78" type="stmt"/>
+        <line num="10" count="78" type="stmt"/>
+        <line num="11" count="78" type="stmt"/>
+        <line num="12" count="78" type="stmt"/>
+        <line num="15" count="78" type="stmt"/>
+        <line num="16" count="78" type="stmt"/>
+        <line num="17" count="78" type="stmt"/>
+        <line num="18" count="78" type="stmt"/>
+        <line num="21" count="78" type="stmt"/>
+        <line num="22" count="78" type="stmt"/>
+        <line num="23" count="78" type="stmt"/>
+        <line num="24" count="78" type="stmt"/>
+        <line num="26" count="78" type="stmt"/>
+        <line num="27" count="6" type="stmt"/>
+        <line num="28" count="6" type="stmt"/>
+        <line num="29" count="6" type="stmt"/>
+        <line num="30" count="6" type="stmt"/>
+        <line num="31" count="5" type="stmt"/>
+        <line num="32" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="33" count="6" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="38" count="5" type="stmt"/>
+        <line num="42" count="6" type="stmt"/>
+        <line num="45" count="78" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="48" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="54" count="78" type="stmt"/>
+        <line num="55" count="2" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="57" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="63" count="78" type="stmt"/>
+        <line num="64" count="27" type="stmt"/>
+        <line num="65" count="27" type="stmt"/>
+        <line num="68" count="78" type="stmt"/>
+        <line num="69" count="33" type="stmt"/>
+        <line num="70" count="33" type="stmt"/>
+        <line num="73" count="78" type="stmt"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="83" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="89" count="78" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="91" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="96" count="1" type="stmt"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="99" count="1" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
+        <line num="104" count="1" type="stmt"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="108" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="110" count="1" type="stmt"/>
+        <line num="114" count="78" type="cond" truecount="2" falsecount="0"/>
+        <line num="115" count="6" type="stmt"/>
+        <line num="124" count="72" type="cond" truecount="1" falsecount="1"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="134" count="72" type="cond" truecount="1" falsecount="1"/>
+        <line num="136" count="72" type="cond" truecount="1" falsecount="1"/>
+        <line num="140" count="78" type="stmt"/>
+      </file>
+      <file name="Register.jsx" path="D:\game_aggregator_diplom\frontend\src\pages\Register.jsx">
+        <metrics statements="21" coveredstatements="19" conditionals="18" coveredconditionals="15" methods="3" coveredmethods="3"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="118" type="stmt"/>
+        <line num="16" count="118" type="stmt"/>
+        <line num="17" count="118" type="stmt"/>
+        <line num="19" count="118" type="stmt"/>
+        <line num="21" count="118" type="stmt"/>
+        <line num="22" count="108" type="stmt"/>
+        <line num="23" count="108" type="stmt"/>
+        <line num="26" count="118" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="30" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="54" count="2" type="stmt"/>
+        <line num="58" count="118" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
