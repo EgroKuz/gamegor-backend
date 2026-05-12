@@ -8,10 +8,10 @@
     - [x] Install Tailwind CSS and its peer dependencies.
     - [x] Generate `tailwind.config.js` and `postcss.config.js`.
     - [x] Add Tailwind directives to the main CSS file.
-- [ ] Task: Setup Code Quality & Testing Tools.
-    - [ ] Install Prettier and configure it with ESLint.
-    - [ ] Install Vitest and React Testing Library to support the project's TDD requirement.
-    - [ ] Configure test scripts in `package.json`.
+- [x] Task: Setup Code Quality & Testing Tools. [dd75750]
+    - [x] Install Prettier and configure it with ESLint.
+    - [x] Install Vitest and React Testing Library to support the project's TDD requirement.
+    - [x] Configure test scripts in `package.json`.
 - [ ] Task: Conductor - User Manual Verification 'Project Setup' (Protocol in workflow.md)
 
 ## Phase 2: Authentication Implementation
