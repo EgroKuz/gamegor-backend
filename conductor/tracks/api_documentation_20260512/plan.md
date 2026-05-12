@@ -6,7 +6,7 @@
 - [~] Task: Add basic `SPECTACULAR_SETTINGS` in `settings.py` (title, description, version).
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Installation & Configuration' (Protocol in workflow.md)
 
-**Phase 2: Routing & UI Integration**
+**Phase 2: Routing & UI Integration** [checkpoint: 8870550]
 - [x] Task: Update `backend/backend/urls.py` to expose `/api/schema/` using `SpectacularAPIView`. 6308475
 - [x] Task: Update `backend/backend/urls.py` to expose `/api/docs/swagger-ui/` using `SpectacularSwaggerView`. 6308475
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Routing & UI Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Routing & UI Integration' (Protocol in workflow.md) 8870550
