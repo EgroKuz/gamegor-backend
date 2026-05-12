@@ -12,12 +12,12 @@
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: Shared UI Components' (Protocol in workflow.md)** [e576231]
 
 ## Phase 2: Refactoring Login & Registration
-- [ ] **Task: Redesign Login Page**
-    - [ ] Update `Login.test.jsx` to reflect the new DOM structure and interactions (e.g., toggling password).
-    - [ ] Refactor `Login.jsx` to use `AuthLayout`, `FormInput`, and `PasswordInput`.
-    - [ ] Apply neon aesthetic to the submit button and add the "Switch to Register" link.
-    - [ ] Ensure existing AuthContext login logic works seamlessly with the new form.
-- [ ] **Task: Redesign Registration Page**
+- [x] **Task: Redesign Login Page** [eeb40b3]
+    - [x] Update `Login.test.jsx` to reflect the new DOM structure and interactions (e.g., toggling password).
+    - [x] Refactor `Login.jsx` to use `AuthLayout`, `FormInput`, and `PasswordInput`.
+    - [x] Apply neon aesthetic to the submit button and add the "Switch to Register" link.
+    - [x] Ensure existing AuthContext login logic works seamlessly with the new form.
+- [~] **Task: Redesign Registration Page**
     - [ ] Update `Register.test.jsx` to reflect the new DOM structure and interactions.
     - [ ] Refactor `Register.jsx` to use the new UI components.
     - [ ] Implement inline validation checks (e.g., password matching) before submission.
