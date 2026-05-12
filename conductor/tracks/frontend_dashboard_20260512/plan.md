@@ -23,9 +23,9 @@
 - [x] **Task: Assemble Dashboard Page** [71049f7]
     - [x] Write integration tests for the full `Dashboard` page.
     - [x] Integrate all components into `Dashboard.jsx`.
-- [~] **Task: Apply Final Polishing & Responsiveness**
-    - [ ] Ensure the grid layout is responsive (stacking on mobile).
-    - [ ] Add neon accents and hover effects to cards.
+- [x] **Task: Apply Final Polishing & Responsiveness** [71049f7]
+    - [x] Ensure the grid layout is responsive (stacking on mobile).
+    - [x] Add neon accents and hover effects to cards.
 
 ## Phase 4: Verification & Polish
 - [ ] **Task: Final Verification**
