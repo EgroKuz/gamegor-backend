@@ -16,7 +16,7 @@
 **Phase 3: Security & Auth**
 - [x] Task: Implement stricter password validation policies in `settings.py`. 68837c3
 - [x] Task: Configure session and CSRF security settings (Secure, HttpOnly, SameSite) for production readiness. 62b2d99
-- [ ] Task: Review and restrict `CORS_ALLOWED_ORIGINS` using environment variables to prevent unauthorized cross-origin requests.
+- [x] Task: Review and restrict `CORS_ALLOWED_ORIGINS` using environment variables to prevent unauthorized cross-origin requests. 571bbef
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Security & Auth' (Protocol in workflow.md)
 
 **Phase 4: Testing & Quality**
