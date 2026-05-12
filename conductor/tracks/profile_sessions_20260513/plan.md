@@ -1,6 +1,6 @@
 # Implementation Plan: Profile & Game Sessions Pages
 
-## Phase 1: API Integration & Routing
+## Phase 1: API Integration & Routing [checkpoint: e87a4fe]
 - [x] **Task: Create API Services** [51e7289]
     - [x] Write tests for `users.js` and `sessions.js` API helper functions (mocking fetch).
     - [x] Implement user endpoints (get profile, update profile, change password) in `frontend/src/api/users.js`.
@@ -8,7 +8,7 @@
 - [x] **Task: Setup Routing** [fb34d72]
     - [x] Update `App.jsx` to include `<ProtectedRoute>` routes for `/profile` and `/profile/sessions`.
     - [x] Create placeholder components for `ProfilePage` and `GameSessionsPage`.
-- [ ] **Task: Conductor - User Manual Verification 'Phase 1: API & Routing' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Phase 1: API & Routing' (Protocol in workflow.md)** [e87a4fe]
 
 ## Phase 2: Profile Page Implementation
 - [ ] **Task: Build Profile Information UI**
