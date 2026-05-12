@@ -1,122 +1,129 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/client';
+import AuthLayout from '../components/auth/AuthLayout';
+import FormInput from '../components/auth/FormInput';
+import PasswordInput from '../components/auth/PasswordInput';
 
 const Register = () => {
-  const [formData, setFormData] = useState({ username: '', email: '', nickname: '', password: '', password2: '' });
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(''); // Clear global errors on typing
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Inline Validation
     if (formData.password !== formData.password2) {
-      setError("Passwords do not match");
+      setError('Passwords do not match');
       return;
     }
-    setLoading(true);
-    setError(null);
+
+    setIsLoading(true);
+    setError('');
+
     try {
-      await api.post('/register/', formData);
+      await api.post('/users/register/', {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
+      // Assuming successful registration should redirect to login or auto-login
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.error || err.response?.data?.password?.[0] || 'Registration failed');
+      setError(
+        err.response?.data?.error || 
+        err.response?.data?.detail ||
+        'Registration failed. Please check your inputs and try again.'
+      );
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              Username
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
+    <AuthLayout title="Join the Community">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="bg-red-900/30 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm text-center mb-6">
+            {error}
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="nickname">
-              Nickname
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="nickname"
-              type="text"
-              name="nickname"
-              value={formData.nickname}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password2">
-              Confirm Password
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              id="password2"
-              type="password"
-              name="password2"
-              value={formData.password2}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? 'Signing up...' : 'Sign Up'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        )}
+
+        <FormInput
+          id="username"
+          name="username"
+          label="Username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+          autoComplete="username"
+        />
+
+        <FormInput
+          id="email"
+          name="email"
+          type="email"
+          label="Email Address"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          autoComplete="email"
+        />
+
+        <PasswordInput
+          id="password"
+          name="password"
+          label="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          autoComplete="new-password"
+        />
+
+        <PasswordInput
+          id="password2"
+          name="password2"
+          label="Confirm Password"
+          value={formData.password2}
+          onChange={handleChange}
+          required
+          autoComplete="new-password"
+          error={formData.password && formData.password2 && formData.password !== formData.password2 ? 'Passwords do not match' : undefined}
+        />
+
+        <div className="pt-4">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`w-full bg-neon-violet text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-violet focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 ${
+              isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-violet-500 hover:shadow-[0_0_15px_rgba(167,139,250,0.4)]'
+            }`}
+          >
+            {isLoading ? 'Creating Account...' : 'Create Account'}
+          </button>
+        </div>
+
+        <p className="text-center text-gray-400 mt-6 text-sm">
+          Already have an account?{' '}
+          <Link to="/login" className="text-neon-violet hover:text-violet-400 font-semibold transition-colors">
+            Sign In
+          </Link>
+        </p>
+      </form>
+    </AuthLayout>
   );
 };
 
