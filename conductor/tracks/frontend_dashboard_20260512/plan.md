@@ -8,7 +8,7 @@
     - [x] Write tests for the Dashboard data fetching logic.
     - [x] Update `Dashboard.jsx` (or a dedicated hook) to fetch and store data on mount.
 
-## Phase 2: UI Components Development
+## Phase 2: UI Components Development [checkpoint: 58c1bfe]
 - [x] **Task: Create Reusable Stats Components** [0d01ce8]
     - [x] Write tests for `StatsCard` and `StatsGrid`.
     - [x] Implement `StatsCard` and `StatsGrid` with Tailwind styling.
