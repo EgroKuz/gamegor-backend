@@ -16,6 +16,7 @@ describe('Layout Components', () => {
     expect(screen.getByRole('banner')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /games/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /videos/i })).toBeInTheDocument();
     expect(screen.getByText('Profile')).toBeInTheDocument(); // Expecting updated placeholder
   });
 
