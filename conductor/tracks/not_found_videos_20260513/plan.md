@@ -4,10 +4,10 @@
 - [x] **Task: Setup Video API Service** [2c9c209]
     - [x] Write failing test for `videos.js` API helper fetching from `/videos/`.
     - [x] Implement `frontend/src/api/videos.js` with `getVideos` function.
-- [ ] **Task: Setup React Router Routes**
-    - [ ] Update `App.jsx` to include a catch-all route `*` for the 404 page.
-    - [ ] Update `App.jsx` to include a route `/videos` for the Video Content page.
-    - [ ] Create placeholder components for `NotFoundPage` and `VideoContentPage`.
+- [x] **Task: Setup React Router Routes** [f9944af]
+    - [x] Update `App.jsx` to include a catch-all route `*` for the 404 page.
+    - [x] Update `App.jsx` to include a route `/videos` for the Video Content page.
+    - [x] Create placeholder components for `NotFoundPage` and `VideoContentPage`.
 - [ ] **Task: Update Header Navigation**
     - [ ] Add a link to the Video Content page (`/videos`) in `Header.jsx`.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 1: API & Routing Setup' (Protocol in workflow.md)**
