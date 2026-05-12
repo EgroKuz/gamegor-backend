@@ -16,9 +16,9 @@
 - [x] **Task: Implement GamesPage Logic and Grid** [5c42c7b]
     - [x] Write tests for fetching games on mount and rendering the grid.
     - [x] Implement `GamesPage.jsx` fetching data via API and mapping over `GameCard`s.
-- [~] **Task: Implement Text Search Filtering**
-    - [ ] Write tests for search input updating state and filtering the rendered list.
-    - [ ] Add search input to `GamesPage` and implement client-side (or server-side if supported) filtering logic.
+- [x] **Task: Implement Text Search Filtering** [2203252]
+    - [x] Write tests for search input updating state and filtering the rendered list.
+    - [x] Add search input to `GamesPage` and implement client-side (or server-side if supported) filtering logic.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Games Catalog Page' (Protocol in workflow.md)**
 
 ## Phase 3: Game Details Page
