@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const AchievementItem = ({ data }) => {
   if (!data) return null;
@@ -15,9 +15,7 @@ const AchievementItem = ({ data }) => {
         <h4 className="text-white font-bold">{achievement.title}</h4>
         <p className="text-gray-400 text-sm">{achievement.description}</p>
       </div>
-      <div className="text-xs text-gray-500 whitespace-nowrap">
-        {date}
-      </div>
+      <div className="text-xs text-gray-500 whitespace-nowrap">{date}</div>
     </div>
   );
 };

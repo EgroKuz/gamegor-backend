@@ -1,11 +1,12 @@
-import React from 'react';
-import useDashboardData from '../hooks/useDashboardData';
-import StatsGrid from '../components/dashboard/StatsGrid';
-import AchievementList from '../components/dashboard/AchievementList';
-import RecommendationGrid from '../components/dashboard/RecommendationGrid';
+import React from "react";
+import useDashboardData from "../hooks/useDashboardData";
+import StatsGrid from "../components/dashboard/StatsGrid";
+import AchievementList from "../components/dashboard/AchievementList";
+import RecommendationGrid from "../components/dashboard/RecommendationGrid";
 
 const Dashboard = () => {
-  const { stats, achievements, recommendations, loading, error } = useDashboardData();
+  const { stats, achievements, recommendations, loading, error } =
+    useDashboardData();
 
   if (loading) {
     return (
@@ -34,7 +35,8 @@ const Dashboard = () => {
           Your Dashboard
         </h2>
         <p className="text-gray-400">
-          Track your progress, view your latest achievements, and discover new content.
+          Track your progress, view your latest achievements, and discover new
+          content.
         </p>
       </header>
 
@@ -46,7 +48,7 @@ const Dashboard = () => {
         <section className="xl:col-span-1">
           <AchievementList achievements={achievements} />
         </section>
-        
+
         <section className="xl:col-span-2">
           <RecommendationGrid recommendations={recommendations} />
         </section>

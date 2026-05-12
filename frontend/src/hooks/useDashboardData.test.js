@@ -1,15 +1,15 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import useDashboardData from './useDashboardData';
-import * as dashboardApi from '../api/dashboard';
+import { renderHook, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import useDashboardData from "./useDashboardData";
+import * as dashboardApi from "../api/dashboard";
 
-vi.mock('../api/dashboard');
+vi.mock("../api/dashboard");
 
-describe('useDashboardData hook', () => {
-  it('fetches and returns dashboard data', async () => {
+describe("useDashboardData hook", () => {
+  it("fetches and returns dashboard data", async () => {
     const mockStats = { games_played: 5 };
-    const mockAchievements = [{ title: 'Ach1' }];
-    const mockRecs = [{ title: 'Rec1' }];
+    const mockAchievements = [{ title: "Ach1" }];
+    const mockRecs = [{ title: "Rec1" }];
 
     dashboardApi.getStats.mockResolvedValue(mockStats);
     dashboardApi.getAchievements.mockResolvedValue(mockAchievements);
@@ -27,13 +27,13 @@ describe('useDashboardData hook', () => {
     expect(result.current.error).toBe(null);
   });
 
-  it('handles errors gracefully', async () => {
-    dashboardApi.getStats.mockRejectedValue(new Error('Fetch failed'));
+  it("handles errors gracefully", async () => {
+    dashboardApi.getStats.mockRejectedValue(new Error("Fetch failed"));
 
     const { result } = renderHook(() => useDashboardData());
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(result.current.error).toBe('Failed to load dashboard data');
+    expect(result.current.error).toBe("Failed to load dashboard data");
   });
 });

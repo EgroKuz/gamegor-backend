@@ -1,5 +1,9 @@
-import { useState, useEffect } from 'react';
-import { getStats, getAchievements, getRecommendations } from '../api/dashboard';
+import { useState, useEffect } from "react";
+import {
+  getStats,
+  getAchievements,
+  getRecommendations,
+} from "../api/dashboard";
 
 const useDashboardData = () => {
   const [stats, setStats] = useState(null);
@@ -12,18 +16,19 @@ const useDashboardData = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [statsData, achievementsData, recommendationsData] = await Promise.all([
-          getStats(),
-          getAchievements(),
-          getRecommendations(),
-        ]);
+        const [statsData, achievementsData, recommendationsData] =
+          await Promise.all([
+            getStats(),
+            getAchievements(),
+            getRecommendations(),
+          ]);
         setStats(statsData);
         setAchievements(achievementsData);
         setRecommendations(recommendationsData);
         setError(null);
       } catch (err) {
-        console.error('Error fetching dashboard data:', err);
-        setError('Failed to load dashboard data');
+        console.error("Error fetching dashboard data:", err);
+        setError("Failed to load dashboard data");
       } finally {
         setLoading(false);
       }

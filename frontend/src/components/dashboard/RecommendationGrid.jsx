@@ -1,5 +1,5 @@
-import React from 'react';
-import RecommendationCard from './RecommendationCard';
+import React from "react";
+import RecommendationCard from "./RecommendationCard";
 
 const RecommendationGrid = ({ recommendations }) => {
   return (
@@ -7,8 +7,8 @@ const RecommendationGrid = ({ recommendations }) => {
       <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
         <span>🔥</span> Recommended for You
       </h3>
-      
-      {(!recommendations || recommendations.length === 0) ? (
+
+      {!recommendations || recommendations.length === 0 ? (
         <div className="text-gray-500 italic text-center py-8 bg-gray-800/50 rounded-lg border border-gray-800 border-dashed">
           No recommendations available yet.
         </div>
