@@ -1,0 +1,46 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const VideoCard = ({ video }) => {
+  if (!video) return null;
+
+  const { title, youtube_id, game } = video;
+
+  return (
+    <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-neon-teal/20 transition-all duration-300 flex flex-col h-full">
+      {/* 16:9 Aspect Ratio Container for Iframe */}
+      <div className="relative w-full pt-[56.25%] bg-black">
+        <iframe
+          className="absolute top-0 left-0 w-full h-full"
+          src={`https://www.youtube.com/embed/${youtube_id}`}
+          title={`${title} video player`}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        ></iframe>
+      </div>
+
+      {/* Content Section */}
+      <div className="p-4 flex flex-col flex-1 justify-between gap-4">
+        <h3 className="text-lg font-bold text-white line-clamp-2 leading-tight">
+          {title}
+        </h3>
+        
+        {game && (
+          <div className="flex items-center gap-2 mt-auto pt-2 border-t border-gray-700/50">
+            <span className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Game:</span>
+            <Link 
+              to={`/games/${game.id}`} 
+              className="text-sm text-neon-teal hover:text-teal-300 hover:underline font-medium truncate"
+            >
+              {game.title}
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default VideoCard;
