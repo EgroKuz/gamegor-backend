@@ -17,7 +17,9 @@ class RecommendationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return Recommendation.objects.filter(user=self.request.user)
+        return Recommendation.objects.filter(user=self.request.user).select_related(
+            'video', 'video__author', 'video__game', 'game'
+        ).prefetch_related('game__platforms')
     
     @action(detail=False, methods=['get'])
     def generate(self, request):

@@ -24,7 +24,7 @@ class Recommender:
                 moderated=True
             ).order_by('-views_count')[:limit]
         
-        videos = Video.objects.filter(moderated=True)
+        videos = Video.objects.filter(moderated=True).select_related('author', 'game')
         
         # Вычисляем релевантность каждого видео
         video_scores = []
@@ -48,7 +48,7 @@ class Recommender:
         weak_skills = TagAnalyzer.get_weak_skills(user_id)
         
         if not weak_skills:
-            return Video.objects.filter(moderated=True).order_by('-views_count')[:limit]
+            return Video.objects.filter(moderated=True).select_related('author', 'game').order_by('-views_count')[:limit]
         
         # Берём топ-3 слабых навыка
         top_skills = [item['skill'] for item in weak_skills[:3]]
@@ -57,7 +57,7 @@ class Recommender:
         videos = Video.objects.filter(
             moderated=True,
             tags__overlap=top_skills
-        ).distinct().order_by('-views_count')[:limit]
+        ).select_related('author', 'game').distinct().order_by('-views_count')[:limit]
         
         return videos
     
