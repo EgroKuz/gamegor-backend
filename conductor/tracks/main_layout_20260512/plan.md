@@ -1,7 +1,7 @@
 # Implementation Plan: Create the main application layout
 
 ## Phase 1: Foundation and Structural Components
-- [ ] **Task: Create Base Layout Components**
+- [x] **Task: Create Base Layout Components** [0896d8f]
     - [ ] Write tests for `MainLayout`, `Header`, `Sidebar`, and `Footer` components (ensuring they render correctly)
     - [ ] Implement skeleton versions of `MainLayout`, `Header`, `Sidebar`, and `Footer`
 - [ ] **Task: Integrate Layout with App Routing**
