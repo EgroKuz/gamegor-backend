@@ -9,7 +9,7 @@
     - [x] Update `App.jsx` to include routes for `GamesPage` and `GameDetailsPage` (pointing to placeholder components initially).
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: API Integration & Routing' (Protocol in workflow.md)** [acc23c1]
 
-## Phase 2: Games Catalog Page (Main View)
+## Phase 2: Games Catalog Page (Main View) [checkpoint: 5debf28]
 - [x] **Task: Create GameCard Component** [a26f3fa]
     - [x] Write tests for `GameCard` rendering title and image.
     - [x] Implement `GameCard` with Tailwind styling and hover effects.
@@ -19,7 +19,7 @@
 - [x] **Task: Implement Text Search Filtering** [2203252]
     - [x] Write tests for search input updating state and filtering the rendered list.
     - [x] Add search input to `GamesPage` and implement client-side (or server-side if supported) filtering logic.
-- [ ] **Task: Conductor - User Manual Verification 'Phase 2: Games Catalog Page' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Phase 2: Games Catalog Page' (Protocol in workflow.md)** [5debf28]
 
 ## Phase 3: Game Details Page
 - [ ] **Task: Implement GameDetailsPage Layout**
