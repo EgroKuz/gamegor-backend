@@ -14,9 +14,9 @@
     - [x] Write tests for checking key aesthetic markers (e.g., dark background class, neon accent colors)
     - [x] Configure `tailwind.config.js` with custom neon colors if necessary
     - [x] Apply dark theme and neon accents to all layout components
-- [ ] **Task: Refine Component UI**
-    - [ ] Write tests for `Header` navigation links and `Sidebar` visibility
-    - [ ] Implement detailed UI for `Header` (Logo, Nav Links, User placeholder) and `Sidebar`
+- [x] **Task: Refine Component UI** [2615563]
+    - [x] Write tests for `Header` navigation links and `Sidebar` visibility
+    - [x] Implement detailed UI for `Header` (Logo, Nav Links, User placeholder) and `Sidebar`
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Styling and Gaming Aesthetic' (Protocol in workflow.md)**
 
 ## Phase 3: Responsiveness and Final Polish
