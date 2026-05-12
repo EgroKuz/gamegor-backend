@@ -1,6 +1,6 @@
 # Implementation Plan: Frontend Dashboard UI
 
-## Phase 1: API Services & Data Fetching
+## Phase 1: API Services & Data Fetching [checkpoint: 3759fcb]
 - [x] **Task: Create API services for Stats, Achievements, and Recommendations** [4e091a9]
     - [x] Write tests for API helper functions (mocking fetch).
     - [x] Implement service functions in `frontend/src/api/` to fetch data from backend endpoints.
