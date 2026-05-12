@@ -27,7 +27,4 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Create the Games page (main page) and Game Details page**
 *Link: [./tracks/games_pages_20260512/](./tracks/games_pages_20260512/)*
 
----
 
-- [x] **Track: Create Profile Page and Game Sessions Page**
-*Link: [./tracks/profile_sessions_20260513/](./tracks/profile_sessions_20260513/)*
