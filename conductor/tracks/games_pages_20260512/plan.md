@@ -21,7 +21,7 @@
     - [x] Add search input to `GamesPage` and implement client-side (or server-side if supported) filtering logic.
 - [x] **Task: Conductor - User Manual Verification 'Phase 2: Games Catalog Page' (Protocol in workflow.md)** [5debf28]
 
-## Phase 3: Game Details Page
+## Phase 3: Game Details Page [checkpoint: 755ef9c]
 - [x] **Task: Implement GameDetailsPage Layout** [6877284]
     - [x] Write tests for `GameDetailsPage` fetching specific game data based on URL parameter.
     - [x] Write tests to ensure core info (title, description, developer) is rendered.
@@ -29,7 +29,7 @@
 - [x] **Task: Add Navigation & Polish** [1c21acf]
     - [x] Ensure "Back to Games" navigation works correctly.
     - [x] Apply responsive Tailwind classes to ensure details look good on mobile and desktop.
-- [ ] **Task: Conductor - User Manual Verification 'Phase 3: Game Details Page' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Phase 3: Game Details Page' (Protocol in workflow.md)** [755ef9c]
 
 ## Phase 4: Final Verification
 - [ ] **Task: Run Full Test Suite & Coverage Check**
