@@ -29,9 +29,9 @@
 - [x] **Task: Implement Interactive Reviews** [57e354b]
     - [x] Write tests for expanding/collapsing the review text within the `SessionItem` (or navigating to a detailed view).
     - [x] Implement the interactive review display logic.
-- [~] **Task: Assemble GameSessionsPage**
-    - [ ] Write tests for `GameSessionsPage` fetching data and rendering a list of `SessionItem`s.
-    - [ ] Implement the main page logic, handling loading, error, and empty states.
+- [x] **Task: Assemble GameSessionsPage** [1863ddf]
+    - [x] Write tests for `GameSessionsPage` fetching data and rendering a list of `SessionItem`s.
+    - [x] Implement the main page logic, handling loading, error, and empty states.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 3: Game Sessions Page' (Protocol in workflow.md)**
 
 ## Phase 4: Final Verification
