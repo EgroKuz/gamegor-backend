@@ -17,6 +17,12 @@ vi.mock('./pages/ProfilePage', () => ({
 vi.mock('./pages/GameSessionsPage', () => ({
   default: () => <div data-testid="game-sessions-page-placeholder">Game Sessions Page Placeholder</div>
 }));
+vi.mock('./pages/NotFoundPage', () => ({
+  default: () => <div data-testid="not-found-page-placeholder">Not Found Page Placeholder</div>
+}));
+vi.mock('./pages/VideoContentPage', () => ({
+  default: () => <div data-testid="video-content-page-placeholder">Video Content Page Placeholder</div>
+}));
 
 describe('App Routing', () => {
   it('renders Login page on /login route', () => {
@@ -118,6 +124,30 @@ describe('App Routing', () => {
     );
     expect(screen.getByTestId('game-sessions-page-placeholder')).toBeInTheDocument();
     localStorage.removeItem('access_token');
+  });
+
+  it('renders Video Content page on /videos route', () => {
+    localStorage.setItem('access_token', 'fake_token');
+    render(
+      <MemoryRouter initialEntries={['/videos']}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('video-content-page-placeholder')).toBeInTheDocument();
+    localStorage.removeItem('access_token');
+  });
+
+  it('renders Not Found page on unknown route', () => {
+    render(
+      <MemoryRouter initialEntries={['/this-route-does-not-exist']}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('not-found-page-placeholder')).toBeInTheDocument();
   });
 });
 
