@@ -32,7 +32,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Phase 3: Game Details Page' (Protocol in workflow.md)** [755ef9c]
 
 ## Phase 4: Final Verification
-- [ ] **Task: Run Full Test Suite & Coverage Check**
-    - [ ] Ensure all frontend tests pass.
-    - [ ] Verify coverage is >80% for `api/games.js`, `GameCard.jsx`, `GamesPage.jsx`, and `GameDetailsPage.jsx`.
-- [ ] **Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)**
+- [x] **Task: Run Full Test Suite & Coverage Check** [755ef9c]
+    - [x] Ensure all frontend tests pass.
+    - [x] Verify coverage is >80% for `api/games.js`, `GameCard.jsx`, `GamesPage.jsx`, and `GameDetailsPage.jsx`.
+- [x] **Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)** [755ef9c]
