@@ -10,17 +10,17 @@ describe('Users API Services', () => {
     api.get.mockResolvedValue({ data: mockData });
 
     const profile = await getProfile();
-    expect(api.get).toHaveBeenCalledWith('/users/me/');
+    expect(api.get).toHaveBeenCalledWith('/users/profile/');
     expect(profile).toEqual(mockData);
   });
 
-  it('updateProfile sends patch request with new data', async () => {
+  it('updateProfile sends put request with new data', async () => {
     const mockData = { nickname: 'NewNick' };
     const mockResponse = { id: 1, nickname: 'NewNick' };
-    api.patch.mockResolvedValue({ data: mockResponse });
+    api.put.mockResolvedValue({ data: mockResponse });
 
     const updated = await updateProfile(mockData);
-    expect(api.patch).toHaveBeenCalledWith('/users/me/', mockData);
+    expect(api.put).toHaveBeenCalledWith('/users/profile/', mockData);
     expect(updated).toEqual(mockResponse);
   });
 
@@ -29,6 +29,6 @@ describe('Users API Services', () => {
     api.post.mockResolvedValue({ data: { message: 'Password changed successfully' } });
 
     await changePassword(mockData);
-    expect(api.post).toHaveBeenCalledWith('/users/change-password/', mockData);
+    expect(api.post).toHaveBeenCalledWith('/users/change_password/', mockData);
   });
 });
