@@ -4,9 +4,9 @@
 - [x] **Task: Create API services for Stats, Achievements, and Recommendations** [4e091a9]
     - [x] Write tests for API helper functions (mocking fetch).
     - [x] Implement service functions in `frontend/src/api/` to fetch data from backend endpoints.
-- [ ] **Task: Implement Dashboard State Management**
-    - [ ] Write tests for the Dashboard data fetching logic.
-    - [ ] Update `Dashboard.jsx` (or a dedicated hook) to fetch and store data on mount.
+- [x] **Task: Implement Dashboard State Management** [7f43f61]
+    - [x] Write tests for the Dashboard data fetching logic.
+    - [x] Update `Dashboard.jsx` (or a dedicated hook) to fetch and store data on mount.
 
 ## Phase 2: UI Components Development
 - [ ] **Task: Create Reusable Stats Components**
