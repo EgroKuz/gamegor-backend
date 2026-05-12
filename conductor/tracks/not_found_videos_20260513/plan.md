@@ -8,8 +8,8 @@
     - [x] Update `App.jsx` to include a catch-all route `*` for the 404 page.
     - [x] Update `App.jsx` to include a route `/videos` for the Video Content page.
     - [x] Create placeholder components for `NotFoundPage` and `VideoContentPage`.
-- [ ] **Task: Update Header Navigation**
-    - [ ] Add a link to the Video Content page (`/videos`) in `Header.jsx`.
+- [x] **Task: Update Header Navigation** [e5ed017]
+    - [x] Add a link to the Video Content page (`/videos`) in `Header.jsx`.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 1: API & Routing Setup' (Protocol in workflow.md)**
 
 ## Phase 2: Not Found (404) Page Implementation
