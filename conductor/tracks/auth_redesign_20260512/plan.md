@@ -4,11 +4,11 @@
 - [x] **Task: Create Split-Screen Wrapper Component** [39e1393]
     - [x] Write tests for a new `AuthLayout` component verifying it renders children and a graphic section.
     - [x] Implement `AuthLayout` with Tailwind CSS for responsiveness (side-by-side on desktop, stacked/hidden on mobile).
-- [~] **Task: Create Reusable Form Inputs**
-    - [ ] Write tests for a reusable `FormInput` component, ensuring it handles labels, types, and error states.
-    - [ ] Implement `FormInput` with Tailwind styling (dark theme, neon focus borders) and inline error message support.
-    - [ ] Write tests for a `PasswordInput` component that includes a show/hide toggle.
-    - [ ] Implement `PasswordInput` extending the base input styling.
+- [x] **Task: Create Reusable Form Inputs** [58c3444]
+    - [x] Write tests for a reusable `FormInput` component, ensuring it handles labels, types, and error states.
+    - [x] Implement `FormInput` with Tailwind styling (dark theme, neon focus borders) and inline error message support.
+    - [x] Write tests for a `PasswordInput` component that includes a show/hide toggle.
+    - [x] Implement `PasswordInput` extending the base input styling.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 1: Shared UI Components' (Protocol in workflow.md)**
 
 ## Phase 2: Refactoring Login & Registration
