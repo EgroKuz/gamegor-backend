@@ -1,8 +1,10 @@
 # recommendations/services/ai_advisor.py
 import requests
+import logging
 from django.conf import settings
 from games.models import Game
 
+logger = logging.getLogger(__name__)
 
 class AIAdvisor:
     """
@@ -13,16 +15,7 @@ class AIAdvisor:
     def get_advice_for_session(cls, game_id, comment, tags):
         """
         Получает рекомендацию от ИИ на основе комментария к сессии.
-        
-        Args:
-            game_id: ID игры
-            comment: Комментарий пользователя о проблеме/опыте
-            tags: Теги сессии (слабые навыки)
-            
-        Returns:
-            str: Текстовая рекомендация от ИИ
         """
-        # Получаем название игры
         game_name = ""
         if game_id and game_id != '—':
             try:
@@ -31,22 +24,22 @@ class AIAdvisor:
             except (Game.DoesNotExist, ValueError):
                 pass
         
-        # Формируем промпт
         prompt = cls._build_prompt(game_name, comment, tags)
         
-        # Отправляем запрос к Ollama
         try:
-            response = cls._call_ollama(prompt)
-            return response
+            return cls._call_ollama(prompt)
+        except requests.exceptions.Timeout:
+            logger.warning("Время ожидания ответа от Ollama истекло.")
+            return cls._get_fallback_advice(comment, tags)
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Ошибка соединения с Ollama API: {e}")
+            return cls._get_fallback_advice(comment, tags)
         except Exception as e:
-            print(f"Ошибка при вызове Ollama: {e}")
+            logger.error(f"Неожиданная ошибка при вызове Ollama: {e}")
             return cls._get_fallback_advice(comment, tags)
     
     @classmethod
     def _build_prompt(cls, game_name, comment, tags):
-        """
-        Строит промпт для ИИ на основе данных сессии.
-        """
         tags_str = ", ".join(tags) if tags else "не указаны"
         
         prompt = f"""Ты — опытный игровой тренер и аналитик. Твоя задача — дать конкретные, практические советы игроку на основе его проблемы.
@@ -64,7 +57,7 @@ class AIAdvisor:
 Отвечай на русском языке, дружелюбно и мотивирующе."""
 
         return prompt
-    
+
     @classmethod
     def _call_ollama(cls, prompt):
         """
@@ -72,9 +65,9 @@ class AIAdvisor:
         """
         host = getattr(settings, 'OLLAMA_HOST', 'http://localhost:11434')
         model = getattr(settings, 'OLLAMA_MODEL', 'qwen')
-        
+
         url = f"{host}/api/generate"
-        
+
         payload = {
             "model": model,
             "prompt": prompt,
@@ -84,13 +77,14 @@ class AIAdvisor:
                 "top_p": 0.9,
             }
         }
-        
-        response = requests.post(url, json=payload, timeout=60)
+
+        # Reduce timeout to 5 seconds to prevent hanging the request
+        response = requests.post(url, json=payload, timeout=5)
         response.raise_for_status()
-        
+
         result = response.json()
         return result.get('response', 'Не удалось получить ответ от ИИ.')
-    
+
     @classmethod
     def _get_fallback_advice(cls, comment, tags):
         """

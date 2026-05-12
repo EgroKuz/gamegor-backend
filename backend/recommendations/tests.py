@@ -7,7 +7,23 @@ from django.contrib.auth import get_user_model
 from games.models import Game
 from videos.models import Video, Author
 from recommendations.models import Recommendation
+from recommendations.services.ai_advisor import AIAdvisor
 from recommendations.services.session_service import SessionRecommendationService
+import requests
+
+class AIAdvisorTests(TestCase):
+    @patch('recommendations.services.ai_advisor.requests.post')
+    def test_get_advice_timeout_fallback(self, mock_post):
+        mock_post.side_effect = requests.exceptions.Timeout("Request timed out")
+        
+        advice = AIAdvisor.get_advice_for_session(
+            game_id=None,
+            comment="This is a test comment",
+            tags=["tag1", "tag2"]
+        )
+        
+        self.assertIn("Рекомендация:", advice)
+        self.assertIn("tag1, tag2", advice)
 
 User = get_user_model()
 
