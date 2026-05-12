@@ -11,6 +11,12 @@ vi.mock('./pages/GamesPage', () => ({
 vi.mock('./pages/GameDetailsPage', () => ({
   default: () => <div data-testid="game-details-page-placeholder">Game Details Page Placeholder</div>
 }));
+vi.mock('./pages/ProfilePage', () => ({
+  default: () => <div data-testid="profile-page-placeholder">Profile Page Placeholder</div>
+}));
+vi.mock('./pages/GameSessionsPage', () => ({
+  default: () => <div data-testid="game-sessions-page-placeholder">Game Sessions Page Placeholder</div>
+}));
 
 describe('App Routing', () => {
   it('renders Login page on /login route', () => {
@@ -85,6 +91,32 @@ describe('App Routing', () => {
       </MemoryRouter>
     );
     expect(screen.getByTestId('game-details-page-placeholder')).toBeInTheDocument();
+    localStorage.removeItem('access_token');
+  });
+
+  it('renders Profile page on /profile route', () => {
+    localStorage.setItem('access_token', 'fake_token');
+    render(
+      <MemoryRouter initialEntries={['/profile']}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('profile-page-placeholder')).toBeInTheDocument();
+    localStorage.removeItem('access_token');
+  });
+
+  it('renders Game Sessions page on /profile/sessions route', () => {
+    localStorage.setItem('access_token', 'fake_token');
+    render(
+      <MemoryRouter initialEntries={['/profile/sessions']}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('game-sessions-page-placeholder')).toBeInTheDocument();
     localStorage.removeItem('access_token');
   });
 });
