@@ -11,7 +11,7 @@
     - [x] Implement `PasswordInput` extending the base input styling.
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: Shared UI Components' (Protocol in workflow.md)** [e576231]
 
-## Phase 2: Refactoring Login & Registration
+## Phase 2: Refactoring Login & Registration [checkpoint: 1482d0e]
 - [x] **Task: Redesign Login Page** [eeb40b3]
     - [x] Update `Login.test.jsx` to reflect the new DOM structure and interactions (e.g., toggling password).
     - [x] Refactor `Login.jsx` to use `AuthLayout`, `FormInput`, and `PasswordInput`.
@@ -22,7 +22,7 @@
     - [x] Refactor `Register.jsx` to use the new UI components.
     - [x] Implement inline validation checks (e.g., password matching) before submission.
     - [x] Apply styling and add the "Switch to Login" link.
-- [ ] **Task: Conductor - User Manual Verification 'Phase 2: Refactoring Login & Registration' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Phase 2: Refactoring Login & Registration' (Protocol in workflow.md)** [1482d0e]
 
 ## Phase 3: Final Verification
 - [ ] **Task: Run Full Test Suite & Coverage Check**
