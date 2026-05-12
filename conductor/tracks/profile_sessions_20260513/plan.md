@@ -11,10 +11,10 @@
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: API & Routing' (Protocol in workflow.md)** [e87a4fe]
 
 ## Phase 2: Profile Page Implementation
-- [ ] **Task: Build Profile Information UI**
-    - [ ] Write tests for displaying user info (username, email, avatar).
-    - [ ] Implement the read-only view of the profile.
-- [ ] **Task: Implement Edit Profile Functionality**
+- [x] **Task: Build Profile Information UI** [7a4614d]
+    - [x] Write tests for displaying user info (username, email, avatar).
+    - [x] Implement the read-only view of the profile.
+- [~] **Task: Implement Edit Profile Functionality**
     - [ ] Write tests for the edit form (nickname, email) and submit handling.
     - [ ] Implement the edit form and connect it to the update API.
 - [ ] **Task: Implement Change Password Functionality**
