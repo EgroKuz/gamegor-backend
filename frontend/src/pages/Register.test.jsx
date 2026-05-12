@@ -18,7 +18,7 @@ describe('Register Component', () => {
     expect(screen.getByRole('heading', { name: /register/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument();
   });
 
@@ -30,15 +30,18 @@ describe('Register Component', () => {
     const user = userEvent.setup();
     await user.type(screen.getByLabelText(/username/i), 'testuser');
     await user.type(screen.getByLabelText(/email/i), 'test@example.com');
-    await user.type(screen.getByLabelText(/password/i), 'password123');
+    await user.type(screen.getByLabelText(/^password$/i), 'password123');
+    await user.type(screen.getByLabelText(/confirm password/i), 'password123');
     
     await user.click(screen.getByRole('button', { name: /sign up/i }));
     
     await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('/users/register/', {
+      expect(api.post).toHaveBeenCalledWith('/register/', {
         username: 'testuser',
+        nickname: '',
         email: 'test@example.com',
         password: 'password123',
+        password2: 'password123'
       });
     });
   });
@@ -53,7 +56,8 @@ describe('Register Component', () => {
     const user = userEvent.setup();
     await user.type(screen.getByLabelText(/username/i), 'testuser');
     await user.type(screen.getByLabelText(/email/i), 'test@example.com');
-    await user.type(screen.getByLabelText(/password/i), 'password123');
+    await user.type(screen.getByLabelText(/^password$/i), 'password123');
+    await user.type(screen.getByLabelText(/confirm password/i), 'password123');
     
     await user.click(screen.getByRole('button', { name: /sign up/i }));
     

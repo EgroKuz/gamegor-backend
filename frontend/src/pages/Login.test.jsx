@@ -37,7 +37,7 @@ describe('Login Component', () => {
     await user.click(screen.getByRole('button', { name: /sign in/i }));
     
     await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('/users/token/', {
+      expect(api.post).toHaveBeenCalledWith('/token/', {
         username: 'testuser',
         password: 'password123',
       });
