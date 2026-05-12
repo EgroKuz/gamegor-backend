@@ -24,8 +24,8 @@
     - [x] Apply styling and add the "Switch to Login" link.
 - [x] **Task: Conductor - User Manual Verification 'Phase 2: Refactoring Login & Registration' (Protocol in workflow.md)** [1482d0e]
 
-## Phase 3: Final Verification
-- [ ] **Task: Run Full Test Suite & Coverage Check**
-    - [ ] Ensure all frontend tests pass, specifically the updated auth tests.
-    - [ ] Verify coverage is >80% for the modified files (`Login.jsx`, `Register.jsx`, new UI components).
-- [ ] **Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)**
+## Phase 3: Final Verification [checkpoint: 13df8ec]
+- [x] **Task: Run Full Test Suite & Coverage Check** [7ffd190]
+    - [x] Ensure all frontend tests pass, specifically the updated auth tests.
+    - [x] Verify coverage is >80% for the modified files (`Login.jsx`, `Register.jsx`, new UI components).
+- [x] **Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)** [13df8ec]
