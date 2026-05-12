@@ -26,9 +26,9 @@
     - [x] Write tests for `GameDetailsPage` fetching specific game data based on URL parameter.
     - [x] Write tests to ensure core info (title, description, developer) is rendered.
     - [x] Implement `GameDetailsPage.jsx` with a hero section for the cover and detailed text sections.
-- [~] **Task: Add Navigation & Polish**
-    - [ ] Ensure "Back to Games" navigation works correctly.
-    - [ ] Apply responsive Tailwind classes to ensure details look good on mobile and desktop.
+- [x] **Task: Add Navigation & Polish** [1c21acf]
+    - [x] Ensure "Back to Games" navigation works correctly.
+    - [x] Apply responsive Tailwind classes to ensure details look good on mobile and desktop.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 3: Game Details Page' (Protocol in workflow.md)**
 
 ## Phase 4: Final Verification
