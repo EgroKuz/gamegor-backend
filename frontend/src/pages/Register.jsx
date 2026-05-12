@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import api from '../api/client';
-import AuthLayout from '../components/auth/AuthLayout';
-import FormInput from '../components/auth/FormInput';
-import PasswordInput from '../components/auth/PasswordInput';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import api from "../api/client";
+import AuthLayout from "../components/auth/AuthLayout";
+import FormInput from "../components/auth/FormInput";
+import PasswordInput from "../components/auth/PasswordInput";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    nickname: '',
-    email: '',
-    password: '',
-    password2: '',
+    username: "",
+    nickname: "",
+    email: "",
+    password: "",
+    password2: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(''); // Clear global errors on typing
+    setError(""); // Clear global errors on typing
   };
 
   const handleSubmit = async (e) => {
@@ -28,27 +28,27 @@ const Register = () => {
 
     // Inline Validation
     if (formData.password !== formData.password2) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
-      await api.post('/register/', {
+      await api.post("/register/", {
         username: formData.username,
-        nickname: formData.nickname || '',
+        nickname: formData.nickname || "",
         email: formData.email,
         password: formData.password,
-        password2: formData.password2
-      });      // Assuming successful registration should redirect to login or auto-login
-      navigate('/login');
+        password2: formData.password2,
+      }); // Assuming successful registration should redirect to login or auto-login
+      navigate("/login");
     } catch (err) {
       setError(
-        err.response?.data?.error || 
-        err.response?.data?.detail ||
-        'Registration failed. Please check your inputs and try again.'
+        err.response?.data?.error ||
+          err.response?.data?.detail ||
+          "Registration failed. Please check your inputs and try again.",
       );
     } finally {
       setIsLoading(false);
@@ -111,7 +111,13 @@ const Register = () => {
           onChange={handleChange}
           required
           autoComplete="new-password"
-          error={formData.password && formData.password2 && formData.password !== formData.password2 ? 'Passwords do not match' : undefined}
+          error={
+            formData.password &&
+            formData.password2 &&
+            formData.password !== formData.password2
+              ? "Passwords do not match"
+              : undefined
+          }
         />
 
         <div className="pt-4">
@@ -119,16 +125,21 @@ const Register = () => {
             type="submit"
             disabled={isLoading}
             className={`w-full bg-neon-violet text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-violet focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 ${
-              isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-violet-500 hover:shadow-[0_0_15px_rgba(167,139,250,0.4)]'
+              isLoading
+                ? "opacity-70 cursor-not-allowed"
+                : "hover:bg-violet-500 hover:shadow-[0_0_15px_rgba(167,139,250,0.4)]"
             }`}
           >
-            {isLoading ? 'Creating Account...' : 'Create Account'}
+            {isLoading ? "Creating Account..." : "Create Account"}
           </button>
         </div>
 
         <p className="text-center text-gray-400 mt-6 text-sm">
-          Already have an account?{' '}
-          <Link to="/login" className="text-neon-violet hover:text-violet-400 font-semibold transition-colors">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-neon-violet hover:text-violet-400 font-semibold transition-colors"
+          >
             Sign In
           </Link>
         </p>
