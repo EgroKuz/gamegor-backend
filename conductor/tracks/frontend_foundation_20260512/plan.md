@@ -1,6 +1,6 @@
 # Implementation Plan: Frontend Foundation & Authentication
 
-## Phase 1: Project Setup
+## Phase 1: Project Setup [checkpoint: 784dee8]
 - [x] Task: Initialize React application using Vite in `frontend/` directory. [4029634]
     - [x] Run initialization command inside `frontend/`.
     - [x] Clean up default Vite boilerplate.
@@ -12,7 +12,7 @@
     - [x] Install Prettier and configure it with ESLint.
     - [x] Install Vitest and React Testing Library to support the project's TDD requirement.
     - [x] Configure test scripts in `package.json`.
-- [ ] Task: Conductor - User Manual Verification 'Project Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Project Setup' (Protocol in workflow.md) [784dee8]
 
 ## Phase 2: Authentication Implementation
 - [ ] Task: Implement Routing Foundation.
