@@ -37,4 +37,18 @@ describe('App Routing', () => {
     // Since not authenticated, dashboard should not render, login should
     expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
   });
+
+  it('renders layout components (banner, complementary, contentinfo)', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MemoryRouter>
+    );
+    expect(screen.getByRole('banner')).toBeInTheDocument();
+    expect(screen.getByRole('complementary')).toBeInTheDocument();
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+  });
 });
+
