@@ -4,6 +4,7 @@
 - **Language:** Python 3.x
 - **Backend Framework:** Django 5.2
 - **API Framework:** Django REST Framework
+- **API Documentation:** drf-spectacular (OpenAPI 3 / Swagger)
 
 ## Data & AI
 - **Database:** PostgreSQL
