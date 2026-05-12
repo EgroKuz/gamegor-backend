@@ -1,6 +1,6 @@
 # Implementation Plan: Not Found (404) & Video Content Pages
 
-## Phase 1: API & Routing Setup
+## Phase 1: API & Routing Setup [checkpoint: e9b4161]
 - [x] **Task: Setup Video API Service** [2c9c209]
     - [x] Write failing test for `videos.js` API helper fetching from `/videos/`.
     - [x] Implement `frontend/src/api/videos.js` with `getVideos` function.
@@ -10,7 +10,7 @@
     - [x] Create placeholder components for `NotFoundPage` and `VideoContentPage`.
 - [x] **Task: Update Header Navigation** [e5ed017]
     - [x] Add a link to the Video Content page (`/videos`) in `Header.jsx`.
-- [ ] **Task: Conductor - User Manual Verification 'Phase 1: API & Routing Setup' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Phase 1: API & Routing Setup' (Protocol in workflow.md)**
 
 ## Phase 2: Not Found (404) Page Implementation
 - [ ] **Task: Build NotFoundPage Component**
