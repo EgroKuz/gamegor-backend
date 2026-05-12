@@ -15,9 +15,9 @@
 - [x] Task: Conductor - User Manual Verification 'Project Setup' (Protocol in workflow.md) [784dee8]
 
 ## Phase 2: Authentication Implementation
-- [ ] Task: Implement Routing Foundation.
-    - [ ] Install `react-router-dom`.
-    - [ ] Define routes for Login, Register, and a placeholder Protected Dashboard.
+- [x] Task: Implement Routing Foundation. [e73b47a]
+    - [x] Install `react-router-dom`.
+    - [x] Define routes for Login, Register, and a placeholder Protected Dashboard.
 - [ ] Task: Implement API Client.
     - [ ] Write tests for API client behavior (e.g., token attachment logic).
     - [ ] Create an API utility (using Fetch or Axios) configured to connect to the Django REST backend.
