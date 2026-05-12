@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { getProfile, updateProfile, changePassword } from '../api/users';
 import FormInput from '../components/auth/FormInput'; 
 import PasswordInput from '../components/auth/PasswordInput';
+import { AuthContext } from '../context/AuthContext';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { logout } = useContext(AuthContext);
   
   // Edit Profile State
   const [isEditing, setIsEditing] = useState(false);
@@ -146,12 +148,20 @@ const ProfilePage = () => {
             Manage your personal information and preferences.
           </p>
         </div>
-        <Link 
-          to="/profile/sessions"
-          className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg border border-gray-700 transition-colors font-semibold"
-        >
-          View Game Sessions &rarr;
-        </Link>
+        <div className="flex gap-4">
+          <button 
+            onClick={logout}
+            className="bg-red-900/30 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg border border-red-500/50 transition-colors font-semibold shadow-sm"
+          >
+            Logout
+          </button>
+          <Link 
+            to="/profile/sessions"
+            className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg border border-gray-700 transition-colors font-semibold shadow-sm"
+          >
+            View Game Sessions &rarr;
+          </Link>
+        </div>
       </header>
 
       <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 shadow-xl flex flex-col md:flex-row gap-8 items-start">

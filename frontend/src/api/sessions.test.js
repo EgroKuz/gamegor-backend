@@ -10,7 +10,7 @@ describe('Sessions API Services', () => {
     api.get.mockResolvedValue({ data: mockData });
 
     const sessions = await getUserSessions();
-    expect(api.get).toHaveBeenCalledWith('/gamesessions/user_sessions/');
+    expect(api.get).toHaveBeenCalledWith('/sessions/');
     expect(sessions).toEqual(mockData);
   });
 });

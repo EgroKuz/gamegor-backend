@@ -4,6 +4,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import ProfilePage from './ProfilePage';
 import { getProfile, updateProfile, changePassword } from '../api/users';
+import { AuthContext } from '../context/AuthContext';
 
 vi.mock('../api/users');
 
@@ -16,6 +17,18 @@ describe('ProfilePage Component', () => {
     registration_date: '2026-01-01T10:00:00Z',
   };
 
+  const mockLogout = vi.fn();
+
+  const renderWithAuth = (ui) => {
+    return render(
+      <AuthContext.Provider value={{ logout: mockLogout }}>
+        <MemoryRouter>
+          {ui}
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
     getProfile.mockResolvedValue(mockUser);
@@ -24,25 +37,16 @@ describe('ProfilePage Component', () => {
   it('renders loading state initially', () => {
     getProfile.mockReturnValue(new Promise(() => {}));
     
-    render(
-      <MemoryRouter>
-        <ProfilePage />
-      </MemoryRouter>
-    );
+    renderWithAuth(<ProfilePage />);
 
     expect(screen.getByText(/loading profile/i)).toBeInTheDocument();
   });
 
   it('renders user profile information after fetching', async () => {
-    render(
-      <MemoryRouter>
-        <ProfilePage />
-      </MemoryRouter>
-    );
+    renderWithAuth(<ProfilePage />);
 
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: 'gamer123' })).toBeInTheDocument();
-      // Email is initially read-only text
       expect(screen.getByText('gamer@example.com')).toBeInTheDocument();
       expect(screen.getByText('The Legend')).toBeInTheDocument();
       expect(screen.getByText(/member since: jan 1, 2026/i)).toBeInTheDocument();
@@ -55,11 +59,7 @@ describe('ProfilePage Component', () => {
     updateProfile.mockResolvedValue({ ...mockUser, nickname: 'New Legend', email: 'new@example.com' });
     const user = userEvent.setup();
 
-    render(
-      <MemoryRouter>
-        <ProfilePage />
-      </MemoryRouter>
-    );
+    renderWithAuth(<ProfilePage />);
 
     await waitFor(() => {
       expect(screen.getByText('The Legend')).toBeInTheDocument();
@@ -90,11 +90,7 @@ describe('ProfilePage Component', () => {
     changePassword.mockResolvedValue({ message: 'Success' });
     const user = userEvent.setup();
 
-    render(
-      <MemoryRouter>
-        <ProfilePage />
-      </MemoryRouter>
-    );
+    renderWithAuth(<ProfilePage />);
 
     await waitFor(() => {
       expect(screen.getByText('The Legend')).toBeInTheDocument();
@@ -116,7 +112,6 @@ describe('ProfilePage Component', () => {
 
     await waitFor(() => {
       expect(changePassword).toHaveBeenCalledWith({ old_password: 'old123', new_password: 'new123' });
-      // Should show success message or revert to read-only view
       expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });
   });
@@ -124,11 +119,7 @@ describe('ProfilePage Component', () => {
   it('shows inline error if new passwords do not match', async () => {
     const user = userEvent.setup();
 
-    render(
-      <MemoryRouter>
-        <ProfilePage />
-      </MemoryRouter>
-    );
+    renderWithAuth(<ProfilePage />);
 
     await waitFor(() => {
       expect(screen.getByText('The Legend')).toBeInTheDocument();
@@ -144,6 +135,21 @@ describe('ProfilePage Component', () => {
     expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument();
     expect(changePassword).not.toHaveBeenCalled();
   });
+
+  it('calls logout when the logout button is clicked', async () => {
+    const user = userEvent.setup();
+    renderWithAuth(<ProfilePage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('The Legend')).toBeInTheDocument();
+    });
+
+    const logoutBtn = screen.getByRole('button', { name: /logout/i });
+    await user.click(logoutBtn);
+
+    expect(mockLogout).toHaveBeenCalledTimes(1);
+  });
 });
+
 
 
