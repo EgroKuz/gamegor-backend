@@ -17,9 +17,9 @@
 - [x] **Task: Implement Edit Profile Functionality** [e80a849]
     - [x] Write tests for the edit form (nickname, email) and submit handling.
     - [x] Implement the edit form and connect it to the update API.
-- [~] **Task: Implement Change Password Functionality**
-    - [ ] Write tests for the change password form (old password, new password, confirm).
-    - [ ] Implement the form and connect it to the change password API.
+- [x] **Task: Implement Change Password Functionality** [b08944c]
+    - [x] Write tests for the change password form (old password, new password, confirm).
+    - [x] Implement the form and connect it to the change password API.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Profile Page' (Protocol in workflow.md)**
 
 ## Phase 3: Game Sessions Page Implementation
