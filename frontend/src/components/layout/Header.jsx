@@ -13,7 +13,7 @@ const Header = () => {
         </nav>
         <div>
           {/* User Placeholder */}
-          <span className="text-sm">User</span>
+          <span className="text-sm cursor-pointer hover:text-neon-teal">User Profile</span>
         </div>
       </div>
     </header>

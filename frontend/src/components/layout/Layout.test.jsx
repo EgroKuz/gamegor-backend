@@ -7,22 +7,29 @@ import MainLayout from './MainLayout';
 import { BrowserRouter } from 'react-router-dom';
 
 describe('Layout Components', () => {
-  it('renders Header component', () => {
+  it('renders Header component with navigation links', () => {
     render(
       <BrowserRouter>
         <Header />
       </BrowserRouter>
     );
     expect(screen.getByRole('banner')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /games/i })).toBeInTheDocument();
+    expect(screen.getByText('User Profile')).toBeInTheDocument(); // Expecting updated placeholder
   });
 
-  it('renders Sidebar component', () => {
+  it('renders Sidebar component with genre filters', () => {
     render(
       <BrowserRouter>
         <Sidebar />
       </BrowserRouter>
     );
     expect(screen.getByRole('complementary')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /filters/i })).toBeInTheDocument();
+    // Assuming we refine UI to show specific genres instead of "Genre 1"
+    expect(screen.getByRole('link', { name: /action/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /rpg/i })).toBeInTheDocument();
   });
 
   it('renders Footer component', () => {
