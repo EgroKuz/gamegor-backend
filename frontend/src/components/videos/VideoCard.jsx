@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const VideoCard = ({ video }) => {
   if (!video) return null;
 
-  const { title, youtube_id, game, author, type, tags } = video;
+  const { title, youtube_id, game, game_title, author_detail, video_type, tags } = video;
 
   return (
     <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-neon-teal/20 transition-all duration-300 flex flex-col h-full">
@@ -29,8 +29,8 @@ const VideoCard = ({ video }) => {
           </h3>
           
           <div className="flex items-center justify-between text-xs text-gray-400">
-            {author && <span className="font-medium text-gray-300">{author}</span>}
-            {type && <span className="uppercase tracking-wider px-2 py-0.5 bg-gray-700 rounded-full">{type}</span>}
+            {author_detail && <span className="font-medium text-gray-300">{author_detail.name}</span>}
+            {video_type && <span className="uppercase tracking-wider px-2 py-0.5 bg-gray-700 rounded-full">{video_type}</span>}
           </div>
         </div>
 
@@ -48,10 +48,10 @@ const VideoCard = ({ video }) => {
           <div className="flex items-center gap-2 mt-auto pt-2 border-t border-gray-700/50">
             <span className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Game:</span>
             <Link 
-              to={`/games/${game.id}`} 
+              to={`/games/${game}`} 
               className="text-sm text-neon-teal hover:text-teal-300 hover:underline font-medium truncate"
             >
-              {game.title}
+              {game_title || 'View Game'}
             </Link>
           </div>
         )}

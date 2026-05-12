@@ -26,7 +26,7 @@ describe('VideoContentPage Component', () => {
   it('renders a list of videos after fetching data', async () => {
     const mockVideos = [
       { id: 1, title: 'Video A', youtube_id: '111' },
-      { id: 2, title: 'Video B', youtube_id: '222', game: { id: 10, title: 'Game A' } }
+      { id: 2, title: 'Video B', youtube_id: '222', game: 10, game_title: 'Game A' }
     ];
     getVideos.mockResolvedValue(mockVideos);
 
