@@ -1,13 +1,13 @@
 # Implementation Plan: Frontend Foundation & Authentication
 
 ## Phase 1: Project Setup
-- [ ] Task: Initialize React application using Vite in `frontend/` directory.
-    - [ ] Run initialization command inside `frontend/`.
-    - [ ] Clean up default Vite boilerplate.
-- [ ] Task: Integrate Tailwind CSS.
-    - [ ] Install Tailwind CSS and its peer dependencies.
-    - [ ] Generate `tailwind.config.js` and `postcss.config.js`.
-    - [ ] Add Tailwind directives to the main CSS file.
+- [x] Task: Initialize React application using Vite in `frontend/` directory. [4029634]
+    - [x] Run initialization command inside `frontend/`.
+    - [x] Clean up default Vite boilerplate.
+- [x] Task: Integrate Tailwind CSS. [4029634]
+    - [x] Install Tailwind CSS and its peer dependencies.
+    - [x] Generate `tailwind.config.js` and `postcss.config.js`.
+    - [x] Add Tailwind directives to the main CSS file.
 - [ ] Task: Setup Code Quality & Testing Tools.
     - [ ] Install Prettier and configure it with ESLint.
     - [ ] Install Vitest and React Testing Library to support the project's TDD requirement.
