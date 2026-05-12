@@ -1,0 +1,8 @@
+{
+  "track_id": "frontend_dashboard_20260512",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-05-12T22:20:00Z",
+  "updated_at": "2026-05-12T22:20:00Z",
+  "description": "Implement the Frontend Dashboard with Stats, Achievements, and Recommendations UI."
+}
