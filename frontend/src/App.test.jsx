@@ -21,7 +21,7 @@ describe('App Routing', () => {
         </AuthProvider>
       </MemoryRouter>
     );
-    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Welcome Back' })).toBeInTheDocument();
   });
 
   it('renders Register page on /register route', () => {
@@ -32,7 +32,7 @@ describe('App Routing', () => {
         </AuthProvider>
       </MemoryRouter>
     );
-    expect(screen.getByRole('heading', { name: /register/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Join the Community' })).toBeInTheDocument();
   });
 
   it('redirects to login on / route when unauthenticated', () => {
@@ -44,7 +44,7 @@ describe('App Routing', () => {
       </MemoryRouter>
     );
     // Since not authenticated, dashboard should not render, login should
-    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Welcome Back' })).toBeInTheDocument();
   });
 
   it('renders layout components (banner, complementary, contentinfo)', () => {
