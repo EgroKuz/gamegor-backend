@@ -2,6 +2,15 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
+import { vi } from 'vitest';
+
+// Mock the complex pages to simplify routing tests
+vi.mock('./pages/GamesPage', () => ({
+  default: () => <div data-testid="games-page-placeholder">Games Page Placeholder</div>
+}));
+vi.mock('./pages/GameDetailsPage', () => ({
+  default: () => <div data-testid="game-details-page-placeholder">Game Details Page Placeholder</div>
+}));
 
 describe('App Routing', () => {
   it('renders Login page on /login route', () => {
