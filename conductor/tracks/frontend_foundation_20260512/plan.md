@@ -18,9 +18,9 @@
 - [x] Task: Implement Routing Foundation. [e73b47a]
     - [x] Install `react-router-dom`.
     - [x] Define routes for Login, Register, and a placeholder Protected Dashboard.
-- [ ] Task: Implement API Client.
-    - [ ] Write tests for API client behavior (e.g., token attachment logic).
-    - [ ] Create an API utility (using Fetch or Axios) configured to connect to the Django REST backend.
+- [x] Task: Implement API Client. [9b2dbdf]
+    - [x] Write tests for API client behavior (e.g., token attachment logic).
+    - [x] Create an API utility (using Fetch or Axios) configured to connect to the Django REST backend.
 - [ ] Task: Implement Registration Feature.
     - [ ] Write tests for Registration component rendering and form submission.
     - [ ] Build the Registration UI using Tailwind CSS.
