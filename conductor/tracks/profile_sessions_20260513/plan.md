@@ -35,7 +35,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Phase 3: Game Sessions Page' (Protocol in workflow.md)** [1077150]
 
 ## Phase 4: Final Verification
-- [ ] **Task: Run Full Test Suite & Coverage Check**
-    - [ ] Ensure all frontend tests pass.
-    - [ ] Verify coverage is >80% for the new pages and components.
-- [ ] **Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)**
+- [x] **Task: Run Full Test Suite & Coverage Check**
+    - [x] Ensure all frontend tests pass.
+    - [x] Verify coverage is >80% for the new pages and components.
+- [x] **Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)**
