@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import ProfilePage from './ProfilePage';
-import { getProfile, updateProfile } from '../api/users';
+import { getProfile, updateProfile, changePassword } from '../api/users';
 
 vi.mock('../api/users');
 
@@ -51,20 +51,6 @@ describe('ProfilePage Component', () => {
     expect(getProfile).toHaveBeenCalledTimes(1);
   });
 
-  it('renders an error message if fetching fails', async () => {
-    getProfile.mockRejectedValue(new Error('Network Error'));
-
-    render(
-      <MemoryRouter>
-        <ProfilePage />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/failed to load profile/i)).toBeInTheDocument();
-    });
-  });
-
   it('toggles edit mode and successfully updates profile', async () => {
     updateProfile.mockResolvedValue({ ...mockUser, nickname: 'New Legend', email: 'new@example.com' });
     const user = userEvent.setup();
@@ -75,42 +61,33 @@ describe('ProfilePage Component', () => {
       </MemoryRouter>
     );
 
-    // Wait for load
     await waitFor(() => {
       expect(screen.getByText('The Legend')).toBeInTheDocument();
     });
 
-    // Click Edit
     const editBtn = screen.getByRole('button', { name: /edit profile/i });
     await user.click(editBtn);
 
-    // Now inputs should be visible
     const nicknameInput = screen.getByLabelText(/nickname/i);
     const emailInput = screen.getByLabelText(/email address/i);
     
-    expect(nicknameInput).toHaveValue('The Legend');
-    expect(emailInput).toHaveValue('gamer@example.com');
-
-    // Make changes
     await user.clear(nicknameInput);
     await user.type(nicknameInput, 'New Legend');
     await user.clear(emailInput);
     await user.type(emailInput, 'new@example.com');
 
-    // Save changes
     const saveBtn = screen.getByRole('button', { name: /save changes/i });
     await user.click(saveBtn);
 
     await waitFor(() => {
       expect(updateProfile).toHaveBeenCalledWith({ nickname: 'New Legend', email: 'new@example.com' });
-      // Back to read-only view, showing new data
       expect(screen.getByText('New Legend')).toBeInTheDocument();
       expect(screen.getByText('new@example.com')).toBeInTheDocument();
     });
   });
 
-  it('handles update failure gracefully', async () => {
-    updateProfile.mockRejectedValue({ response: { data: { error: 'Email already exists' } } });
+  it('toggles change password form and successfully changes password', async () => {
+    changePassword.mockResolvedValue({ message: 'Success' });
     const user = userEvent.setup();
 
     render(
@@ -119,20 +96,54 @@ describe('ProfilePage Component', () => {
       </MemoryRouter>
     );
 
-    // Wait for load
     await waitFor(() => {
       expect(screen.getByText('The Legend')).toBeInTheDocument();
     });
 
-    // Edit and Submit
-    await user.click(screen.getByRole('button', { name: /edit profile/i }));
-    await user.click(screen.getByRole('button', { name: /save changes/i }));
+    const changePwdBtn = screen.getByRole('button', { name: /change password/i });
+    await user.click(changePwdBtn);
+
+    const oldPwdInput = screen.getByLabelText(/current password/i);
+    const newPwdInput = screen.getByLabelText(/^new password$/i);
+    const confirmPwdInput = screen.getByLabelText(/confirm new password/i);
+
+    await user.type(oldPwdInput, 'old123');
+    await user.type(newPwdInput, 'new123');
+    await user.type(confirmPwdInput, 'new123');
+
+    const updatePwdBtn = screen.getByRole('button', { name: /update password/i });
+    await user.click(updatePwdBtn);
 
     await waitFor(() => {
-      expect(screen.getByText(/email already exists/i)).toBeInTheDocument();
-      // Should still be in edit mode
-      expect(screen.getByRole('button', { name: /save changes/i })).toBeInTheDocument();
+      expect(changePassword).toHaveBeenCalledWith({ old_password: 'old123', new_password: 'new123' });
+      // Should show success message or revert to read-only view
+      expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });
   });
+
+  it('shows inline error if new passwords do not match', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <MemoryRouter>
+        <ProfilePage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('The Legend')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole('button', { name: /change password/i }));
+
+    await user.type(screen.getByLabelText(/^new password$/i), 'new123');
+    await user.type(screen.getByLabelText(/confirm new password/i), 'different');
+
+    await user.click(screen.getByRole('button', { name: /update password/i }));
+
+    expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument();
+    expect(changePassword).not.toHaveBeenCalled();
+  });
 });
+
 

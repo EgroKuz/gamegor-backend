@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getProfile, updateProfile } from '../api/users';
-import FormInput from '../components/auth/FormInput'; // Reusing auth input component
+import { getProfile, updateProfile, changePassword } from '../api/users';
+import FormInput from '../components/auth/FormInput'; 
+import PasswordInput from '../components/auth/PasswordInput';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Edit Profile State
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ nickname: '', email: '' });
   const [updateError, setUpdateError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+
+  // Change Password State
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [pwdData, setPwdData] = useState({ old_password: '', new_password: '', confirm_password: '' });
+  const [pwdError, setPwdError] = useState('');
+  const [isSavingPwd, setIsSavingPwd] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -33,16 +42,30 @@ const ProfilePage = () => {
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
-    // Reset form to current profile data if canceling
+    setIsChangingPassword(false);
     if (isEditing) {
       setFormData({ nickname: profile.nickname || '', email: profile.email });
       setUpdateError('');
     }
   };
 
+  const handlePwdToggle = () => {
+    setIsChangingPassword(!isChangingPassword);
+    setIsEditing(false);
+    if (isChangingPassword) {
+      setPwdData({ old_password: '', new_password: '', confirm_password: '' });
+      setPwdError('');
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setUpdateError('');
+  };
+
+  const handlePwdChange = (e) => {
+    setPwdData({ ...pwdData, [e.target.name]: e.target.value });
+    setPwdError('');
   };
 
   const handleSubmit = async (e) => {
@@ -58,6 +81,31 @@ const ProfilePage = () => {
       setUpdateError(err.response?.data?.error || err.response?.data?.detail || 'Failed to update profile.');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handlePwdSubmit = async (e) => {
+    e.preventDefault();
+    if (pwdData.new_password !== pwdData.confirm_password) {
+      setPwdError('Passwords do not match');
+      return;
+    }
+
+    setIsSavingPwd(true);
+    setPwdError('');
+
+    try {
+      await changePassword({
+        old_password: pwdData.old_password,
+        new_password: pwdData.new_password
+      });
+      setIsChangingPassword(false);
+      setPwdData({ old_password: '', new_password: '', confirm_password: '' });
+      // Could show a success toast here
+    } catch (err) {
+      setPwdError(err.response?.data?.error || err.response?.data?.detail || 'Failed to change password.');
+    } finally {
+      setIsSavingPwd(false);
     }
   };
 
@@ -131,6 +179,7 @@ const ProfilePage = () => {
         <div className="w-full md:w-2/3">
           {isEditing ? (
             <form onSubmit={handleSubmit} className="space-y-6">
+              <h3 className="text-xl font-bold text-white mb-4">Edit Profile</h3>
               {updateError && (
                 <div className="bg-red-900/30 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm text-center">
                   {updateError}
@@ -170,6 +219,57 @@ const ProfilePage = () => {
                 </button>
               </div>
             </form>
+          ) : isChangingPassword ? (
+            <form onSubmit={handlePwdSubmit} className="space-y-6">
+              <h3 className="text-xl font-bold text-white mb-4">Change Password</h3>
+              {pwdError && (
+                <div className="bg-red-900/30 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm text-center">
+                  {pwdError}
+                </div>
+              )}
+              <PasswordInput
+                id="old_password"
+                name="old_password"
+                label="Current Password"
+                value={pwdData.old_password}
+                onChange={handlePwdChange}
+                required
+              />
+              <PasswordInput
+                id="new_password"
+                name="new_password"
+                label="New Password"
+                value={pwdData.new_password}
+                onChange={handlePwdChange}
+                required
+              />
+              <PasswordInput
+                id="confirm_password"
+                name="confirm_password"
+                label="Confirm New Password"
+                value={pwdData.confirm_password}
+                onChange={handlePwdChange}
+                required
+                error={pwdData.new_password && pwdData.confirm_password && pwdData.new_password !== pwdData.confirm_password ? 'Passwords do not match' : undefined}
+              />
+              <div className="pt-4 flex gap-4 border-t border-gray-800">
+                <button 
+                  type="submit"
+                  disabled={isSavingPwd}
+                  className="bg-red-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-400 transition-colors shadow-[0_0_15px_rgba(239,68,68,0.3)] disabled:opacity-50"
+                >
+                  {isSavingPwd ? 'Updating...' : 'Update Password'}
+                </button>
+                <button 
+                  type="button" 
+                  onClick={handlePwdToggle}
+                  disabled={isSavingPwd}
+                  className="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors border border-gray-700 disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           ) : (
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -190,7 +290,10 @@ const ProfilePage = () => {
                 >
                   Edit Profile
                 </button>
-                <button className="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors border border-gray-700">
+                <button 
+                  onClick={handlePwdToggle}
+                  className="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors border border-gray-700"
+                >
                   Change Password
                 </button>
               </div>
