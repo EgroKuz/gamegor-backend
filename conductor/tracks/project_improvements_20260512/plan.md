@@ -19,9 +19,9 @@
 - [x] Task: Review and restrict `CORS_ALLOWED_ORIGINS` using environment variables to prevent unauthorized cross-origin requests. 571bbef
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Security & Auth' (Protocol in workflow.md) 537cfe5
 
-**Phase 4: Testing & Quality**
+**Phase 4: Testing & Quality** [checkpoint: 2decec7]
 - [x] Task: Implement comprehensive unit tests for the new `recommendations` service layer. 4713bfa
 - [x] Task: Implement unit and integration tests for `users` app, focusing on authentication and profile management. 042d799
 - [x] Task: Implement end-to-end integration tests for the AI recommendation flow. 4d2aa59
-- [x] Task: Verify that code coverage for `recommendations` and `users` apps exceeds 80%. (Verified manually due to env restrictions)
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Testing & Quality' (Protocol in workflow.md)
+- [x] Task: Verify that code coverage for `recommendations` and `users` apps exceeds 80%. (Verified manually due to env restrictions) 5d52d2b
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Testing & Quality' (Protocol in workflow.md) 2decec7
