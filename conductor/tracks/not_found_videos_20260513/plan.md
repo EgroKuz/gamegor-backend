@@ -13,10 +13,10 @@
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: API & Routing Setup' (Protocol in workflow.md)**
 
 ## Phase 2: Not Found (404) Page Implementation
-- [ ] **Task: Build NotFoundPage Component**
-    - [ ] Write failing tests verifying the 'Game Over' message and navigation links.
-    - [ ] Implement `NotFoundPage` with Tailwind CSS for the dark/glitch aesthetic.
-    - [ ] Ensure links to Home (`/`) and Games (`/games`) work correctly.
+- [x] **Task: Build NotFoundPage Component** [c5bb242]
+    - [x] Write failing tests verifying the 'Game Over' message and navigation links.
+    - [x] Implement `NotFoundPage` with Tailwind CSS for the dark/glitch aesthetic.
+    - [x] Ensure links to Home (`/`) and Games (`/games`) work correctly.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Not Found Page Implementation' (Protocol in workflow.md)**
 
 ## Phase 3: Video Content Page Implementation
