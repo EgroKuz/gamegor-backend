@@ -16,3 +16,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Frontend development for Game Aggregator (React setup & Auth)**
 *Link: [./tracks/frontend_foundation_20260512/](./tracks/frontend_foundation_20260512/)*
+
+---
+
+- [ ] **Track: Create the main application layout**
+*Link: [./tracks/main_layout_20260512/](./tracks/main_layout_20260512/)*
