@@ -25,3 +25,9 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Create the Games page (main page) and Game Details page**
 *Link: [./tracks/games_pages_20260512/](./tracks/games_pages_20260512/)*
+
+
+---
+
+- [ ] **Track: Переделай страницу регистрации и авторизации под нынешние стили**
+*Link: [./tracks/auth_redesign_20260512/](./tracks/auth_redesign_20260512/)*
