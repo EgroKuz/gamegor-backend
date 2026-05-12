@@ -18,4 +18,4 @@ A backend API on Django + Django REST Framework for a video game aggregator with
 - **Stats & Achievements:** Comprehensive user statistics aggregation (games played, genres, videos watched) and unlockable achievements based on platform activity.
 
 ## Key Technical Priorities
-- **Performance & Security:** Fixing N+1 query problems across Django ViewSets and removing insecure configuration from settings.
+- **Performance & Security:** N+1 query problems are resolved. AI integration is hardened with timeouts, and core logic is isolated in a testable Service Layer. Session and password security policies meet production readiness standards.
