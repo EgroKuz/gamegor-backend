@@ -190,8 +190,8 @@ AUTH_USER_MODEL = 'users.User'
 # Если Django в контейнере, а Ollama на хосте (localhost), используйте special DNS:
 # - Для Docker Desktop (Mac/Windows): http://host.docker.internal:11434
 # - Для Linux Docker: http://172.17.0.1:11434 (IP хоста docker0)
-OLLAMA_HOST = "http://localhost:11434"
-OLLAMA_MODEL = "qwen2.5:3b"  # Или "qwen2.5", проверьте название через `docker exec ollama ollama list`
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL_NAME", "qwen2.5:3b")
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Game Aggregator API',

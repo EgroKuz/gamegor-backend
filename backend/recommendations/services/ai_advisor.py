@@ -78,8 +78,8 @@ class AIAdvisor:
             }
         }
 
-        # Reduce timeout to 5 seconds to prevent hanging the request
-        response = requests.post(url, json=payload, timeout=5)
+        # Увеличиваем таймаут до 60 секунд, так как генерация ответа может занимать длительное время
+        response = requests.post(url, json=payload, timeout=60)
         response.raise_for_status()
 
         result = response.json()
