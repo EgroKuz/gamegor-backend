@@ -9,5 +9,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: добавь документацию api**
+- [x] **Track: добавь документацию api**
   *Link: [./tracks/api_documentation_20260512/](./tracks/api_documentation_20260512/)*
