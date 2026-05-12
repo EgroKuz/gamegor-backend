@@ -8,7 +8,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Architecture & Refactoring' (Protocol in workflow.md) 744731f
 
 **Phase 2: Optimization**
-- [ ] Task: Optimize `VideoViewSet` and `UserVideoInteractionViewSet` to eliminate N+1 queries using `select_related` and `prefetch_related`.
+- [x] Task: Optimize `VideoViewSet` and `UserVideoInteractionViewSet` to eliminate N+1 queries using `select_related` and `prefetch_related`. fcd2e6a
 - [ ] Task: Resolve N+1 queries in `RecommendationViewSet` actions, ensuring efficient retrieval of related videos and games.
 - [ ] Task: Implement robust error handling and timeouts for `AIAdvisor` to handle Ollama service unavailability gracefully.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Optimization' (Protocol in workflow.md)
