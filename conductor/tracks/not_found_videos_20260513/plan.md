@@ -23,10 +23,10 @@
 - [x] **Task: Create VideoCard Component** [fc9a3d5]
     - [x] Write failing tests for `VideoCard` to render YouTube embed `<iframe>` and game title.
     - [x] Implement `VideoCard` with Tailwind CSS.
-- [ ] **Task: Build VideoContentPage**
-    - [ ] Write failing tests for fetching videos and rendering a grid of `VideoCard`s.
-    - [ ] Implement `VideoContentPage` logic (loading state, error state, empty state).
-    - [ ] Integrate `getVideos` API call.
+- [x] **Task: Build VideoContentPage** [76eedfe]
+    - [x] Write failing tests for fetching videos and rendering a grid of `VideoCard`s.
+    - [x] Implement `VideoContentPage` logic (loading state, error state, empty state).
+    - [x] Integrate `getVideos` API call.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 3: Video Content Page Implementation' (Protocol in workflow.md)**
 
 ## Phase 4: Final Verification
