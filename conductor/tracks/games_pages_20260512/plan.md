@@ -4,9 +4,9 @@
 - [x] **Task: Create API Service for Games** [f5a9d81]
     - [x] Write tests for API helper functions (mocking fetch).
     - [x] Implement `getGames` and `getGameDetails` in `frontend/src/api/games.js`.
-- [ ] **Task: Setup Routing**
-    - [ ] Write integration test ensuring correct component rendering for `/games` and `/games/:id` routes.
-    - [ ] Update `App.jsx` to include routes for `GamesPage` and `GameDetailsPage` (pointing to placeholder components initially).
+- [x] **Task: Setup Routing** [d281fca]
+    - [x] Write integration test ensuring correct component rendering for `/games` and `/games/:id` routes.
+    - [x] Update `App.jsx` to include routes for `GamesPage` and `GameDetailsPage` (pointing to placeholder components initially).
 - [ ] **Task: Conductor - User Manual Verification 'Phase 1: API Integration & Routing' (Protocol in workflow.md)**
 
 ## Phase 2: Games Catalog Page (Main View)
