@@ -16,7 +16,7 @@ describe('Layout Components', () => {
     expect(screen.getByRole('banner')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /games/i })).toBeInTheDocument();
-    expect(screen.getByText('User Profile')).toBeInTheDocument(); // Expecting updated placeholder
+    expect(screen.getByText('Profile')).toBeInTheDocument(); // Expecting updated placeholder
   });
 
   it('renders Sidebar component with genre filters', () => {

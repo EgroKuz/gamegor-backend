@@ -25,7 +25,7 @@ describe('Layout Aesthetic', () => {
         <Header />
       </BrowserRouter>
     );
-    const logoText = screen.getByText('GameAggregator');
+    const logoText = screen.getByText('GameGor');
     expect(logoText).toHaveClass('text-neon-teal'); // Expecting custom color from config
   });
 
