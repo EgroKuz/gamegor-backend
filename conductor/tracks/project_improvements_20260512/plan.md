@@ -21,7 +21,7 @@
 
 **Phase 4: Testing & Quality**
 - [x] Task: Implement comprehensive unit tests for the new `recommendations` service layer. 4713bfa
-- [ ] Task: Implement unit and integration tests for `users` app, focusing on authentication and profile management.
+- [x] Task: Implement unit and integration tests for `users` app, focusing on authentication and profile management. 042d799
 - [ ] Task: Implement end-to-end integration tests for the AI recommendation flow.
 - [ ] Task: Verify that code coverage for `recommendations` and `users` apps exceeds 80%.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Testing & Quality' (Protocol in workflow.md)
