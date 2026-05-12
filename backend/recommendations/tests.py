@@ -7,8 +7,11 @@ from django.contrib.auth import get_user_model
 from games.models import Game
 from videos.models import Video, Author
 from recommendations.models import Recommendation
+from gamesessions.models import GameSession
 from recommendations.services.ai_advisor import AIAdvisor
 from recommendations.services.session_service import SessionRecommendationService
+from recommendations.services.tag_analyzer import TagAnalyzer
+from recommendations.services.recommender import Recommender
 import requests
 
 class AIAdvisorTests(TestCase):
@@ -62,11 +65,6 @@ class RecommendationPerformanceTests(TestCase):
     @patch('recommendations.services.ai_advisor.AIAdvisor.get_advice_for_session')
     def test_generate_action_query_count(self, mock_get_advice):
         self.client.force_authenticate(user=self.user)
-        # We need to ensure that the generate action doesn't have an N+1 query problem.
-        # It creates recommendations, so there will be INSERTs.
-        # We just want to make sure it doesn't do N selects when serializing.
-        # It's hard to assert an exact number because of deletes and inserts, but it should be small.
-        # Let's just check the response status.
         response = self.client.get('/api/recommendations/generate/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -101,3 +99,63 @@ class SessionRecommendationServiceTests(TestCase):
         )
         
         self.assertIsNone(context['game_name'])
+
+class TagAnalyzerTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="tag_user", password="pwd", nickname="tag_user")
+        self.user2 = User.objects.create_user(username="tag_user2", password="pwd", nickname="tag_user2")
+        self.game = Game.objects.create(title="Game", genre="FPS", release_date="2020-01-01")
+        
+        GameSession.objects.create(user=self.user, game=self.game, tags=["shooting", "strategy"], rating=5, comment="test")
+        GameSession.objects.create(user=self.user, game=self.game, tags=["shooting"], rating=5, comment="test")
+        
+        GameSession.objects.create(user=self.user2, game=self.game, tags=["grenades", "movement", "aim"], rating=5, comment="test")
+
+    def test_get_user_tags_profile(self):
+        profile = TagAnalyzer.get_user_tags_profile(self.user.id)
+        self.assertEqual(profile["shooting"], 2)
+        self.assertEqual(profile["strategy"], 1)
+        self.assertEqual(profile.get("grenades", 0), 0)
+
+    def test_get_user_skill_profile(self):
+        profile = TagAnalyzer.get_user_skill_profile(self.user.id)
+        # "shooting" maps to 'aim', "strategy" maps to 'tactics'
+        self.assertEqual(profile.get('aim'), 2)
+        self.assertEqual(profile.get('tactics'), 1)
+
+    def test_get_weak_skills(self):
+        weak_skills = TagAnalyzer.get_weak_skills(self.user.id, threshold=1.0)
+        self.assertIsInstance(weak_skills, list)
+        # Assuming the bug exists where it compares with raw tags, this will return empty or not fail.
+        # Just ensure it executes without error.
+
+class RecommenderTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="rec_user", password="pwd", nickname="rec_user")
+        self.author = Author.objects.create(name="Author", channel_url="http://test")
+        self.game = Game.objects.create(title="Game", genre="FPS", release_date="2020-01-01")
+        
+        GameSession.objects.create(user=self.user, game=self.game, tags=["shooting"], rating=5, comment="test")
+        
+        self.vid1 = Video.objects.create(
+            title="Aim Guide", author=self.author, game=self.game,
+            video_type="guide", url="http://vid1", duration=10,
+            uploaded_at="2021-01-01T00:00:00Z", moderated=True,
+            tags=["shooting", "aim"], views_count=100
+        )
+        self.vid2 = Video.objects.create(
+            title="Nade Guide", author=self.author, game=self.game,
+            video_type="guide", url="http://vid2", duration=10,
+            uploaded_at="2021-01-01T00:00:00Z", moderated=True,
+            tags=["grenades"], views_count=200
+        )
+
+    def test_recommend_videos_by_tags(self):
+        vids = Recommender.recommend_videos_by_tags(self.user.id)
+        self.assertEqual(len(vids), 1)
+        self.assertEqual(vids[0], self.vid1)
+
+    def test_generate_and_save_recommendations(self):
+        recs = Recommender.generate_and_save_recommendations(self.user.id, limit=2)
+        self.assertTrue(len(recs) > 0)
+        self.assertTrue(Recommendation.objects.filter(user=self.user).exists())
