@@ -1,7 +1,7 @@
 # Product Guide
 
 ## Initial Concept
-A backend API on Django + Django REST Framework for a video game aggregator with a recommendation system.
+A full-stack video game aggregator with a recommendation system, featuring a React (Vite) frontend and a Django REST Framework backend API.
 
 ## Target Audience
 - **Gamers / Viewers:** Users seeking a platform to find games and videos, track their sessions, and receive recommendations based on their preferences and skills.
