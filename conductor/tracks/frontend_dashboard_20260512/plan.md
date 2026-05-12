@@ -19,7 +19,7 @@
     - [x] Write tests for `RecommendationGrid` and `RecommendationCard`.
     - [x] Implement `RecommendationGrid` and `RecommendationCard`.
 
-## Phase 3: Integration & Styling
+## Phase 3: Integration & Styling [checkpoint: 6c9cb2b]
 - [x] **Task: Assemble Dashboard Page** [71049f7]
     - [x] Write integration tests for the full `Dashboard` page.
     - [x] Integrate all components into `Dashboard.jsx`.
