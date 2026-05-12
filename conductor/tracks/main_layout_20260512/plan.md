@@ -1,13 +1,13 @@
 # Implementation Plan: Create the main application layout
 
-## Phase 1: Foundation and Structural Components
+## Phase 1: Foundation and Structural Components [checkpoint: b386105]
 - [x] **Task: Create Base Layout Components** [0896d8f]
-    - [ ] Write tests for `MainLayout`, `Header`, `Sidebar`, and `Footer` components (ensuring they render correctly)
-    - [ ] Implement skeleton versions of `MainLayout`, `Header`, `Sidebar`, and `Footer`
+    - [x] Write tests for `MainLayout`, `Header`, `Sidebar`, and `Footer` components (ensuring they render correctly)
+    - [x] Implement skeleton versions of `MainLayout`, `Header`, `Sidebar`, and `Footer`
 - [x] **Task: Integrate Layout with App Routing** [934defb]
-    - [ ] Write tests for `App.jsx` to ensure it wraps routes with the `MainLayout`
-    - [ ] Update `App.jsx` to use the `MainLayout` component as a wrapper for pages
-- [ ] **Task: Conductor - User Manual Verification 'Phase 1: Foundation and Structural Components' (Protocol in workflow.md)**
+    - [x] Write tests for `App.jsx` to ensure it wraps routes with the `MainLayout`
+    - [x] Update `App.jsx` to use the `MainLayout` component as a wrapper for pages
+- [x] **Task: Conductor - User Manual Verification 'Phase 1: Foundation and Structural Components' (Protocol in workflow.md)** [b386105]
 
 ## Phase 2: Styling and Gaming Aesthetic
 - [ ] **Task: Apply Gaming Aesthetic (Tailwind)**
