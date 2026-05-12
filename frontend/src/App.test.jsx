@@ -50,5 +50,33 @@ describe('App Routing', () => {
     expect(screen.getByRole('complementary')).toBeInTheDocument();
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   });
+
+  // Mocking auth to simplify protected route testing for Games
+  it('renders Games page on /games route', () => {
+    // We mock localStorage to simulate an authenticated user
+    localStorage.setItem('access_token', 'fake_token');
+    render(
+      <MemoryRouter initialEntries={['/games']}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('games-page-placeholder')).toBeInTheDocument();
+    localStorage.removeItem('access_token');
+  });
+
+  it('renders Game Details page on /games/:id route', () => {
+    localStorage.setItem('access_token', 'fake_token');
+    render(
+      <MemoryRouter initialEntries={['/games/123']}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('game-details-page-placeholder')).toBeInTheDocument();
+    localStorage.removeItem('access_token');
+  });
 });
 
