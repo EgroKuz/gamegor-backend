@@ -1,13 +1,13 @@
 # Implementation Plan: Games Catalog & Details Pages
 
-## Phase 1: API Integration & Routing
+## Phase 1: API Integration & Routing [checkpoint: acc23c1]
 - [x] **Task: Create API Service for Games** [f5a9d81]
     - [x] Write tests for API helper functions (mocking fetch).
     - [x] Implement `getGames` and `getGameDetails` in `frontend/src/api/games.js`.
 - [x] **Task: Setup Routing** [d281fca]
     - [x] Write integration test ensuring correct component rendering for `/games` and `/games/:id` routes.
     - [x] Update `App.jsx` to include routes for `GamesPage` and `GameDetailsPage` (pointing to placeholder components initially).
-- [ ] **Task: Conductor - User Manual Verification 'Phase 1: API Integration & Routing' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Phase 1: API Integration & Routing' (Protocol in workflow.md)** [acc23c1]
 
 ## Phase 2: Games Catalog Page (Main View)
 - [ ] **Task: Create GameCard Component**
