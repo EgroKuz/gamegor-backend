@@ -8,13 +8,14 @@ import PasswordInput from '../components/auth/PasswordInput';
 const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
+    nickname: '',
     email: '',
     password: '',
     password2: '',
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,7 +25,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Inline Validation
     if (formData.password !== formData.password2) {
       setError('Passwords do not match');
@@ -37,10 +38,11 @@ const Register = () => {
     try {
       await api.post('/register/', {
         username: formData.username,
+        nickname: formData.nickname || '',
         email: formData.email,
         password: formData.password,
-      });
-      // Assuming successful registration should redirect to login or auto-login
+        password2: formData.password2
+      });      // Assuming successful registration should redirect to login or auto-login
       navigate('/login');
     } catch (err) {
       setError(
@@ -70,6 +72,14 @@ const Register = () => {
           onChange={handleChange}
           required
           autoComplete="username"
+        />
+
+        <FormInput
+          id="nickname"
+          name="nickname"
+          label="Nickname (Optional)"
+          value={formData.nickname}
+          onChange={handleChange}
         />
 
         <FormInput

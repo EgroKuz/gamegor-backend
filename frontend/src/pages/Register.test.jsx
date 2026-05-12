@@ -67,8 +67,10 @@ describe('Register Component', () => {
     await waitFor(() => {
       expect(api.post).toHaveBeenCalledWith('/register/', {
         username: 'testuser',
+        nickname: '',
         email: 'test@example.com',
         password: 'password123',
+        password2: 'password123',
       });
       // A success message or redirect should happen. We can check for a success alert or mock navigation
     });
