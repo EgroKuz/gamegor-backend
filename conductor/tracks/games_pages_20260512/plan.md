@@ -10,10 +10,10 @@
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: API Integration & Routing' (Protocol in workflow.md)** [acc23c1]
 
 ## Phase 2: Games Catalog Page (Main View)
-- [ ] **Task: Create GameCard Component**
-    - [ ] Write tests for `GameCard` rendering title and image.
-    - [ ] Implement `GameCard` with Tailwind styling and hover effects.
-- [ ] **Task: Implement GamesPage Logic and Grid**
+- [x] **Task: Create GameCard Component** [a26f3fa]
+    - [x] Write tests for `GameCard` rendering title and image.
+    - [x] Implement `GameCard` with Tailwind styling and hover effects.
+- [~] **Task: Implement GamesPage Logic and Grid**
     - [ ] Write tests for fetching games on mount and rendering the grid.
     - [ ] Implement `GamesPage.jsx` fetching data via API and mapping over `GameCard`s.
 - [ ] **Task: Implement Text Search Filtering**
