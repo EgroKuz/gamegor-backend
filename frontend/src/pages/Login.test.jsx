@@ -61,9 +61,7 @@ describe('Login Component', () => {
         username: 'testuser',
         password: 'password123',
       });
-      expect(localStorage.getItem('access_token')).toBe('fake-access-token');
-      expect(localStorage.getItem('refresh_token')).toBe('fake-refresh');
-      expect(mockLogin).toHaveBeenCalled();
+      expect(mockLogin).toHaveBeenCalledWith('fake-access-token', 'fake-refresh');
     });
   });
 

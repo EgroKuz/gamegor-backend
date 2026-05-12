@@ -27,14 +27,9 @@ const Login = () => {
     try {
       const response = await api.post('/token/', formData);
       const { access, refresh } = response.data;
-      
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
-      
-      login();
-      navigate('/');
-    } catch (err) {
-      setError(
+
+      login(access, refresh);
+    } catch (err) {      setError(
         err.response?.data?.detail || 
         'Login failed. Please check your credentials and try again.'
       );

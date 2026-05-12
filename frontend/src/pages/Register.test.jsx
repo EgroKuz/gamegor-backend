@@ -65,7 +65,7 @@ describe('Register Component', () => {
     await user.click(screen.getByRole('button', { name: /create account/i }));
 
     await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('/users/register/', {
+      expect(api.post).toHaveBeenCalledWith('/register/', {
         username: 'testuser',
         email: 'test@example.com',
         password: 'password123',
