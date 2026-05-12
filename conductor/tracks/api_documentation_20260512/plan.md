@@ -7,6 +7,6 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Installation & Configuration' (Protocol in workflow.md)
 
 **Phase 2: Routing & UI Integration**
-- [ ] Task: Update `backend/backend/urls.py` to expose `/api/schema/` using `SpectacularAPIView`.
-- [ ] Task: Update `backend/backend/urls.py` to expose `/api/docs/swagger-ui/` using `SpectacularSwaggerView`.
+- [x] Task: Update `backend/backend/urls.py` to expose `/api/schema/` using `SpectacularAPIView`. 6308475
+- [x] Task: Update `backend/backend/urls.py` to expose `/api/docs/swagger-ui/` using `SpectacularSwaggerView`. 6308475
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Routing & UI Integration' (Protocol in workflow.md)
