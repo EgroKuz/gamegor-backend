@@ -6,12 +6,13 @@ const GamesPage = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
         setLoading(true);
-        const data = await getGames();
+        const data = await getGames(searchTerm);
         setGames(data);
         setError(null);
       } catch (err) {
@@ -22,32 +23,21 @@ const GamesPage = () => {
       }
     };
 
-    fetchGames();
-  }, []);
+    // Debounce search
+    const timerId = setTimeout(() => {
+      fetchGames();
+    }, 300);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="text-neon-teal text-xl font-bold animate-pulse">
-          Loading Games...
-        </div>
-      </div>
-    );
-  }
+    return () => clearTimeout(timerId);
+  }, [searchTerm]);
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="text-red-400 text-xl font-bold bg-red-900/20 p-6 rounded-lg border border-red-500/50">
-          {error}
-        </div>
-      </div>
-    );
-  }
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <header className="flex justify-between items-center">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h2 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
             Games Catalog
@@ -56,10 +46,33 @@ const GamesPage = () => {
             Browse our collection of awesome games.
           </p>
         </div>
-        {/* Placeholder for Search Input */}
+        <div className="w-full md:w-auto relative">
+          <input
+            type="text"
+            placeholder="Search games..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="w-full md:w-64 bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:border-neon-teal transition-colors"
+          />
+          <div className="absolute right-3 top-2.5 text-gray-500">
+            🔍
+          </div>
+        </div>
       </header>
 
-      {games.length === 0 ? (
+      {error ? (
+        <div className="flex justify-center items-center min-h-[30vh]">
+          <div className="text-red-400 text-xl font-bold bg-red-900/20 p-6 rounded-lg border border-red-500/50">
+            {error}
+          </div>
+        </div>
+      ) : loading && games.length === 0 ? (
+        <div className="flex justify-center items-center min-h-[30vh]">
+          <div className="text-neon-teal text-xl font-bold animate-pulse">
+            Loading Games...
+          </div>
+        </div>
+      ) : games.length === 0 ? (
         <div className="text-center py-20 text-gray-500 italic bg-gray-800/30 rounded-xl border border-dashed border-gray-700">
           No games found.
         </div>

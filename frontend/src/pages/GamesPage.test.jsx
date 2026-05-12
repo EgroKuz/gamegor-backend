@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import GamesPage from './GamesPage';
@@ -12,7 +13,6 @@ describe('GamesPage Component', () => {
   });
 
   it('renders a loading state initially', () => {
-    // Return an unresolved promise to keep it in loading state
     getGames.mockReturnValue(new Promise(() => {}));
     
     render(
@@ -37,14 +37,55 @@ describe('GamesPage Component', () => {
       </MemoryRouter>
     );
 
-    // Wait for the loading to finish and data to render
     await waitFor(() => {
       expect(screen.getByText('Game One')).toBeInTheDocument();
       expect(screen.getByText('Game Two')).toBeInTheDocument();
     });
 
-    // Ensure the API was called
     expect(getGames).toHaveBeenCalledTimes(1);
+    // Initial call should be without a search term
+    expect(getGames).toHaveBeenCalledWith('');
+  });
+
+  it('filters games when searching', async () => {
+    const user = userEvent.setup();
+    const initialMockGames = [
+      { id: 1, title: 'Elden Ring', developer: 'FromSoftware' },
+      { id: 2, title: 'Dark Souls', developer: 'FromSoftware' }
+    ];
+    
+    // First call returns all games
+    getGames.mockResolvedValueOnce(initialMockGames);
+    
+    // Second call simulates backend returning filtered games based on 'Elden'
+    const filteredMockGames = [{ id: 1, title: 'Elden Ring', developer: 'FromSoftware' }];
+    getGames.mockResolvedValueOnce(filteredMockGames);
+
+    render(
+      <MemoryRouter>
+        <GamesPage />
+      </MemoryRouter>
+    );
+
+    // Wait for initial render
+    await waitFor(() => {
+      expect(screen.getByText('Elden Ring')).toBeInTheDocument();
+      expect(screen.getByText('Dark Souls')).toBeInTheDocument();
+    });
+
+    // Find search input and type
+    const searchInput = screen.getByPlaceholderText(/search games/i);
+    await user.type(searchInput, 'Elden{enter}');
+
+    // Wait for filtered render
+    await waitFor(() => {
+      expect(screen.getByText('Elden Ring')).toBeInTheDocument();
+      expect(screen.queryByText('Dark Souls')).not.toBeInTheDocument();
+    });
+    
+    // Verify getGames was called with the search term
+    expect(getGames).toHaveBeenCalledTimes(2);
+    expect(getGames).toHaveBeenLastCalledWith('Elden');
   });
 
   it('renders an error message if fetching fails', async () => {
@@ -75,3 +116,4 @@ describe('GamesPage Component', () => {
     });
   });
 });
+
