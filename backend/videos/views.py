@@ -35,7 +35,7 @@ class UserVideoInteractionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return UserVideoInteraction.objects.filter(user=self.request.user)
+        return UserVideoInteraction.objects.filter(user=self.request.user).select_related('video', 'video__author', 'video__game')
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
