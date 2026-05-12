@@ -15,9 +15,9 @@
 - [x] **Task: Create Achievement Components** [f13de0b]
     - [x] Write tests for `AchievementList` and `AchievementItem`.
     - [x] Implement `AchievementList` and `AchievementItem`.
-- [~] **Task: Create Recommendation Components**
-    - [ ] Write tests for `RecommendationGrid` and `RecommendationCard`.
-    - [ ] Implement `RecommendationGrid` and `RecommendationCard`.
+- [x] **Task: Create Recommendation Components** [393787a]
+    - [x] Write tests for `RecommendationGrid` and `RecommendationCard`.
+    - [x] Implement `RecommendationGrid` and `RecommendationCard`.
 
 ## Phase 3: Integration & Styling
 - [ ] **Task: Assemble Dashboard Page**
