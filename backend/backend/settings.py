@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else ['localhost', '127.0.0.1']
 
 # Security settings for Session and CSRF
 SESSION_COOKIE_SECURE = not DEBUG
@@ -192,3 +192,11 @@ AUTH_USER_MODEL = 'users.User'
 # - Для Linux Docker: http://172.17.0.1:11434 (IP хоста docker0)
 OLLAMA_HOST = "http://localhost:11434"
 OLLAMA_MODEL = "qwen2.5:3b"  # Или "qwen2.5", проверьте название через `docker exec ollama ollama list`
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Game Aggregator API',
+    'DESCRIPTION': 'API documentation for the Video Game Aggregator with AI Recommendations.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+}
