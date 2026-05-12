@@ -25,10 +25,10 @@
     - [x] Write tests for Registration component rendering and form submission.
     - [x] Build the Registration UI using Tailwind CSS.
     - [x] Connect the UI to the backend registration endpoint and handle responses/errors.
-- [ ] Task: Implement Login Feature.
-    - [ ] Write tests for Login component rendering and token storage logic.
-    - [ ] Build the Login UI.
-    - [ ] Connect to the backend token endpoint, save the JWT, and handle login state.
+- [x] Task: Implement Login Feature. [63de379]
+    - [x] Write tests for Login component rendering and token storage logic.
+    - [x] Build the Login UI.
+    - [x] Connect to the backend token endpoint, save the JWT, and handle login state.
 - [ ] Task: Implement Auth State & Protected Routes.
     - [ ] Write tests for the Protected Route component (redirects if unauthenticated).
     - [ ] Implement an Auth Provider/Context to manage global authentication state.
