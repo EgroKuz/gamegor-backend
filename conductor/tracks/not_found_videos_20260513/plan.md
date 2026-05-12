@@ -1,9 +1,9 @@
 # Implementation Plan: Not Found (404) & Video Content Pages
 
 ## Phase 1: API & Routing Setup
-- [ ] **Task: Setup Video API Service**
-    - [ ] Write failing test for `videos.js` API helper fetching from `/videos/`.
-    - [ ] Implement `frontend/src/api/videos.js` with `getVideos` function.
+- [x] **Task: Setup Video API Service** [2c9c209]
+    - [x] Write failing test for `videos.js` API helper fetching from `/videos/`.
+    - [x] Implement `frontend/src/api/videos.js` with `getVideos` function.
 - [ ] **Task: Setup React Router Routes**
     - [ ] Update `App.jsx` to include a catch-all route `*` for the 404 page.
     - [ ] Update `App.jsx` to include a route `/videos` for the Video Content page.
