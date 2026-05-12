@@ -19,7 +19,7 @@ describe('Dashboard API Services', () => {
     api.get.mockResolvedValue({ data: mockData });
 
     const achievements = await getAchievements();
-    expect(api.get).toHaveBeenCalledWith('/stats/achievements/');
+    expect(api.get).toHaveBeenCalledWith('/users/me/achievements/');
     expect(achievements).toEqual(mockData);
   });
 

@@ -6,7 +6,7 @@ export const getStats = async () => {
 };
 
 export const getAchievements = async () => {
-  const response = await api.get('/stats/achievements/');
+  const response = await api.get('/users/me/achievements/');
   return response.data;
 };
 
