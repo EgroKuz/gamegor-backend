@@ -1,10 +1,10 @@
 # Implementation Plan: Auth Pages Aesthetic Redesign
 
 ## Phase 1: Shared UI Components & Layout
-- [ ] **Task: Create Split-Screen Wrapper Component**
-    - [ ] Write tests for a new `AuthLayout` component verifying it renders children and a graphic section.
-    - [ ] Implement `AuthLayout` with Tailwind CSS for responsiveness (side-by-side on desktop, stacked/hidden on mobile).
-- [ ] **Task: Create Reusable Form Inputs**
+- [x] **Task: Create Split-Screen Wrapper Component** [39e1393]
+    - [x] Write tests for a new `AuthLayout` component verifying it renders children and a graphic section.
+    - [x] Implement `AuthLayout` with Tailwind CSS for responsiveness (side-by-side on desktop, stacked/hidden on mobile).
+- [~] **Task: Create Reusable Form Inputs**
     - [ ] Write tests for a reusable `FormInput` component, ensuring it handles labels, types, and error states.
     - [ ] Implement `FormInput` with Tailwind styling (dark theme, neon focus borders) and inline error message support.
     - [ ] Write tests for a `PasswordInput` component that includes a show/hide toggle.
