@@ -19,6 +19,7 @@ from django.urls import path, include
 from games.views import HomePageView, GameDetailPageView
 from gamesessions.views import GameSessionCreatePageView
 from videos.views import VideoListPageView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home_page'),
@@ -26,6 +27,11 @@ urlpatterns = [
     path('games/<int:game_id>/session/new/', GameSessionCreatePageView.as_view(), name='game_session_create_page'),
     path('admin/', admin.site.urls),
     path('videos/', VideoListPageView.as_view(), name='videos_page'),
+    
+    # OpenAPI Schema and UI
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+
     path('api/', include('users.urls')),
     path('api/', include('games.urls')),
     path('api/', include('videos.urls')),
