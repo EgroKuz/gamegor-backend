@@ -21,10 +21,10 @@
 - [x] Task: Implement API Client. [9b2dbdf]
     - [x] Write tests for API client behavior (e.g., token attachment logic).
     - [x] Create an API utility (using Fetch or Axios) configured to connect to the Django REST backend.
-- [ ] Task: Implement Registration Feature.
-    - [ ] Write tests for Registration component rendering and form submission.
-    - [ ] Build the Registration UI using Tailwind CSS.
-    - [ ] Connect the UI to the backend registration endpoint and handle responses/errors.
+- [x] Task: Implement Registration Feature. [e154189]
+    - [x] Write tests for Registration component rendering and form submission.
+    - [x] Build the Registration UI using Tailwind CSS.
+    - [x] Connect the UI to the backend registration endpoint and handle responses/errors.
 - [ ] Task: Implement Login Feature.
     - [ ] Write tests for Login component rendering and token storage logic.
     - [ ] Build the Login UI.
