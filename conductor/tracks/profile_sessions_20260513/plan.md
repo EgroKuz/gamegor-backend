@@ -20,7 +20,7 @@
 - [x] **Task: Implement Change Password Functionality** [b08944c]
     - [x] Write tests for the change password form (old password, new password, confirm).
     - [x] Implement the form and connect it to the change password API.
-- [ ] **Task: Conductor - User Manual Verification 'Phase 2: Profile Page' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Phase 2: Profile Page' (Protocol in workflow.md)** [51c0c20]
 
 ## Phase 3: Game Sessions Page Implementation
 - [ ] **Task: Create SessionItem Component**
