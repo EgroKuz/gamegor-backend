@@ -56,6 +56,21 @@ describe('GameDetailsPage Component', () => {
     expect(getGameDetails).toHaveBeenCalledWith('123');
   });
 
+  it('contains links back to the games catalog', async () => {
+    const mockGame = { id: 123, title: 'Test Game' };
+    getGameDetails.mockResolvedValue(mockGame);
+
+    renderWithRouter(<GameDetailsPage />, { route: '/games/123' });
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Test Game' })).toBeInTheDocument();
+    });
+
+    const backLinks = screen.getAllByRole('link', { name: /back to games/i });
+    expect(backLinks.length).toBeGreaterThan(0);
+    expect(backLinks[0]).toHaveAttribute('href', '/games');
+  });
+
   it('renders an error message if fetching fails', async () => {
     getGameDetails.mockRejectedValue(new Error('Failed'));
     renderWithRouter(<GameDetailsPage />);
