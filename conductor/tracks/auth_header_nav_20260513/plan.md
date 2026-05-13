@@ -1,8 +1,8 @@
 # Implementation Plan: Auth-Based Header Navigation
 
 **Phase 1: Component Refactoring**
-- [ ] Task: Modify `frontend/src/components/layout/Header.jsx`. Conditionally render the "Home" `<Link>` so it only appears when `isAuthenticated` is true.
-- [ ] Task: Modify `frontend/src/components/layout/Header.jsx`. Replace the static "Profile" `<Link>` with a conditional rendering block: if `isAuthenticated`, show "Profile" (`/profile`), else show "Login" (`/login`).
+- [x] Task: Modify `frontend/src/components/layout/Header.jsx`. Conditionally render the "Home" `<Link>` so it only appears when `isAuthenticated` is true. a42f3e9
+- [x] Task: Modify `frontend/src/components/layout/Header.jsx`. Replace the static "Profile" `<Link>` with a conditional rendering block: if `isAuthenticated`, show "Profile" (`/profile`), else show "Login" (`/login`). a42f3e9
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Component Refactoring' (Protocol in workflow.md)
 
 **Phase 2: Test Updates & Verification**
