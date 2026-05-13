@@ -10,7 +10,7 @@
 - [x] Task: Modify `frontend/src/pages/ProfilePage.jsx`. Locate and remove the "View Game Sessions" button/link. cbf077d
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Cleanup Profile Page' (Protocol in workflow.md) 0367a8d
 
-**Phase 3: Final Verification**
-- [ ] Task: Run frontend test suite. Update any broken component tests related to `Header` or `ProfilePage`.
-- [ ] Task: Manually verify responsiveness of the header with the new link.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)
+**Phase 3: Final Verification** [checkpoint: 3d13552]
+- [x] Task: Run frontend test suite. Update any broken component tests related to `Header` or `ProfilePage`. 168ab4d
+- [x] Task: Manually verify responsiveness of the header with the new link. 3d13552
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md) 3d13552
