@@ -7,9 +7,9 @@ import MainLayout from './MainLayout';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
-const renderWithContext = (ui, token = 'dummy-token') => {
+const renderWithContext = (ui, isAuthenticated = true) => {
   return render(
-    <AuthContext.Provider value={{ token }}>
+    <AuthContext.Provider value={{ isAuthenticated }}>
       <BrowserRouter>
         {ui}
       </BrowserRouter>
