@@ -17,7 +17,7 @@ describe("StatsGrid Component", () => {
     // Check titles
     expect(screen.getByText("Games Played")).toBeInTheDocument();
     expect(screen.getByText("Videos Watched")).toBeInTheDocument();
-    expect(screen.getByText("Reviews Written")).toBeInTheDocument();
+    expect(screen.getByText("Game Sessions")).toBeInTheDocument();
     expect(screen.getByText("Top Genre")).toBeInTheDocument();
 
     // Check values

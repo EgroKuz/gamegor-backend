@@ -11,7 +11,7 @@ const StatsGrid = ({ stats }) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <StatsCard title="Games Played" value={games_played ?? 0} />
       <StatsCard title="Videos Watched" value={videos_watched ?? 0} />
-      <StatsCard title="Reviews Written" value={reviews_written ?? 0} />
+      <StatsCard title="Game Sessions" value={reviews_written ?? 0} />
       <StatsCard title="Top Genre" value={topGenre} />
     </div>
   );
