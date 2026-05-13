@@ -1,0 +1,8 @@
+{
+  "track_id": "remove_sidebar_20260513",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-05-13T18:50:00Z",
+  "updated_at": "2026-05-13T18:50:00Z",
+  "description": "убери слева фильтр со всех страниц. он больше не нужен"
+}
