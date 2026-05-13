@@ -1,9 +1,9 @@
 # Implementation Plan: Move Sessions Link to Header
 
 **Phase 1: Update Header Navigation**
-- [ ] Task: Modify `frontend/src/components/layout/Header.jsx` (or similar layout component). Add a new `<Link>` to `/profile/sessions` labeled "Sessions".
-- [ ] Task: Wrap the new link in an authentication check (e.g., using `AuthContext` or `token`) so it only renders for logged-in users.
-- [ ] Task: Ensure styling matches existing header navigation links.
+- [x] Task: Modify `frontend/src/components/layout/Header.jsx` (or similar layout component). Add a new `<Link>` to `/profile/sessions` labeled "Sessions". 2923ab5
+- [x] Task: Wrap the new link in an authentication check (e.g., using `AuthContext` or `token`) so it only renders for logged-in users. 2923ab5
+- [x] Task: Ensure styling matches existing header navigation links. 2923ab5
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Update Header Navigation' (Protocol in workflow.md)
 
 **Phase 2: Cleanup Profile Page**
