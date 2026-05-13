@@ -23,7 +23,7 @@ describe('VideoContentPage Component', () => {
     expect(screen.getByText(/loading videos/i)).toBeInTheDocument();
   });
 
-  it('renders a list of videos after fetching data', async () => {
+  it('renders a list of videos and a search input after fetching data', async () => {
     const mockVideos = [
       { id: 1, title: 'Video A', youtube_id: '111' },
       { id: 2, title: 'Video B', youtube_id: '222', game: 10, game_title: 'Game A' }
@@ -37,6 +37,7 @@ describe('VideoContentPage Component', () => {
     );
 
     await waitFor(() => {
+      expect(screen.getByPlaceholderText(/search videos/i)).toBeInTheDocument();
       expect(screen.getByText('Video A')).toBeInTheDocument();
       expect(screen.getByText('Video B')).toBeInTheDocument();
       expect(screen.getByText('Game A')).toBeInTheDocument(); // Checks if game assoc is rendered via VideoCard
@@ -69,6 +70,7 @@ describe('VideoContentPage Component', () => {
     );
 
     await waitFor(() => {
+      expect(screen.getByPlaceholderText(/search videos/i)).toBeInTheDocument();
       expect(screen.getByText(/no videos available/i)).toBeInTheDocument();
     });
   });

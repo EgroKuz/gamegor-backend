@@ -6,6 +6,7 @@ const VideoContentPage = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -47,13 +48,24 @@ const VideoContentPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
-      <header className="border-b border-gray-800 pb-6">
-        <h2 className="text-3xl font-extrabold text-white tracking-tight">
-          Video Content
-        </h2>
-        <p className="text-gray-400 mt-1">
-          Watch gameplay, reviews, and guides from the community.
-        </p>
+      <header className="border-b border-gray-800 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-extrabold text-white tracking-tight">
+            Video Content
+          </h2>
+          <p className="text-gray-400 mt-1">
+            Watch gameplay, reviews, and guides from the community.
+          </p>
+        </div>
+        <div className="w-full md:w-auto min-w-[300px]">
+          <input
+            type="text"
+            placeholder="Search videos by title, description, or author..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-neon-teal transition-colors"
+          />
+        </div>
       </header>
 
       {videos.length === 0 ? (
