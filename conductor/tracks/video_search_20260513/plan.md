@@ -1,8 +1,8 @@
 # Implementation Plan: Video Content Search
 
 **Phase 1: Component Structure & State**
-- [ ] Task: Modify `frontend/src/pages/VideoContentPage.jsx` to introduce a state variable for the search query (e.g., `const [searchQuery, setSearchQuery] = useState('')`).
-- [ ] Task: Add a search input UI element at the top of the component, binding its value to the `searchQuery` state.
+- [x] Task: Modify `frontend/src/pages/VideoContentPage.jsx` to introduce a state variable for the search query (e.g., `const [searchQuery, setSearchQuery] = useState('')`). 97ca11e
+- [x] Task: Add a search input UI element at the top of the component, binding its value to the `searchQuery` state. 97ca11e
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Component Structure & State' (Protocol in workflow.md)
 
 **Phase 2: Client-Side Filtering Logic**
