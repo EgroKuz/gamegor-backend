@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/layout/Header.jsx</title>
+    <title>Code coverage report for src/pages/NotFoundPage.jsx</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../prettify.css" />
-    <link rel="stylesheet" href="../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/layout</a> Header.jsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/pages</a> NotFoundPage.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -87,11 +87,43 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,27 +146,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
 import { Link } from 'react-router-dom';
 &nbsp;
-const Header = () =&gt; {
+const NotFoundPage = () =&gt; {
   return (
-    &lt;header role="banner" className="bg-gray-900 text-white p-4"&gt;
-      &lt;div className="container mx-auto flex justify-between items-center"&gt;
-        &lt;Link to="/" className="text-xl font-bold text-neon-teal"&gt;GameGor&lt;/Link&gt;
-        &lt;nav&gt;
-          &lt;ul className="flex space-x-4"&gt;
-            &lt;li&gt;&lt;Link to="/" className="hover:text-neon-teal"&gt;Home&lt;/Link&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;Link to="/games" className="hover:text-neon-teal"&gt;Games&lt;/Link&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;Link to="/videos" className="hover:text-neon-teal"&gt;Videos&lt;/Link&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/nav&gt;
-        &lt;div&gt;
-          &lt;Link to="/profile" className="text-sm cursor-pointer hover:text-neon-teal"&gt;Profile&lt;/Link&gt;
-        &lt;/div&gt;
+    &lt;div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-in fade-in duration-700"&gt;
+      &lt;div className="relative"&gt;
+        &lt;h1 className="text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-red-500 to-purple-600 drop-shadow-[0_0_25px_rgba(239,68,68,0.5)] select-none"&gt;
+          404
+        &lt;/h1&gt;
+        &lt;div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-2 bg-black/50 blur-sm mix-blend-overlay"&gt;&lt;/div&gt;
       &lt;/div&gt;
-    &lt;/header&gt;
+      
+      &lt;h2 className="text-4xl font-bold text-white mt-8 mb-4 uppercase tracking-widest"&gt;
+        Game Over
+      &lt;/h2&gt;
+      
+      &lt;p className="text-xl text-gray-400 max-w-lg mb-12"&gt;
+        The page you are looking for does not exist or has been moved to another server.
+      &lt;/p&gt;
+&nbsp;
+      &lt;div className="flex flex-col sm:flex-row gap-6 w-full max-w-md justify-center"&gt;
+        &lt;Link 
+          to="/" 
+          className="flex-1 bg-neon-teal text-gray-950 font-bold py-3 px-6 rounded-lg shadow-[0_0_15px_rgba(34,211,238,0.4)] hover:bg-teal-400 hover:shadow-[0_0_25px_rgba(34,211,238,0.6)] transition-all duration-300 uppercase tracking-wider text-center"
+        &gt;
+          Return to Home
+        &lt;/Link&gt;
+        &lt;Link 
+          to="/games" 
+          className="flex-1 bg-transparent border-2 border-neon-violet text-neon-violet font-bold py-3 px-6 rounded-lg hover:bg-neon-violet/10 transition-all duration-300 uppercase tracking-wider text-center"
+        &gt;
+          Browse Games
+        &lt;/Link&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
   );
 };
 &nbsp;
-export default Header;
+export default NotFoundPage;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -144,14 +192,14 @@ export default Header;
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2026-05-13T00:01:24.377Z
             </div>
-        <script src="../../../prettify.js"></script>
+        <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../sorter.js"></script>
-        <script src="../../../block-navigation.js"></script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
     </body>
 </html>
     
