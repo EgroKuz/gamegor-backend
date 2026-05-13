@@ -1,9 +1,9 @@
 # Implementation Plan: Add Game Session Form
 
 **Phase 1: API Integration & Component Setup**
-- [ ] Task: Update the API client (`frontend/src/api/sessions.js`) to include a `createSession(sessionData)` function that sends a POST request to `/api/sessions/`.
-- [ ] Task: Create the base UI component for the form (e.g., `SessionForm.jsx`).
-- [ ] Task: Implement form state management (rating, comment, tags) within the new component.
+- [x] Task: Update the API client (`frontend/src/api/sessions.js`) to include a `createSession(sessionData)` function that sends a POST request to `/api/sessions/`. 87e689a
+- [x] Task: Create the base UI component for the form (e.g., `SessionForm.jsx`). 87e689a
+- [x] Task: Implement form state management (rating, comment, tags) within the new component. 87e689a
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration & Component Setup' (Protocol in workflow.md)
 
 **Phase 2: Form Implementation & Validation**
