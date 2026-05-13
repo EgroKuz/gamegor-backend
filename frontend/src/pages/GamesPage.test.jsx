@@ -24,10 +24,10 @@ describe('GamesPage Component', () => {
     expect(screen.getByText(/loading games/i)).toBeInTheDocument();
   });
 
-  it('renders a grid of game cards after fetching data', async () => {
+  it('renders a grid of game cards with cover images or fallbacks after fetching data', async () => {
     const mockGames = [
-      { id: 1, title: 'Game One', developer: 'Dev A' },
-      { id: 2, title: 'Game Two', developer: 'Dev B' }
+      { id: 1, title: 'Game One', developer: 'Dev A', cover_image_url: 'http://example.com/game1.jpg' },
+      { id: 2, title: 'Game Two', developer: 'Dev B' } // No image
     ];
     getGames.mockResolvedValue(mockGames);
 
@@ -41,6 +41,14 @@ describe('GamesPage Component', () => {
       expect(screen.getByText('Game One')).toBeInTheDocument();
       expect(screen.getByText('Game Two')).toBeInTheDocument();
     });
+    
+    // Check image for Game One
+    const img1 = screen.getByRole('img', { name: /game one cover/i });
+    expect(img1).toHaveAttribute('src', 'http://example.com/game1.jpg');
+
+    // Check fallback for Game Two
+    const fallbackText = screen.getByText('No Image');
+    expect(fallbackText).toBeInTheDocument();
 
     expect(getGames).toHaveBeenCalledTimes(1);
     // Initial call should be without a search term
