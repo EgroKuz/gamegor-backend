@@ -4,15 +4,18 @@ import { BrowserRouter } from 'react-router-dom';
 import MainLayout from './MainLayout';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import { AuthContext } from '../../context/AuthContext';
 
 describe('Layout Aesthetic', () => {
   it('MainLayout should have a dark background and white text', () => {
     const { container } = render(
-      <BrowserRouter>
-        <MainLayout>
-          <div>Content</div>
-        </MainLayout>
-      </BrowserRouter>
+      <AuthContext.Provider value={{ isAuthenticated: false }}>
+        <BrowserRouter>
+          <MainLayout>
+            <div>Content</div>
+          </MainLayout>
+        </BrowserRouter>
+      </AuthContext.Provider>
     );
     // Use firstChild to check the root div of MainLayout
     expect(container.firstChild).toHaveClass('bg-gray-950');
@@ -21,9 +24,11 @@ describe('Layout Aesthetic', () => {
 
   it('Header should use custom neon teal for the logo text', () => {
     render(
-      <BrowserRouter>
-        <Header />
-      </BrowserRouter>
+      <AuthContext.Provider value={{ isAuthenticated: false }}>
+        <BrowserRouter>
+          <Header />
+        </BrowserRouter>
+      </AuthContext.Provider>
     );
     const logoText = screen.getByText('GameGor');
     expect(logoText).toHaveClass('text-neon-teal'); // Expecting custom color from config
