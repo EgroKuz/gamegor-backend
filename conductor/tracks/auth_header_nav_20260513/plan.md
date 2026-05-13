@@ -1,9 +1,9 @@
 # Implementation Plan: Auth-Based Header Navigation
 
-**Phase 1: Component Refactoring**
+**Phase 1: Component Refactoring** [checkpoint: 36f794f]
 - [x] Task: Modify `frontend/src/components/layout/Header.jsx`. Conditionally render the "Home" `<Link>` so it only appears when `isAuthenticated` is true. a42f3e9
 - [x] Task: Modify `frontend/src/components/layout/Header.jsx`. Replace the static "Profile" `<Link>` with a conditional rendering block: if `isAuthenticated`, show "Profile" (`/profile`), else show "Login" (`/login`). a42f3e9
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Component Refactoring' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Component Refactoring' (Protocol in workflow.md) 36f794f
 
 **Phase 2: Test Updates & Verification**
 - [ ] Task: Update `frontend/src/components/layout/Layout.test.jsx`. Update the existing header test to verify the authenticated state, and add a new test case to verify the header renders correctly for unauthenticated users (only "Games", "Videos", "Login").
