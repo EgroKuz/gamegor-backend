@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import VideoCard from '../components/videos/VideoCard';
 import { getVideos } from '../api/videos';
 
@@ -25,6 +25,18 @@ const VideoContentPage = () => {
 
     fetchVideos();
   }, []);
+
+  const filteredVideos = useMemo(() => {
+    if (!searchQuery.trim()) return videos;
+    const lowerQuery = searchQuery.toLowerCase();
+    return videos.filter((video) => {
+      return (
+        (video.title && video.title.toLowerCase().includes(lowerQuery)) ||
+        (video.description && video.description.toLowerCase().includes(lowerQuery)) ||
+        (video.author_name && video.author_name.toLowerCase().includes(lowerQuery))
+      );
+    });
+  }, [videos, searchQuery]);
 
   if (loading) {
     return (
@@ -76,9 +88,17 @@ const VideoContentPage = () => {
             Check back later for new video content.
           </p>
         </div>
+      ) : filteredVideos.length === 0 ? (
+        <div className="bg-gray-900/50 rounded-2xl p-12 border border-gray-800 text-center animate-in fade-in">
+          <span className="text-5xl block mb-4">🔍</span>
+          <h3 className="text-xl font-bold text-white mb-2">No Matching Videos Found</h3>
+          <p className="text-gray-400">
+            We couldn't find any videos matching "{searchQuery}". Try adjusting your search terms.
+          </p>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {videos.map((video) => (
+          {filteredVideos.map((video) => (
             <VideoCard key={video.id} video={video} />
           ))}
         </div>

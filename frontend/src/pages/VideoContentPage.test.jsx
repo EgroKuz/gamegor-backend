@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import VideoContentPage from './VideoContentPage';
@@ -46,6 +47,68 @@ describe('VideoContentPage Component', () => {
     expect(getVideos).toHaveBeenCalledTimes(1);
   });
 
+  it('filters videos based on search query', async () => {
+    const user = userEvent.setup();
+    const mockVideos = [
+      { id: 1, title: 'Dark Souls Guide', description: 'Hard boss', author_name: 'GamerX', youtube_id: '111' },
+      { id: 2, title: 'Mario Speedrun', description: 'Fast', author_name: 'Speedy', youtube_id: '222' }
+    ];
+    getVideos.mockResolvedValue(mockVideos);
+
+    render(
+      <MemoryRouter>
+        <VideoContentPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Dark Souls Guide')).toBeInTheDocument();
+      expect(screen.getByText('Mario Speedrun')).toBeInTheDocument();
+    });
+
+    const searchInput = screen.getByPlaceholderText(/search videos/i);
+
+    // Search by title
+    await user.type(searchInput, 'mario');
+    expect(screen.queryByText('Dark Souls Guide')).not.toBeInTheDocument();
+    expect(screen.getByText('Mario Speedrun')).toBeInTheDocument();
+
+    await user.clear(searchInput);
+
+    // Search by description
+    await user.type(searchInput, 'boss');
+    expect(screen.getByText('Dark Souls Guide')).toBeInTheDocument();
+    expect(screen.queryByText('Mario Speedrun')).not.toBeInTheDocument();
+
+    await user.clear(searchInput);
+
+    // Search by author
+    await user.type(searchInput, 'speedy');
+    expect(screen.queryByText('Dark Souls Guide')).not.toBeInTheDocument();
+    expect(screen.getByText('Mario Speedrun')).toBeInTheDocument();
+  });
+
+  it('displays empty state when search yields no results', async () => {
+    const user = userEvent.setup();
+    getVideos.mockResolvedValue([{ id: 1, title: 'Video A', youtube_id: '111' }]);
+
+    render(
+      <MemoryRouter>
+        <VideoContentPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Video A')).toBeInTheDocument();
+    });
+
+    const searchInput = screen.getByPlaceholderText(/search videos/i);
+    await user.type(searchInput, 'xyz123');
+
+    expect(screen.queryByText('Video A')).not.toBeInTheDocument();
+    expect(screen.getByText(/no matching videos found/i)).toBeInTheDocument();
+  });
+
   it('renders an error message if fetching fails', async () => {
     getVideos.mockRejectedValue(new Error('Network Error'));
 
@@ -60,7 +123,7 @@ describe('VideoContentPage Component', () => {
     });
   });
 
-  it('renders an empty state if no videos are found', async () => {
+  it('renders a global empty state if no videos are found at all', async () => {
     getVideos.mockResolvedValue([]);
 
     render(
