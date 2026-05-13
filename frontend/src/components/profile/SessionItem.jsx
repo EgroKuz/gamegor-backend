@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SessionItem = ({ session }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
 
   if (!session || !session.game) return null;
 
@@ -77,14 +78,22 @@ const SessionItem = ({ session }) => {
       </div>
 
       {/* Expandable Review Section */}
-      {isExpanded && comment && (
-        <div className="p-4 bg-gray-900/50 border-t border-gray-700 text-gray-300 text-sm leading-relaxed animate-in slide-in-from-top-2 duration-200">
-          <p className="whitespace-pre-line">{comment}</p>
-        </div>
-      )}
-      {isExpanded && !comment && (
-        <div className="p-4 bg-gray-900/50 border-t border-gray-700 text-gray-500 italic text-sm">
-          No review text provided for this session.
+      {isExpanded && (
+        <div className="p-4 bg-gray-900/50 border-t border-gray-700 animate-in slide-in-from-top-2 duration-200 flex flex-col gap-4">
+          {comment ? (
+            <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">{comment}</p>
+          ) : (
+            <p className="text-gray-500 italic text-sm">No review text provided for this session.</p>
+          )}
+          
+          <div className="flex justify-end pt-2">
+            <button
+              onClick={() => navigate(`/sessions/${id}/recommendation`)}
+              className="bg-neon-teal/10 text-neon-teal hover:bg-neon-teal hover:text-gray-900 border border-neon-teal px-4 py-2 rounded-md font-bold transition-all text-sm flex items-center gap-2"
+            >
+              <span>🤖</span> View AI Advice
+            </button>
+          </div>
         </div>
       )}
     </div>
@@ -92,4 +101,5 @@ const SessionItem = ({ session }) => {
 };
 
 export default SessionItem;
+
 
