@@ -7,6 +7,7 @@ import GamesPage from './pages/GamesPage';
 import GameDetailsPage from './pages/GameDetailsPage';
 import ProfilePage from './pages/ProfilePage';
 import GameSessionsPage from './pages/GameSessionsPage';
+import RecommendationDetailsPage from './pages/RecommendationDetailsPage';
 import VideoContentPage from './pages/VideoContentPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -25,6 +26,7 @@ function App() {
         <Route path="/games/:id" element={<ProtectedRoute><GameDetailsPage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/profile/sessions" element={<ProtectedRoute><GameSessionsPage /></ProtectedRoute>} />
+        <Route path="/sessions/:id/recommendation" element={<ProtectedRoute><RecommendationDetailsPage /></ProtectedRoute>} />
         <Route path="/videos" element={<ProtectedRoute><VideoContentPage /></ProtectedRoute>} />
 
         {/* Public Routes */}
