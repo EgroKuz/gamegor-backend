@@ -6,9 +6,9 @@
 - [x] Task: Ensure styling matches existing header navigation links. 2923ab5
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Update Header Navigation' (Protocol in workflow.md)
 
-**Phase 2: Cleanup Profile Page**
+**Phase 2: Cleanup Profile Page** [checkpoint: 0367a8d]
 - [x] Task: Modify `frontend/src/pages/ProfilePage.jsx`. Locate and remove the "View Game Sessions" button/link. cbf077d
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Cleanup Profile Page' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Cleanup Profile Page' (Protocol in workflow.md) 0367a8d
 
 **Phase 3: Final Verification**
 - [ ] Task: Run frontend test suite. Update any broken component tests related to `Header` or `ProfilePage`.
