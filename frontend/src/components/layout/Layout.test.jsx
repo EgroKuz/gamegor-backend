@@ -18,14 +18,28 @@ const renderWithContext = (ui, isAuthenticated = true) => {
 };
 
 describe('Layout Components', () => {
-  it('renders Header component with navigation links', () => {
-    renderWithContext(<Header />);
+  it('renders Header component with navigation links for authenticated users', () => {
+    renderWithContext(<Header />, true);
     expect(screen.getByRole('banner')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /games/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /videos/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /sessions/i })).toBeInTheDocument();
-    expect(screen.getByText('Profile')).toBeInTheDocument(); // Expecting updated placeholder
+    expect(screen.getByRole('link', { name: /profile/i })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /login/i })).not.toBeInTheDocument();
+  });
+
+  it('renders Header component with navigation links for unauthenticated users', () => {
+    renderWithContext(<Header />, false);
+    expect(screen.getByRole('banner')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /games/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /videos/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument();
+    
+    // Should NOT see Home, Sessions, or Profile
+    expect(screen.queryByRole('link', { name: /home/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /sessions/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /profile/i })).not.toBeInTheDocument();
   });
 
   it('renders Sidebar component with genre filters', () => {
