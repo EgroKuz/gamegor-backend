@@ -1,8 +1,8 @@
 # Implementation Plan: Remove Sidebar Filters
 
 **Phase 1: Layout Refactoring**
-- [ ] Task: Modify `frontend/src/components/layout/MainLayout.jsx` to remove the `<Sidebar />` import and component instance.
-- [ ] Task: Adjust the CSS classes on the `MainLayout` container (e.g., removing flex structures that specifically allocated fixed width to the sidebar) so the `<main>` content expands to full width.
+- [x] Task: Modify `frontend/src/components/layout/MainLayout.jsx` to remove the `<Sidebar />` import and component instance. 1d33730
+- [x] Task: Adjust the CSS classes on the `MainLayout` container (e.g., removing flex structures that specifically allocated fixed width to the sidebar) so the `<main>` content expands to full width. 1d33730
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Layout Refactoring' (Protocol in workflow.md)
 
 **Phase 2: Test Updates & Verification**
