@@ -1,0 +1,8 @@
+{
+  "track_id": "recommendation_details_20260513",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-05-13T14:55:00Z",
+  "updated_at": "2026-05-13T14:55:00Z",
+  "description": "должно отображаться название игры, ответ ии, теги и кнопка с возможностью перейти на страницу Video"
+}
