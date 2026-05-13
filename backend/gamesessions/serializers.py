@@ -17,7 +17,8 @@ class GameSessionSerializer(serializers.ModelSerializer):
 class GameSessionCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameSession
-        fields = ['game', 'rating', 'comment', 'tags']
+        fields = ['id', 'game', 'rating', 'comment', 'tags']
+        read_only_fields = ['id']
     
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
