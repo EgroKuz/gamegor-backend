@@ -1,30 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SessionItem from '../components/profile/SessionItem';
-import { getUserSessions } from '../api/sessions';
+import { getUserSessions, updateSession } from '../api/sessions';
 
 const GameSessionsPage = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchSessions = async () => {
-      try {
-        setLoading(true);
-        const data = await getUserSessions();
-        setSessions(data);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching sessions:', err);
-        setError('Failed to load sessions. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchSessions = async () => {
+    try {
+      setLoading(true);
+      const data = await getUserSessions();
+      setSessions(data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching sessions:', err);
+      setError('Failed to load sessions. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchSessions();
   }, []);
+
+  const handleUpdateSession = async (id, updatedData) => {
+    try {
+      await updateSession(id, updatedData);
+      // Optimistically update the session in the local state or refetch
+      await fetchSessions();
+    } catch (err) {
+      console.error('Failed to update session:', err);
+      alert('Failed to update session. ' + (err.response?.data?.detail || ''));
+    }
+  };
 
   if (loading) {
     return (
@@ -82,7 +93,7 @@ const GameSessionsPage = () => {
       ) : (
         <div className="space-y-4">
           {sessions.map((session) => (
-            <SessionItem key={session.id} session={session} />
+            <SessionItem key={session.id} session={session} onUpdate={handleUpdateSession} />
           ))}
         </div>
       )}

@@ -1,28 +1,35 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import VideoCard from '../components/videos/VideoCard';
-import { getVideos } from '../api/videos';
+import VideoFormModal from '../components/videos/VideoFormModal';
+import { getVideos, createVideo, updateVideo, deleteVideo } from '../api/videos';
+import { AuthContext } from '../context/AuthContext';
 
 const VideoContentPage = () => {
+  const { user } = useContext(AuthContext);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        setLoading(true);
-        const data = await getVideos();
-        setVideos(data);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching videos:', err);
-        setError('Failed to load videos. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const [showModal, setShowModal] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const fetchVideos = async () => {
+    try {
+      setLoading(true);
+      const data = await getVideos();
+      setVideos(data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching videos:', err);
+      setError('Failed to load videos. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchVideos();
   }, []);
 
@@ -37,6 +44,46 @@ const VideoContentPage = () => {
       );
     });
   }, [videos, searchQuery]);
+
+  const handleEditOpen = (video) => {
+    setSelectedVideo(video);
+    setShowModal(true);
+  };
+
+  const handleCreateOpen = () => {
+    setSelectedVideo(null);
+    setShowModal(true);
+  };
+
+  const handleSubmit = async (formData) => {
+    setIsSubmitting(true);
+    try {
+      if (selectedVideo) {
+        await updateVideo(selectedVideo.id, formData);
+      } else {
+        await createVideo(formData);
+      }
+      setShowModal(false);
+      await fetchVideos();
+    } catch (err) {
+      console.error('Error saving video:', err);
+      alert('Failed to save video. ' + (err.response?.data?.detail || ''));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (video) => {
+    if (window.confirm(`Are you sure you want to delete the video "${video.title}"? This action cannot be undone.`)) {
+      try {
+        await deleteVideo(video.id);
+        await fetchVideos();
+      } catch (err) {
+        console.error('Error deleting video:', err);
+        alert('Failed to delete video. ' + (err.response?.data?.detail || ''));
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -99,9 +146,30 @@ const VideoContentPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredVideos.map((video) => (
-            <VideoCard key={video.id} video={video} />
+            <VideoCard key={video.id} video={video} onEdit={handleEditOpen} onDelete={handleDelete} />
           ))}
         </div>
+      )}
+
+      {user?.is_staff && (
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={handleCreateOpen}
+            className="bg-neon-teal text-gray-950 px-8 py-3 rounded-xl font-bold hover:bg-teal-400 transition-colors shadow-[0_0_20px_rgba(34,211,238,0.3)] flex items-center gap-2"
+          >
+            <span className="text-xl">+</span> Add New Video
+          </button>
+        </div>
+      )}
+
+      {showModal && (
+        <VideoFormModal 
+          video={selectedVideo}
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+        />
       )}
     </div>
   );

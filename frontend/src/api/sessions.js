@@ -15,7 +15,13 @@ export const createSession = async (sessionData) => {
   return response.data;
 };
 
+export const updateSession = async (id, sessionData) => {
+  const response = await api.patch(`/sessions/${id}/`, sessionData);
+  return response.data;
+};
+
 export const getSessionAdvice = async (params) => {
   const response = await api.get('/session-advice/', { params });
   return response.data;
 };
+

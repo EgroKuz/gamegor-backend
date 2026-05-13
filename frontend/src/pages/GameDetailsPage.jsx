@@ -1,18 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getGameDetails } from '../api/games';
+import { getGameDetails, updateGame, deleteGame } from '../api/games';
 import { createSession } from '../api/sessions';
 import SessionForm from '../components/sessions/SessionForm';
+import GameFormModal from '../components/games/GameFormModal';
+import { AuthContext } from '../context/AuthContext';
 
 const GameDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -46,6 +54,32 @@ const GameDetailsPage = () => {
       setSubmitError(err.response?.data?.detail || err.response?.data?.error || 'Failed to submit review.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleEditGame = async (formData) => {
+    setIsEditing(true);
+    try {
+      const updatedGame = await updateGame(game.id, formData);
+      setGame(updatedGame);
+      setShowEditModal(false);
+    } catch (err) {
+      console.error('Error updating game:', err);
+      alert('Failed to update game. ' + (err.response?.data?.detail || ''));
+    } finally {
+      setIsEditing(false);
+    }
+  };
+
+  const handleDeleteGame = async () => {
+    if (window.confirm(`Are you sure you want to delete the game "${game.title}"? This action cannot be undone.`)) {
+      try {
+        await deleteGame(game.id);
+        navigate('/games');
+      } catch (err) {
+        console.error('Error deleting game:', err);
+        alert('Failed to delete game. ' + (err.response?.data?.detail || ''));
+      }
     }
   };
 
@@ -84,7 +118,24 @@ const GameDetailsPage = () => {
         <span className="mr-2">&larr;</span> Back to Games
       </Link>
 
-      <div className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 shadow-2xl flex flex-col md:flex-row">
+      <div className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 shadow-2xl flex flex-col md:flex-row relative">
+        {user?.is_staff && (
+          <div className="absolute top-4 right-4 z-10 flex gap-2">
+            <button 
+              onClick={() => setShowEditModal(true)}
+              className="bg-gray-800/80 backdrop-blur-sm border border-gray-600 text-white px-3 py-1.5 rounded-md hover:bg-gray-700 transition-colors shadow-md text-sm font-medium flex items-center gap-2"
+            >
+              <span>✏️</span> Edit Game
+            </button>
+            <button 
+              onClick={handleDeleteGame}
+              className="bg-gray-800/80 backdrop-blur-sm border border-red-900/50 text-red-400 px-3 py-1.5 rounded-md hover:bg-red-900/30 hover:text-red-300 transition-colors shadow-md text-sm font-medium flex items-center gap-2"
+            >
+              <span>🗑️</span> Delete Game
+            </button>
+          </div>
+        )}
+
         {/* Cover Image Section */}
         <div className="md:w-1/3 relative bg-gray-950 flex-shrink-0">
           {game.cover_image ? (
@@ -105,7 +156,7 @@ const GameDetailsPage = () => {
 
         {/* Details Section */}
         <div className="p-8 md:w-2/3 flex flex-col">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2 tracking-tight pr-12">
             {game.title}
           </h1>
           
@@ -120,7 +171,7 @@ const GameDetailsPage = () => {
 
           <div className="prose prose-invert max-w-none text-gray-300">
             <h3 className="text-xl font-bold text-white mb-2 border-b border-gray-800 pb-2">About the Game</h3>
-            <p className="leading-relaxed">
+            <p className="leading-relaxed whitespace-pre-line">
               {game.description || 'No description available for this game.'}
             </p>
           </div>
@@ -132,7 +183,7 @@ const GameDetailsPage = () => {
              >
                Add Session
              </button>
-             <button className="bg-gray-800 text-white border border-gray-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors">
+             <button onClick={() => navigate(`/videos?gameId=${game.id}`)} className="bg-gray-800 text-white border border-gray-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors">
                View Videos
              </button>
           </div>
@@ -151,6 +202,16 @@ const GameDetailsPage = () => {
             />
           </div>
         </div>
+      )}
+
+      {showEditModal && (
+        <GameFormModal 
+          game={game}
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          onSubmit={handleEditGame}
+          isSubmitting={isEditing}
+        />
       )}
     </div>
   );

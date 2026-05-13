@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const SessionForm = ({ onSubmit, onCancel, isSubmitting = false, error = null }) => {
+const SessionForm = ({ initialData = null, onSubmit, onCancel, isSubmitting = false, error = null }) => {
   const [rating, setRating] = useState('');
   const [comment, setComment] = useState('');
   const [tagsInput, setTagsInput] = useState('');
   const [validationError, setValidationError] = useState('');
+
+  useEffect(() => {
+    if (initialData) {
+      setRating(initialData.rating ? initialData.rating.toString() : '');
+      setComment(initialData.comment || '');
+      setTagsInput(Array.isArray(initialData.tags) ? initialData.tags.join(', ') : (initialData.tags || ''));
+    }
+  }, [initialData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -100,3 +108,4 @@ const SessionForm = ({ onSubmit, onCancel, isSubmitting = false, error = null })
 };
 
 export default SessionForm;
+

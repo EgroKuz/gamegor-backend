@@ -2,8 +2,9 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import GameDetailsPage from './GameDetailsPage';
-import { getGameDetails } from '../api/games';
+import { getGameDetails, deleteGame } from '../api/games';
 import { createSession } from '../api/sessions';
+import { AuthContext } from '../context/AuthContext';
 
 vi.mock('../api/games');
 vi.mock('../api/sessions');
@@ -22,13 +23,15 @@ describe('GameDetailsPage Component', () => {
     vi.clearAllMocks();
   });
 
-  const renderWithRouter = (ui, { route = '/games/1' } = {}) => {
+  const renderWithRouter = (ui, { route = '/games/1', user = null } = {}) => {
     window.history.pushState({}, 'Test page', route);
     return render(
       <MemoryRouter initialEntries={[route]}>
-        <Routes>
-          <Route path="/games/:id" element={ui} />
-        </Routes>
+        <AuthContext.Provider value={{ user, isAuthenticated: !!user, login: vi.fn(), logout: vi.fn(), loading: false }}>
+          <Routes>
+            <Route path="/games/:id" element={ui} />
+          </Routes>
+        </AuthContext.Provider>
       </MemoryRouter>
     );
   };
@@ -129,5 +132,55 @@ describe('GameDetailsPage Component', () => {
       });
       expect(mockNavigate).toHaveBeenCalledWith('/sessions/1/recommendation');
     });
+  });
+
+  it('does not render Edit or Delete Game button for non-staff users', async () => {
+    getGameDetails.mockResolvedValue({ id: 123, title: 'Test Game' });
+    renderWithRouter(<GameDetailsPage />, { route: '/games/123', user: { is_staff: false } });
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Test Game' })).toBeInTheDocument();
+    });
+
+    expect(screen.queryByRole('button', { name: /edit game/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /delete game/i })).not.toBeInTheDocument();
+  });
+
+  it('renders Edit and Delete Game button for staff users', async () => {
+    getGameDetails.mockResolvedValue({ id: 123, title: 'Test Game' });
+    renderWithRouter(<GameDetailsPage />, { route: '/games/123', user: { is_staff: true } });
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Test Game' })).toBeInTheDocument();
+    });
+
+    expect(screen.getByRole('button', { name: /edit game/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /delete game/i })).toBeInTheDocument();
+  });
+
+  it('deletes game and redirects to games catalog when delete is confirmed', async () => {
+    // Mock window.confirm to always return true
+    const originalConfirm = window.confirm;
+    window.confirm = vi.fn(() => true);
+
+    getGameDetails.mockResolvedValue({ id: 123, title: 'Test Game' });
+    deleteGame.mockResolvedValue({}); // Simulate successful deletion
+
+    renderWithRouter(<GameDetailsPage />, { route: '/games/123', user: { is_staff: true } });
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Test Game' })).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /delete game/i }));
+
+    await waitFor(() => {
+      expect(window.confirm).toHaveBeenCalledWith(expect.stringContaining('Test Game'));
+      expect(deleteGame).toHaveBeenCalledWith(123);
+      expect(mockNavigate).toHaveBeenCalledWith('/games');
+    });
+
+    // Restore original confirm
+    window.confirm = originalConfirm;
   });
 });

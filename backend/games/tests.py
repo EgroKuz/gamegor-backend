@@ -2,7 +2,10 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
+from django.contrib.auth import get_user_model
 from .models import Game, Platform
+
+User = get_user_model()
 
 class GamePerformanceTests(TestCase):
     def setUp(self):
@@ -32,3 +35,52 @@ class GamePerformanceTests(TestCase):
         with self.assertNumQueries(1):
             response = self.client.get('/api/platforms/')
             self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class GamePermissionsTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.game = Game.objects.create(
+            title="Test Game",
+            genre="Action",
+            developer="Test Dev",
+            release_date="2022-01-01"
+        )
+        self.url = f'/api/games/{self.game.id}/'
+        
+        # Create a regular user
+        self.regular_user = User.objects.create_user(
+            username='regularuser',
+            password='testpassword123',
+            nickname='regular_nick'
+        )
+        
+        # Create a staff user (moderator)
+        self.staff_user = User.objects.create_user(
+            username='staffuser',
+            password='testpassword123',
+            nickname='staff_nick',
+            is_staff=True
+        )
+
+    def test_anonymous_can_read(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_anonymous_cannot_update(self):
+        data = {'title': 'Updated Title'}
+        response = self.client.patch(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+    def test_regular_user_cannot_update(self):
+        self.client.force_authenticate(user=self.regular_user)
+        data = {'title': 'Updated Title'}
+        response = self.client.patch(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+    def test_staff_user_can_update(self):
+        self.client.force_authenticate(user=self.staff_user)
+        data = {'title': 'Updated Title'}
+        response = self.client.patch(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.game.refresh_from_db()
+        self.assertEqual(self.game.title, 'Updated Title')

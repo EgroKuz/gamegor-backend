@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import VideoContentPage from './VideoContentPage';
 import { getVideos } from '../api/videos';
+import { AuthContext } from '../context/AuthContext';
 
 vi.mock('../api/videos');
 
@@ -12,14 +13,20 @@ describe('VideoContentPage Component', () => {
     vi.clearAllMocks();
   });
 
+  const renderWithContext = (ui, { user = null } = {}) => {
+    return render(
+      <MemoryRouter>
+        <AuthContext.Provider value={{ user, isAuthenticated: !!user }}>
+          {ui}
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
+  };
+
   it('renders loading state initially', () => {
     getVideos.mockReturnValue(new Promise(() => {})); // Never resolves
     
-    render(
-      <MemoryRouter>
-        <VideoContentPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<VideoContentPage />);
 
     expect(screen.getByText(/loading videos/i)).toBeInTheDocument();
   });
@@ -31,11 +38,7 @@ describe('VideoContentPage Component', () => {
     ];
     getVideos.mockResolvedValue(mockVideos);
 
-    render(
-      <MemoryRouter>
-        <VideoContentPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<VideoContentPage />);
 
     await waitFor(() => {
       expect(screen.getByPlaceholderText(/search videos/i)).toBeInTheDocument();
@@ -55,11 +58,7 @@ describe('VideoContentPage Component', () => {
     ];
     getVideos.mockResolvedValue(mockVideos);
 
-    render(
-      <MemoryRouter>
-        <VideoContentPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<VideoContentPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Dark Souls Guide')).toBeInTheDocument();
@@ -92,11 +91,7 @@ describe('VideoContentPage Component', () => {
     const user = userEvent.setup();
     getVideos.mockResolvedValue([{ id: 1, title: 'Video A', youtube_id: '111' }]);
 
-    render(
-      <MemoryRouter>
-        <VideoContentPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<VideoContentPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Video A')).toBeInTheDocument();
@@ -112,11 +107,7 @@ describe('VideoContentPage Component', () => {
   it('renders an error message if fetching fails', async () => {
     getVideos.mockRejectedValue(new Error('Network Error'));
 
-    render(
-      <MemoryRouter>
-        <VideoContentPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<VideoContentPage />);
 
     await waitFor(() => {
       expect(screen.getByText(/failed to load videos/i)).toBeInTheDocument();
@@ -126,15 +117,40 @@ describe('VideoContentPage Component', () => {
   it('renders a global empty state if no videos are found at all', async () => {
     getVideos.mockResolvedValue([]);
 
-    render(
-      <MemoryRouter>
-        <VideoContentPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<VideoContentPage />);
 
     await waitFor(() => {
       expect(screen.getByPlaceholderText(/search videos/i)).toBeInTheDocument();
       expect(screen.getByText(/no videos available/i)).toBeInTheDocument();
     });
   });
+
+  it('does not render Add New Video button for regular users', async () => {
+    getVideos.mockResolvedValue([]);
+    renderWithContext(<VideoContentPage />, { user: { is_staff: false } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/no videos available/i)).toBeInTheDocument();
+    });
+
+    expect(screen.queryByRole('button', { name: /\+ add new video/i })).not.toBeInTheDocument();
+  });
+
+  it('renders Add New Video button for staff users and opens modal', async () => {
+    getVideos.mockResolvedValue([]);
+    renderWithContext(<VideoContentPage />, { user: { is_staff: true } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/no videos available/i)).toBeInTheDocument();
+    });
+
+    const addBtn = screen.getByRole('button', { name: /\+ add new video/i });
+    expect(addBtn).toBeInTheDocument();
+
+    fireEvent.click(addBtn);
+
+    // Modal should be open, showing 'Add New Video' title
+    expect(screen.getByRole('heading', { name: 'Add New Video' })).toBeInTheDocument();
+  });
 });
+

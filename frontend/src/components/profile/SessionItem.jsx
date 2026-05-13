@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import SessionForm from '../sessions/SessionForm';
 
-const SessionItem = ({ session }) => {
+const SessionItem = ({ session, onUpdate }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
   if (!session || !session.game) return null;
 
-  const { id, game, game_detail, created_at, rating, comment, tags } = session;
+  const { id, game, game_detail, game_cover_image, created_at, rating, comment, tags } = session;
 
   const formattedDate = new Date(created_at).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -15,16 +17,43 @@ const SessionItem = ({ session }) => {
     day: 'numeric'
   });
 
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    setIsEditing(true);
+    setIsExpanded(true); // Ensure expanded to see the form
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
+  const handleSubmitEdit = async (data) => {
+    if (onUpdate) {
+      await onUpdate(id, data);
+      setIsEditing(false);
+    }
+  };
+
   return (
     <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-gray-500 transition-colors duration-300">
       <div 
-        className="flex flex-col sm:flex-row cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
+        className="flex flex-col sm:flex-row cursor-pointer relative"
+        onClick={() => !isEditing && setIsExpanded(!isExpanded)}
         data-testid="session-item-header"
       >
-        {/* Thumbnail - Simplified since we only get game ID and name from list API */}
-        <div className="sm:w-32 h-32 sm:h-auto flex-shrink-0 bg-gray-900 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-gray-700">
-          <span className="text-3xl text-gray-600">🎮</span>
+        <div className="sm:w-32 h-40 flex-shrink-0 bg-gray-900 border-b sm:border-b-0 sm:border-r border-gray-700 relative overflow-hidden">
+          {game_cover_image ? (
+            <img 
+              src={game_cover_image} 
+              alt={`${game_detail} cover`} 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 bg-gray-850">
+              <span className="text-3xl mb-2">🎮</span>
+              <span className="text-xs">No Image</span>
+            </div>
+          )}
         </div>
 
         {/* Core Metrics */}
@@ -36,6 +65,13 @@ const SessionItem = ({ session }) => {
               </Link>
             </h3>
             <div className="flex items-center gap-2">
+              <button 
+                onClick={handleEditClick}
+                className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1.5 rounded-lg border border-gray-600 transition-colors text-sm shadow-sm"
+                title="Edit Session"
+              >
+                ✏️
+              </button>
               {rating && (
                 <span className="bg-gray-900 text-neon-teal font-bold px-3 py-1.5 rounded-lg border border-gray-700 text-sm whitespace-nowrap shadow-sm">
                   {rating} / 10
@@ -66,20 +102,33 @@ const SessionItem = ({ session }) => {
       {/* Expandable Review Section */}
       {isExpanded && (
         <div className="p-5 bg-gray-900/60 border-t border-gray-700 animate-in slide-in-from-top-2 duration-200 flex flex-col gap-4">
-          {comment ? (
-            <p className="text-gray-300 text-base leading-relaxed whitespace-pre-line">{comment}</p>
+          {isEditing ? (
+            <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+              <h4 className="text-lg font-bold text-white mb-4">Edit Session</h4>
+              <SessionForm 
+                initialData={{ rating, comment, tags }}
+                onSubmit={handleSubmitEdit}
+                onCancel={handleCancelEdit}
+              />
+            </div>
           ) : (
-            <p className="text-gray-500 italic text-sm">No review text provided for this session.</p>
+            <>
+              {comment ? (
+                <p className="text-gray-300 text-base leading-relaxed whitespace-pre-line">{comment}</p>
+              ) : (
+                <p className="text-gray-500 italic text-sm">No review text provided for this session.</p>
+              )}
+              
+              <div className="flex justify-end pt-3 border-t border-gray-800/50 mt-2">
+                <button
+                  onClick={() => navigate(`/sessions/${id}/recommendation`)}
+                  className="bg-neon-teal/10 text-neon-teal hover:bg-neon-teal hover:text-gray-900 border border-neon-teal px-5 py-2.5 rounded-lg font-bold transition-all shadow-[0_0_10px_rgba(34,211,238,0.2)] hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] text-sm flex items-center gap-2"
+                >
+                  <span className="text-lg">🤖</span> View AI Advice
+                </button>
+              </div>
+            </>
           )}
-          
-          <div className="flex justify-end pt-3 border-t border-gray-800/50 mt-2">
-            <button
-              onClick={() => navigate(`/sessions/${id}/recommendation`)}
-              className="bg-neon-teal/10 text-neon-teal hover:bg-neon-teal hover:text-gray-900 border border-neon-teal px-5 py-2.5 rounded-lg font-bold transition-all shadow-[0_0_10px_rgba(34,211,238,0.2)] hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] text-sm flex items-center gap-2"
-            >
-              <span className="text-lg">🤖</span> View AI Advice
-            </button>
-          </div>
         </div>
       )}
     </div>
@@ -87,5 +136,6 @@ const SessionItem = ({ session }) => {
 };
 
 export default SessionItem;
+
 
 

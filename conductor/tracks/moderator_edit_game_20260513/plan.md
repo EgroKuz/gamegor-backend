@@ -19,6 +19,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Edit Game UI & Logic' (Protocol in workflow.md) (Already implemented)
 
 **Phase 4: Final Verification**
-- [ ] Task: Run full backend test suite (`python manage.py test`). Add tests for the backend permission logic.
-- [ ] Task: Run full frontend test suite (`npm run test`). Add component tests for `EditGameModal` and `GameDetailsPage` checking role-based rendering.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Verification' (Protocol in workflow.md)
+- [x] Task: Run full backend test suite (`python manage.py test`). Add tests for the backend permission logic.
+- [x] Task: Run full frontend test suite (`npm run test`). Add component tests for `EditGameModal` and `GameDetailsPage` checking role-based rendering.
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Final Verification' (Protocol in workflow.md)

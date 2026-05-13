@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import GamesPage from './GamesPage';
 import { getGames } from '../api/games';
+import { AuthContext } from '../context/AuthContext';
 
 vi.mock('../api/games');
 
@@ -12,14 +13,20 @@ describe('GamesPage Component', () => {
     vi.clearAllMocks();
   });
 
+  const renderWithContext = (ui, { user = null } = {}) => {
+    return render(
+      <MemoryRouter>
+        <AuthContext.Provider value={{ user, isAuthenticated: !!user }}>
+          {ui}
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
+  };
+
   it('renders a loading state initially', () => {
     getGames.mockReturnValue(new Promise(() => {}));
     
-    render(
-      <MemoryRouter>
-        <GamesPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<GamesPage />);
 
     expect(screen.getByText(/loading games/i)).toBeInTheDocument();
   });
@@ -31,11 +38,7 @@ describe('GamesPage Component', () => {
     ];
     getGames.mockResolvedValue(mockGames);
 
-    render(
-      <MemoryRouter>
-        <GamesPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<GamesPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Game One')).toBeInTheDocument();
@@ -69,11 +72,7 @@ describe('GamesPage Component', () => {
     const filteredMockGames = [{ id: 1, title: 'Elden Ring', developer: 'FromSoftware' }];
     getGames.mockResolvedValueOnce(filteredMockGames);
 
-    render(
-      <MemoryRouter>
-        <GamesPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<GamesPage />);
 
     // Wait for initial render
     await waitFor(() => {
@@ -99,11 +98,7 @@ describe('GamesPage Component', () => {
   it('renders an error message if fetching fails', async () => {
     getGames.mockRejectedValue(new Error('Network Error'));
 
-    render(
-      <MemoryRouter>
-        <GamesPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<GamesPage />);
 
     await waitFor(() => {
       expect(screen.getByText(/failed to load games/i)).toBeInTheDocument();
@@ -113,15 +108,39 @@ describe('GamesPage Component', () => {
   it('renders an empty state if no games are found', async () => {
     getGames.mockResolvedValue([]);
 
-    render(
-      <MemoryRouter>
-        <GamesPage />
-      </MemoryRouter>
-    );
+    renderWithContext(<GamesPage />);
 
     await waitFor(() => {
       expect(screen.getByText(/no games found/i)).toBeInTheDocument();
     });
+  });
+
+  it('does not render Add New Game button for regular users', async () => {
+    getGames.mockResolvedValue([]);
+    renderWithContext(<GamesPage />, { user: { is_staff: false } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/no games found/i)).toBeInTheDocument();
+    });
+
+    expect(screen.queryByRole('button', { name: /\+ add new game/i })).not.toBeInTheDocument();
+  });
+
+  it('renders Add New Game button for staff users and opens modal', async () => {
+    getGames.mockResolvedValue([]);
+    renderWithContext(<GamesPage />, { user: { is_staff: true } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/no games found/i)).toBeInTheDocument();
+    });
+
+    const addBtn = screen.getByRole('button', { name: /\+ add new game/i });
+    expect(addBtn).toBeInTheDocument();
+
+    fireEvent.click(addBtn);
+
+    // Modal should be open, showing 'Add New Game' title
+    expect(screen.getByRole('heading', { name: 'Add New Game' })).toBeInTheDocument();
   });
 });
 
