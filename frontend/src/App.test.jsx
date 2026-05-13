@@ -71,10 +71,7 @@ describe('App Routing', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   });
 
-  // Mocking auth to simplify protected route testing for Games
   it('renders Games page on /games route', () => {
-    // We mock localStorage to simulate an authenticated user
-    localStorage.setItem('access_token', 'fake_token');
     render(
       <MemoryRouter initialEntries={['/games']}>
         <AuthProvider>
@@ -83,11 +80,9 @@ describe('App Routing', () => {
       </MemoryRouter>
     );
     expect(screen.getByTestId('games-page-placeholder')).toBeInTheDocument();
-    localStorage.removeItem('access_token');
   });
 
   it('renders Game Details page on /games/:id route', () => {
-    localStorage.setItem('access_token', 'fake_token');
     render(
       <MemoryRouter initialEntries={['/games/123']}>
         <AuthProvider>
@@ -96,7 +91,6 @@ describe('App Routing', () => {
       </MemoryRouter>
     );
     expect(screen.getByTestId('game-details-page-placeholder')).toBeInTheDocument();
-    localStorage.removeItem('access_token');
   });
 
   it('renders Profile page on /profile route', () => {
@@ -126,7 +120,6 @@ describe('App Routing', () => {
   });
 
   it('renders Video Content page on /videos route', () => {
-    localStorage.setItem('access_token', 'fake_token');
     render(
       <MemoryRouter initialEntries={['/videos']}>
         <AuthProvider>
@@ -135,7 +128,6 @@ describe('App Routing', () => {
       </MemoryRouter>
     );
     expect(screen.getByTestId('video-content-page-placeholder')).toBeInTheDocument();
-    localStorage.removeItem('access_token');
   });
 
   it('renders Not Found page on unknown route', () => {

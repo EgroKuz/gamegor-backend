@@ -22,14 +22,14 @@ function App() {
       <Routes>
         {/* Protected Routes */}
         <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/games" element={<ProtectedRoute><GamesPage /></ProtectedRoute>} />
-        <Route path="/games/:id" element={<ProtectedRoute><GameDetailsPage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/profile/sessions" element={<ProtectedRoute><GameSessionsPage /></ProtectedRoute>} />
         <Route path="/sessions/:id/recommendation" element={<ProtectedRoute><RecommendationDetailsPage /></ProtectedRoute>} />
-        <Route path="/videos" element={<ProtectedRoute><VideoContentPage /></ProtectedRoute>} />
 
         {/* Public Routes */}
+        <Route path="/games" element={<GamesPage />} />
+        <Route path="/games/:id" element={<GameDetailsPage />} />
+        <Route path="/videos" element={<VideoContentPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
