@@ -14,7 +14,17 @@ describe('SessionForm Component', () => {
     expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
   });
 
-  it('calls onSubmit with form data when submitted', () => {
+  it('shows error if rating is not provided on submit', () => {
+    const mockSubmit = vi.fn();
+    render(<SessionForm onSubmit={mockSubmit} onCancel={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /submit review/i }));
+
+    expect(mockSubmit).not.toHaveBeenCalled();
+    expect(screen.getByText(/rating is required/i)).toBeInTheDocument();
+  });
+
+  it('calls onSubmit with form data when submitted with valid data', () => {
     const mockSubmit = vi.fn();
     render(<SessionForm onSubmit={mockSubmit} onCancel={vi.fn()} />);
 
@@ -25,10 +35,21 @@ describe('SessionForm Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /submit review/i }));
 
     expect(mockSubmit).toHaveBeenCalledWith({
-      rating: '8',
+      rating: 8,
       comment: 'Great game!',
       tags: ['Hard Boss', 'Good Story']
     });
+  });
+
+  it('displays API error message if provided via error prop', () => {
+    render(<SessionForm onSubmit={vi.fn()} onCancel={vi.fn()} error="Failed to save session" />);
+    expect(screen.getByText('Failed to save session')).toBeInTheDocument();
+  });
+
+  it('disables submit button when isSubmitting is true', () => {
+    render(<SessionForm onSubmit={vi.fn()} onCancel={vi.fn()} isSubmitting={true} />);
+    const submitBtn = screen.getByRole('button', { name: /submitting/i });
+    expect(submitBtn).toBeDisabled();
   });
 
   it('calls onCancel when cancel button is clicked', () => {
