@@ -25,8 +25,8 @@ describe('GameSessionsPage Component', () => {
 
   it('renders a list of sessions after fetching data', async () => {
     const mockSessions = [
-      { id: 1, game: { id: 101, title: 'Game A' }, date_played: '2026-05-10T14:00:00Z', duration_minutes: 60 },
-      { id: 2, game: { id: 102, title: 'Game B' }, date_played: '2026-05-11T14:00:00Z', duration_minutes: 120 }
+      { id: 1, game: 101, game_detail: 'Game A', created_at: '2026-05-10T14:00:00Z', duration_minutes: 60 },
+      { id: 2, game: 102, game_detail: 'Game B', created_at: '2026-05-11T14:00:00Z', duration_minutes: 120 }
     ];
     getUserSessions.mockResolvedValue(mockSessions);
 
