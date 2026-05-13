@@ -1,9 +1,9 @@
 # Implementation Plan: Game Cover Images
 
 **Phase 1: Component Update**
-- [ ] Task: Modify `frontend/src/components/games/GameCard.jsx` to include an image container at the top of the card structure.
-- [ ] Task: Implement rendering logic for the `cover_image_url` property and the fallback icon placeholder.
-- [ ] Task: Apply CSS classes (Tailwind) to ensure correct sizing, aspect ratio, and object-fit for the image.
+- [x] Task: Modify `frontend/src/components/games/GameCard.jsx` to include an image container at the top of the card structure. d01403b
+- [x] Task: Implement rendering logic for the `cover_image_url` property and the fallback icon placeholder. d01403b
+- [x] Task: Apply CSS classes (Tailwind) to ensure correct sizing, aspect ratio, and object-fit for the image. d01403b
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Component Update' (Protocol in workflow.md)
 
 **Phase 2: Test Updates & Verification**
