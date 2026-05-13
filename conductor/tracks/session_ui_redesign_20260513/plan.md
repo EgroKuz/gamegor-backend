@@ -1,9 +1,9 @@
 # Implementation Plan: Redesign Session Item UI
 
 **Phase 1: Component Refactoring**
-- [ ] Task: Modify `frontend/src/components/profile/SessionItem.jsx`. Remove the `duration_minutes` calculation and the JSX span rendering the duration icon and text.
-- [ ] Task: Remove the JSX span rendering the session ID.
-- [ ] Task: Update the CSS classes for the game title `<h3>` and `<Link>` to make it more prominent (e.g., larger text size, different color, or better spacing).
+- [x] Task: Modify `frontend/src/components/profile/SessionItem.jsx`. Remove the `duration_minutes` calculation and the JSX span rendering the duration icon and text. 98df5c6
+- [x] Task: Remove the JSX span rendering the session ID. 98df5c6
+- [x] Task: Update the CSS classes for the game title `<h3>` and `<Link>` to make it more prominent (e.g., larger text size, different color, or better spacing). 98df5c6
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Component Refactoring' (Protocol in workflow.md)
 
 **Phase 2: Test Updates & Verification**
