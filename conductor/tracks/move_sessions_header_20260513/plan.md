@@ -7,7 +7,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Update Header Navigation' (Protocol in workflow.md)
 
 **Phase 2: Cleanup Profile Page**
-- [ ] Task: Modify `frontend/src/pages/ProfilePage.jsx`. Locate and remove the "View Game Sessions" button/link.
+- [x] Task: Modify `frontend/src/pages/ProfilePage.jsx`. Locate and remove the "View Game Sessions" button/link. cbf077d
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Cleanup Profile Page' (Protocol in workflow.md)
 
 **Phase 3: Final Verification**
