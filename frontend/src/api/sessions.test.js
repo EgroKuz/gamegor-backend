@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import api from './client';
-import { getUserSessions } from './sessions';
+import { getUserSessions, createSession } from './sessions';
 
 vi.mock('./client');
 
@@ -12,5 +12,15 @@ describe('Sessions API Services', () => {
     const sessions = await getUserSessions();
     expect(api.get).toHaveBeenCalledWith('/sessions/');
     expect(sessions).toEqual(mockData);
+  });
+
+  it('createSession sends a POST request with session data', async () => {
+    const sessionData = { game: 1, rating: 8, comment: 'Great game!', duration_minutes: 120 };
+    const mockResponse = { id: 2, ...sessionData };
+    api.post.mockResolvedValue({ data: mockResponse });
+
+    const result = await createSession(sessionData);
+    expect(api.post).toHaveBeenCalledWith('/sessions/', sessionData);
+    expect(result).toEqual(mockResponse);
   });
 });
