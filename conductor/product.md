@@ -14,6 +14,7 @@ A full-stack video game aggregator with a recommendation system, featuring a Rea
 
 ## Key Features
 - **Game & Video Tracking:** Centralized search and rating for games and content.
+- **Video Content Hub:** A dedicated page aggregating game-related videos, allowing users to watch content directly on the platform and discover related games.
 - **AI Recommendations:** Smart matching of games and videos based on user preferences.
 - **User Profiles & History:** Personal dashboard for managing user data and viewing detailed game session history with interactive reviews.
 - **Stats & Achievements:** Comprehensive user statistics aggregation (games played, genres, videos watched) and unlockable achievements based on platform activity.
