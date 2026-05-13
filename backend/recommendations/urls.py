@@ -7,5 +7,6 @@ router.register(r'recommendations', views.RecommendationViewSet, basename='recom
 
 urlpatterns = [
     path('recommendations-page/', views.RecommendationPageView.as_view(), name='recommendation_page'),
+    path('session-advice/', views.SessionAdviceAPIView.as_view(), name='session_advice_api'),
     path('', include(router.urls)),
 ]

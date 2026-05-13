@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import api from './client';
-import { getUserSessions, getSession, createSession } from './sessions';
+import { getUserSessions, getSession, createSession, getSessionAdvice } from './sessions';
 
 vi.mock('./client');
 
@@ -30,6 +30,16 @@ describe('Sessions API Services', () => {
 
     const result = await createSession(sessionData);
     expect(api.post).toHaveBeenCalledWith('/sessions/', sessionData);
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('getSessionAdvice fetches advice based on params', async () => {
+    const params = { game: 1, tags: 'aim', comment: 'test' };
+    const mockResponse = { ai_advice: 'Keep practicing!' };
+    api.get.mockResolvedValue({ data: mockResponse });
+
+    const result = await getSessionAdvice(params);
+    expect(api.get).toHaveBeenCalledWith('/session-advice/', { params });
     expect(result).toEqual(mockResponse);
   });
 });

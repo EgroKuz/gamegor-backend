@@ -8,6 +8,7 @@ from .services.recommender import Recommender
 from .services.tag_analyzer import TagAnalyzer
 from .services.session_service import SessionRecommendationService
 from videos.serializers import VideoSerializer
+from rest_framework.views import APIView
 
 class RecommendationViewSet(viewsets.ModelViewSet):
     """
@@ -58,6 +59,18 @@ class RecommendationViewSet(viewsets.ModelViewSet):
         recommendation.viewed = True
         recommendation.save()
         return Response({'status': 'marked as viewed'})
+
+class SessionAdviceAPIView(APIView):
+    """API endpoint to get AI advice for a session."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        game_id = request.query_params.get('game')
+        tags = request.query_params.get('tags', '')
+        comment = request.query_params.get('comment', '')
+        
+        session_context = SessionRecommendationService.get_context_data(game_id, tags, comment)
+        return Response(session_context)
 
 class RecommendationPageView(TemplateView):
     """Страница текстовой рекомендации после сохранения сессии."""

@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import RecommendationDetailsPage from './RecommendationDetailsPage';
-import { getSession } from '../api/sessions';
+import { getSession, getSessionAdvice } from '../api/sessions';
 
 vi.mock('../api/sessions');
 
@@ -34,10 +34,13 @@ describe('RecommendationDetailsPage Component', () => {
       id: 123,
       game: 4,
       game_detail: 'Test Game',
-      ai_advice: 'Practice your aiming skills.',
       tags: ['aim', 'mechanics']
     };
+    const mockAdvice = {
+      ai_advice: 'Practice your aiming skills.'
+    };
     getSession.mockResolvedValue(mockSession);
+    getSessionAdvice.mockResolvedValue(mockAdvice);
 
     renderWithRouter(<RecommendationDetailsPage />, { route: '/sessions/123/recommendation' });
 
@@ -50,6 +53,7 @@ describe('RecommendationDetailsPage Component', () => {
 
     expect(screen.getByRole('button', { name: /watch videos/i })).toBeInTheDocument();
     expect(getSession).toHaveBeenCalledWith('123');
+    expect(getSessionAdvice).toHaveBeenCalledWith({ game: 4, tags: 'aim,mechanics', comment: '' });
   });
 
   it('renders an error message if fetching fails', async () => {

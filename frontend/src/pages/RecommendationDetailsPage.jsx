@@ -1,30 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getSession } from '../api/sessions';
+import { getSession, getSessionAdvice } from '../api/sessions';
 
 const RecommendationDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
+  const [advice, setAdvice] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchSession = async () => {
+    const fetchSessionAndAdvice = async () => {
       try {
         setLoading(true);
-        const data = await getSession(id);
-        setSession(data);
+        // 1. Fetch the base session details
+        const sessionData = await getSession(id);
+        setSession(sessionData);
+        
+        // 2. Fetch the AI advice specifically for this session context
+        const params = {
+          game: sessionData.game,
+          tags: sessionData.tags ? sessionData.tags.join(',') : '',
+          comment: sessionData.comment || ''
+        };
+        
+        const adviceData = await getSessionAdvice(params);
+        setAdvice(adviceData.ai_advice || "No specific advice generated for this session yet.");
         setError(null);
       } catch (err) {
-        console.error('Error fetching session details:', err);
+        console.error('Error fetching recommendation details:', err);
         setError('Failed to load recommendation details. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSession();
+    fetchSessionAndAdvice();
   }, [id]);
 
   if (loading) {
@@ -84,7 +96,7 @@ const RecommendationDetailsPage = () => {
           </h2>
           <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50">
             <p className="text-gray-200 text-lg leading-relaxed whitespace-pre-line">
-              {session.ai_advice || "The AI is still processing your session. Please check back later."}
+              {advice}
             </p>
           </div>
         </section>
