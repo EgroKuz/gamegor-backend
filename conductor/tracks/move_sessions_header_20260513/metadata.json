@@ -1,0 +1,8 @@
+{
+  "track_id": "move_sessions_header_20260513",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-05-13T16:15:00Z",
+  "updated_at": "2026-05-13T16:15:00Z",
+  "description": "перемести кнопку view game sessions из профиля в хедер рядом с Home Games Videos"
+}
