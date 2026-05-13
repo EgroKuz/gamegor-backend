@@ -155,12 +155,6 @@ const ProfilePage = () => {
           >
             Logout
           </button>
-          <Link 
-            to="/profile/sessions"
-            className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg border border-gray-700 transition-colors font-semibold shadow-sm"
-          >
-            View Game Sessions &rarr;
-          </Link>
         </div>
       </header>
 
