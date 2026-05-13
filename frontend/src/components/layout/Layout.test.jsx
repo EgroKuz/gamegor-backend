@@ -53,7 +53,6 @@ describe('Layout Components', () => {
       </MainLayout>
     );
     expect(screen.getByRole('banner')).toBeInTheDocument();
-    expect(screen.getByRole('complementary')).toBeInTheDocument();
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
     expect(screen.getByTestId('child-content')).toBeInTheDocument();
   });

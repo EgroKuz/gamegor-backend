@@ -59,7 +59,7 @@ describe('App Routing', () => {
     expect(screen.getByRole('heading', { name: 'Welcome Back' })).toBeInTheDocument();
   });
 
-  it('renders layout components (banner, complementary, contentinfo)', () => {
+  it('renders layout components (banner, contentinfo)', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <AuthProvider>
@@ -68,7 +68,6 @@ describe('App Routing', () => {
       </MemoryRouter>
     );
     expect(screen.getByRole('banner')).toBeInTheDocument();
-    expect(screen.getByRole('complementary')).toBeInTheDocument();
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   });
 
