@@ -7,7 +7,7 @@ const SessionItem = ({ session }) => {
 
   if (!session || !session.game) return null;
 
-  const { id, game, created_at, rating, comment, tags } = session;
+  const { id, game, game_detail, created_at, rating, comment, tags } = session;
 
   const formattedDate = new Date(created_at).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -22,21 +22,17 @@ const SessionItem = ({ session }) => {
         onClick={() => setIsExpanded(!isExpanded)}
         data-testid="session-item-header"
       >
-        {/* Thumbnail */}
+        {/* Thumbnail - Simplified since we only get game ID and name from list API */}
         <div className="sm:w-32 h-32 sm:h-auto flex-shrink-0 bg-gray-900 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-gray-700">
-          {game.cover_image_url ? (
-            <img src={game.cover_image_url} alt={`${game.title} cover`} className="w-full h-full object-cover" />
-          ) : (
-            <span className="text-3xl text-gray-600">🎮</span>
-          )}
+          <span className="text-3xl text-gray-600">🎮</span>
         </div>
 
         {/* Core Metrics */}
         <div className="flex-1 p-5 flex flex-col justify-between">
           <div className="flex justify-between items-start gap-4">
             <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
-              <Link to={`/games/${game.id}`} className="hover:text-neon-teal transition-colors" onClick={(e) => e.stopPropagation()}>
-                {game.title}
+              <Link to={`/games/${game}`} className="hover:text-neon-teal transition-colors" onClick={(e) => e.stopPropagation()}>
+                {game_detail || 'Unknown Game'}
               </Link>
             </h3>
             <div className="flex items-center gap-2">
