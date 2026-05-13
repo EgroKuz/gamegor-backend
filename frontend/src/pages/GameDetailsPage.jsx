@@ -36,12 +36,12 @@ const GameDetailsPage = () => {
     setIsSubmitting(true);
     setSubmitError(null);
     try {
-      await createSession({
+      const newSession = await createSession({
         ...sessionData,
         game: game.id,
       });
       setShowReviewModal(false);
-      navigate('/recommendations');
+      navigate(`/sessions/${newSession.id}/recommendation`);
     } catch (err) {
       setSubmitError(err.response?.data?.detail || err.response?.data?.error || 'Failed to submit review.');
     } finally {

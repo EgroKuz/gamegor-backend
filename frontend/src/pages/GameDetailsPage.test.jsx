@@ -127,7 +127,7 @@ describe('GameDetailsPage Component', () => {
         comment: 'Good game',
         tags: []
       });
-      expect(mockNavigate).toHaveBeenCalledWith('/recommendations');
+      expect(mockNavigate).toHaveBeenCalledWith('/sessions/1/recommendation');
     });
   });
 });
