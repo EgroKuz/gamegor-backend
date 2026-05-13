@@ -11,7 +11,9 @@ const Header = () => {
         <Link to="/" className="text-xl font-bold text-neon-teal">GameGor</Link>
         <nav>
           <ul className="flex space-x-4">
-            <li><Link to="/" className="hover:text-neon-teal transition-colors">Home</Link></li>
+            {isAuthenticated && (
+              <li><Link to="/" className="hover:text-neon-teal transition-colors">Home</Link></li>
+            )}
             <li><Link to="/games" className="hover:text-neon-teal transition-colors">Games</Link></li>
             <li><Link to="/videos" className="hover:text-neon-teal transition-colors">Videos</Link></li>
             {isAuthenticated && (
@@ -20,7 +22,11 @@ const Header = () => {
           </ul>
         </nav>
         <div>
-          <Link to="/profile" className="text-sm cursor-pointer hover:text-neon-teal transition-colors">Profile</Link>
+          {isAuthenticated ? (
+            <Link to="/profile" className="text-sm cursor-pointer hover:text-neon-teal transition-colors">Profile</Link>
+          ) : (
+            <Link to="/login" className="text-sm cursor-pointer hover:text-neon-teal transition-colors">Login</Link>
+          )}
         </div>
       </div>
     </header>
