@@ -5,18 +5,26 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import MainLayout from './MainLayout';
 import { BrowserRouter } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+
+const renderWithContext = (ui, token = 'dummy-token') => {
+  return render(
+    <AuthContext.Provider value={{ token }}>
+      <BrowserRouter>
+        {ui}
+      </BrowserRouter>
+    </AuthContext.Provider>
+  );
+};
 
 describe('Layout Components', () => {
   it('renders Header component with navigation links', () => {
-    render(
-      <BrowserRouter>
-        <Header />
-      </BrowserRouter>
-    );
+    renderWithContext(<Header />);
     expect(screen.getByRole('banner')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /games/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /videos/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /sessions/i })).toBeInTheDocument();
     expect(screen.getByText('Profile')).toBeInTheDocument(); // Expecting updated placeholder
   });
 
@@ -39,12 +47,10 @@ describe('Layout Components', () => {
   });
 
   it('renders MainLayout with children', () => {
-    render(
-      <BrowserRouter>
-        <MainLayout>
-          <div data-testid="child-content">Child Content</div>
-        </MainLayout>
-      </BrowserRouter>
+    renderWithContext(
+      <MainLayout>
+        <div data-testid="child-content">Child Content</div>
+      </MainLayout>
     );
     expect(screen.getByRole('banner')).toBeInTheDocument();
     expect(screen.getByRole('complementary')).toBeInTheDocument();
