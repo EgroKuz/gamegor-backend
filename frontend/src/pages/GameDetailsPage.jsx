@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getGameDetails } from '../api/games';
+import { createSession } from '../api/sessions';
+import SessionForm from '../components/sessions/SessionForm';
 
 const GameDetailsPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -25,6 +31,23 @@ const GameDetailsPage = () => {
 
     fetchDetails();
   }, [id]);
+
+  const handleAddReview = async (sessionData) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      await createSession({
+        ...sessionData,
+        game: game.id,
+      });
+      setShowReviewModal(false);
+      navigate('/');
+    } catch (err) {
+      setSubmitError(err.response?.data?.detail || err.response?.data?.error || 'Failed to submit review.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -56,7 +79,7 @@ const GameDetailsPage = () => {
     : 'Unknown';
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 max-w-5xl mx-auto">
+    <div className="space-y-8 animate-in fade-in duration-500 max-w-5xl mx-auto relative">
       <Link to="/games" className="inline-flex items-center text-gray-400 hover:text-neon-teal transition-colors">
         <span className="mr-2">&larr;</span> Back to Games
       </Link>
@@ -102,9 +125,11 @@ const GameDetailsPage = () => {
             </p>
           </div>
           
-          {/* Placeholder for future sections like Platforms, Genres, etc. */}
           <div className="mt-auto pt-8 flex gap-4">
-             <button className="bg-neon-teal text-gray-950 px-6 py-2 rounded-lg font-bold hover:bg-teal-400 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+             <button 
+               onClick={() => setShowReviewModal(true)}
+               className="bg-neon-teal text-gray-950 px-6 py-2 rounded-lg font-bold hover:bg-teal-400 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.4)]"
+             >
                Add Review
              </button>
              <button className="bg-gray-800 text-white border border-gray-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors">
@@ -113,6 +138,20 @@ const GameDetailsPage = () => {
           </div>
         </div>
       </div>
+
+      {showReviewModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-lg p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+            <h2 className="text-2xl font-bold text-white mb-4">Add Review for {game.title}</h2>
+            <SessionForm 
+              onSubmit={handleAddReview} 
+              onCancel={() => setShowReviewModal(false)}
+              isSubmitting={isSubmitting}
+              error={submitError}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

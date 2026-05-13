@@ -1,10 +1,21 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import GameDetailsPage from './GameDetailsPage';
 import { getGameDetails } from '../api/games';
+import { createSession } from '../api/sessions';
 
 vi.mock('../api/games');
+vi.mock('../api/sessions');
+
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 describe('GameDetailsPage Component', () => {
   beforeEach(() => {
@@ -45,8 +56,6 @@ describe('GameDetailsPage Component', () => {
       expect(screen.getByRole('heading', { name: 'Dark Souls III' })).toBeInTheDocument();
       expect(screen.getByText('A challenging action RPG.')).toBeInTheDocument();
       expect(screen.getByText('FromSoftware')).toBeInTheDocument();
-      // The formatting matches "Mar 24, 2016" but depending on local timezone of runner it might be 23rd or 24th
-      // Lets check if the year exists to be safe
       expect(screen.getByText(/2016/)).toBeInTheDocument(); 
     });
 
@@ -77,6 +86,48 @@ describe('GameDetailsPage Component', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/failed to load game details/i)).toBeInTheDocument();
+    });
+  });
+
+  it('opens Add Review modal when button is clicked', async () => {
+    getGameDetails.mockResolvedValue({ id: 123, title: 'Test Game' });
+    renderWithRouter(<GameDetailsPage />, { route: '/games/123' });
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Test Game' })).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /add review/i }));
+    
+    // Expect the form elements to be visible
+    expect(screen.getByRole('heading', { name: /add review for test game/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/rating/i)).toBeInTheDocument();
+  });
+
+  it('submits review and redirects to dashboard', async () => {
+    getGameDetails.mockResolvedValue({ id: 123, title: 'Test Game' });
+    createSession.mockResolvedValue({ id: 1, rating: 8 });
+
+    renderWithRouter(<GameDetailsPage />, { route: '/games/123' });
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Test Game' })).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /add review/i }));
+    
+    fireEvent.change(screen.getByLabelText(/rating/i), { target: { value: '8' } });
+    fireEvent.change(screen.getByLabelText(/comment/i), { target: { value: 'Good game' } });
+    fireEvent.click(screen.getByRole('button', { name: /submit review/i }));
+
+    await waitFor(() => {
+      expect(createSession).toHaveBeenCalledWith({
+        game: 123,
+        rating: 8,
+        comment: 'Good game',
+        tags: []
+      });
+      expect(mockNavigate).toHaveBeenCalledWith('/');
     });
   });
 });
