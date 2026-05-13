@@ -1,0 +1,8 @@
+{
+  "track_id": "auth_header_nav_20260513",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-05-13T20:02:00Z",
+  "updated_at": "2026-05-13T20:02:00Z",
+  "description": "когда пользователь не авторизован он должен видеть только кнопки Games и Videos. И вместо кнопки Profile должна быть кнопка Login"
+}
