@@ -6,7 +6,7 @@ describe('GameCard Component', () => {
   const mockGame = {
     id: 1,
     title: 'Elden Ring',
-    cover_image_url: 'http://example.com/eldenring.jpg',
+    cover_image: 'http://example.com/eldenring.jpg',
     developer: 'FromSoftware'
   };
 
@@ -44,7 +44,7 @@ describe('GameCard Component', () => {
   });
 
   it('renders a placeholder if no cover image is provided', () => {
-    const gameWithoutImage = { ...mockGame, cover_image_url: null };
+    const gameWithoutImage = { ...mockGame, cover_image: null };
     render(
       <MemoryRouter>
         <GameCard game={gameWithoutImage} />

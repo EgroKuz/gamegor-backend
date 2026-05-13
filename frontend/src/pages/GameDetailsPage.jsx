@@ -87,9 +87,9 @@ const GameDetailsPage = () => {
       <div className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 shadow-2xl flex flex-col md:flex-row">
         {/* Cover Image Section */}
         <div className="md:w-1/3 relative bg-gray-950 flex-shrink-0">
-          {game.cover_image_url ? (
+          {game.cover_image ? (
             <img 
-              src={game.cover_image_url} 
+              src={game.cover_image} 
               alt={`${game.title} cover`} 
               className="w-full h-full object-cover min-h-[400px]"
             />

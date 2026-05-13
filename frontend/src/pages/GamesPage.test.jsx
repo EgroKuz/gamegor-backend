@@ -26,7 +26,7 @@ describe('GamesPage Component', () => {
 
   it('renders a grid of game cards with cover images or fallbacks after fetching data', async () => {
     const mockGames = [
-      { id: 1, title: 'Game One', developer: 'Dev A', cover_image_url: 'http://example.com/game1.jpg' },
+      { id: 1, title: 'Game One', developer: 'Dev A', cover_image: 'http://example.com/game1.jpg' },
       { id: 2, title: 'Game Two', developer: 'Dev B' } // No image
     ];
     getGames.mockResolvedValue(mockGames);

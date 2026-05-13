@@ -10,9 +10,9 @@ const GameCard = ({ game }) => {
       className="block group bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-neon-teal transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-neon-teal/20"
     >
       <div className="relative aspect-[3/4] bg-gray-900 overflow-hidden">
-        {game.cover_image_url ? (
+        {game.cover_image ? (
           <img 
-            src={game.cover_image_url} 
+            src={game.cover_image} 
             alt={`${game.title} cover`} 
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />

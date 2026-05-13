@@ -46,7 +46,7 @@ describe('GameDetailsPage Component', () => {
       description: 'A challenging action RPG.',
       developer: 'FromSoftware',
       release_date: '2016-03-24',
-      cover_image_url: 'http://example.com/ds3.jpg'
+      cover_image: 'http://example.com/ds3.jpg'
     };
     getGameDetails.mockResolvedValue(mockGame);
 
