@@ -89,7 +89,7 @@ describe('GameDetailsPage Component', () => {
     });
   });
 
-  it('opens Add Review modal when button is clicked', async () => {
+  it('opens Add Session modal when button is clicked', async () => {
     getGameDetails.mockResolvedValue({ id: 123, title: 'Test Game' });
     renderWithRouter(<GameDetailsPage />, { route: '/games/123' });
 
@@ -97,10 +97,10 @@ describe('GameDetailsPage Component', () => {
       expect(screen.getByRole('heading', { name: 'Test Game' })).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /add review/i }));
+    fireEvent.click(screen.getByRole('button', { name: /add session/i }));
     
     // Expect the form elements to be visible
-    expect(screen.getByRole('heading', { name: /add review for test game/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /add session for test game/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/rating/i)).toBeInTheDocument();
   });
 
@@ -114,7 +114,7 @@ describe('GameDetailsPage Component', () => {
       expect(screen.getByRole('heading', { name: 'Test Game' })).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /add review/i }));
+    fireEvent.click(screen.getByRole('button', { name: /add session/i }));
     
     fireEvent.change(screen.getByLabelText(/rating/i), { target: { value: '8' } });
     fireEvent.change(screen.getByLabelText(/comment/i), { target: { value: 'Good game' } });
@@ -127,7 +127,7 @@ describe('GameDetailsPage Component', () => {
         comment: 'Good game',
         tags: []
       });
-      expect(mockNavigate).toHaveBeenCalledWith('/');
+      expect(mockNavigate).toHaveBeenCalledWith('/recommendations');
     });
   });
 });

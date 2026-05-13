@@ -41,7 +41,7 @@ const GameDetailsPage = () => {
         game: game.id,
       });
       setShowReviewModal(false);
-      navigate('/');
+      navigate('/recommendations');
     } catch (err) {
       setSubmitError(err.response?.data?.detail || err.response?.data?.error || 'Failed to submit review.');
     } finally {
@@ -130,7 +130,7 @@ const GameDetailsPage = () => {
                onClick={() => setShowReviewModal(true)}
                className="bg-neon-teal text-gray-950 px-6 py-2 rounded-lg font-bold hover:bg-teal-400 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.4)]"
              >
-               Add Review
+               Add Session
              </button>
              <button className="bg-gray-800 text-white border border-gray-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-700 transition-colors">
                View Videos
@@ -142,7 +142,7 @@ const GameDetailsPage = () => {
       {showReviewModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-lg p-6 shadow-2xl animate-in zoom-in-95 duration-200">
-            <h2 className="text-2xl font-bold text-white mb-4">Add Review for {game.title}</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Add Session for {game.title}</h2>
             <SessionForm 
               onSubmit={handleAddReview} 
               onCancel={() => setShowReviewModal(false)}
