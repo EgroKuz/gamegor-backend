@@ -15,7 +15,7 @@ describe('SessionItem Component', () => {
     },
     created_at: '2026-05-10T14:00:00Z',
     updated_at: '2026-05-11T10:00:00Z',
-    duration_minutes: 120,
+    duration_minutes: 120, // Keep in mock to ensure component doesn't crash if passed, but it shouldn't render
     rating: 9,
     comment: 'Amazing game!',
     tags: ['metroidvania', 'hard']
@@ -37,12 +37,14 @@ describe('SessionItem Component', () => {
     expect(img).toHaveAttribute('src', 'http://example.com/hk.jpg');
   });
 
-  it('renders session metrics (id, dates, duration, rating)', () => {
+  it('renders session metrics (date, rating) but NOT duration or ID', () => {
     renderComponent(mockSession);
     expect(screen.getByText(/may 10, 2026/i)).toBeInTheDocument(); // created_at
-    expect(screen.getByText(/2h 0m/i)).toBeInTheDocument();
-    expect(screen.getByText('9/10')).toBeInTheDocument();
-    expect(screen.getByText(/ID: 99/i)).toBeInTheDocument();
+    expect(screen.getByText('9 / 10')).toBeInTheDocument();
+    
+    // Ensure duration and ID are NOT rendered
+    expect(screen.queryByText(/2h 0m/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/ID: 99/i)).not.toBeInTheDocument();
   });
 
   it('renders tags if available', () => {

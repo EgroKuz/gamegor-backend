@@ -7,17 +7,13 @@ const SessionItem = ({ session }) => {
 
   if (!session || !session.game) return null;
 
-  const { id, game, created_at, duration_minutes, rating, comment, tags } = session;
+  const { id, game, created_at, rating, comment, tags } = session;
 
   const formattedDate = new Date(created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
   });
-
-  const hours = Math.floor(duration_minutes / 60);
-  const minutes = duration_minutes % 60;
-  const formattedDuration = `${hours}h ${minutes}m`;
 
   return (
     <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-gray-500 transition-colors duration-300">
@@ -36,38 +32,32 @@ const SessionItem = ({ session }) => {
         </div>
 
         {/* Core Metrics */}
-        <div className="flex-1 p-4 flex flex-col justify-between">
+        <div className="flex-1 p-5 flex flex-col justify-between">
           <div className="flex justify-between items-start gap-4">
-            <h3 className="text-xl font-bold text-white leading-tight">
-              <Link to={`/games/${game.id}`} className="hover:text-neon-teal hover:underline" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
+              <Link to={`/games/${game.id}`} className="hover:text-neon-teal transition-colors" onClick={(e) => e.stopPropagation()}>
                 {game.title}
               </Link>
             </h3>
             <div className="flex items-center gap-2">
               {rating && (
-                <span className="bg-gray-900 text-neon-teal font-bold px-2 py-1 rounded border border-gray-700 text-sm whitespace-nowrap">
-                  {rating}/10
+                <span className="bg-gray-900 text-neon-teal font-bold px-3 py-1.5 rounded-lg border border-gray-700 text-sm whitespace-nowrap shadow-sm">
+                  {rating} / 10
                 </span>
               )}
             </div>
           </div>
           
-          <div className="flex flex-col gap-2 mt-4 text-sm text-gray-400">
-            <div className="flex flex-wrap gap-4">
-               <span className="flex items-center gap-1">
-                 🆔 ID: {id}
-               </span>
-              <span className="flex items-center gap-1">
+          <div className="flex flex-col gap-3 mt-4 text-sm text-gray-400">
+            <div className="flex flex-wrap gap-4 items-center">
+              <span className="flex items-center gap-1 font-medium text-gray-300">
                 📅 {formattedDate}
-              </span>
-              <span className="flex items-center gap-1">
-                ⏱️ {formattedDuration}
               </span>
             </div>
             {tags && tags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-1">
                     {tags.map((tag, idx) => (
-                        <span key={idx} className="bg-gray-700 text-gray-300 px-2 py-0.5 rounded text-xs">
+                        <span key={idx} className="bg-gray-700 text-gray-200 px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider">
                             {tag}
                         </span>
                     ))}
@@ -79,19 +69,19 @@ const SessionItem = ({ session }) => {
 
       {/* Expandable Review Section */}
       {isExpanded && (
-        <div className="p-4 bg-gray-900/50 border-t border-gray-700 animate-in slide-in-from-top-2 duration-200 flex flex-col gap-4">
+        <div className="p-5 bg-gray-900/60 border-t border-gray-700 animate-in slide-in-from-top-2 duration-200 flex flex-col gap-4">
           {comment ? (
-            <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">{comment}</p>
+            <p className="text-gray-300 text-base leading-relaxed whitespace-pre-line">{comment}</p>
           ) : (
             <p className="text-gray-500 italic text-sm">No review text provided for this session.</p>
           )}
           
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-end pt-3 border-t border-gray-800/50 mt-2">
             <button
               onClick={() => navigate(`/sessions/${id}/recommendation`)}
-              className="bg-neon-teal/10 text-neon-teal hover:bg-neon-teal hover:text-gray-900 border border-neon-teal px-4 py-2 rounded-md font-bold transition-all text-sm flex items-center gap-2"
+              className="bg-neon-teal/10 text-neon-teal hover:bg-neon-teal hover:text-gray-900 border border-neon-teal px-5 py-2.5 rounded-lg font-bold transition-all shadow-[0_0_10px_rgba(34,211,238,0.2)] hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] text-sm flex items-center gap-2"
             >
-              <span>🤖</span> View AI Advice
+              <span className="text-lg">🤖</span> View AI Advice
             </button>
           </div>
         </div>
